@@ -294,6 +294,11 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!4 &1653310366 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 388658434354745354, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
+  m_PrefabInstance: {fileID: 1671471412}
+  m_PrefabAsset: {fileID: 0}
 --- !u!212 &1653310367 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 1251458615317572886, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
@@ -328,7 +333,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _toolSpriteRenderer: {fileID: 1653310367}
   _firePoint: {fileID: 1857742145}
-  CurrentWeapon: {fileID: 11400000, guid: 5946f12a48a469047890f67e3e3027d3, type: 2}
+  CurrentWeapon: {fileID: 0}
+  _availableWeapons:
+  - {fileID: 11400000, guid: 5946f12a48a469047890f67e3e3027d3, type: 2}
+  - {fileID: 11400000, guid: ca4f4100259e0654f95108d96da9c336, type: 2}
+  _gunHolder: {fileID: 1653310366}
 --- !u!1001 &1671471412
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -379,11 +388,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8266898161994222279, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
       propertyPath: m_SortingLayer
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8266898161994222279, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
       propertyPath: m_SortingLayerID
-      value: 0
+      value: -1521904745
       objectReference: {fileID: 0}
     - target: {fileID: 8365761478105298372, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
       propertyPath: m_Enabled

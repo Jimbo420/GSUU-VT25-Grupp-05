@@ -47,5 +47,8 @@ TagManager:
   - name: Weapon
     uniqueID: 2844628419
     locked: 0
+  - name: Player
+    uniqueID: 2773062551
+    locked: 0
   m_RenderingLayers:
   - Default

@@ -89,6 +89,7 @@ public class Movement : MonoBehaviour
 
         if (y is 1 or -1)
             _toolSpriteRenderer.sprite = _weaponManager.CurrentWeapon.WeaponSprite;
+        if(y is 1 or -1 && x is 1 or -1) _toolSpriteRenderer.sprite = _weaponManager.CurrentWeapon.SideSprite;
         
         _weaponManager.UpdateWeaponOrientation((int)x, (int)y);
     }
