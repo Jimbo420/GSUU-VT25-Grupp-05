@@ -29,6 +29,7 @@ public class Shooting : MonoBehaviour
 
         //Create bullet and apply forces + rotation
         GameObject bullet = Instantiate(bulletPrefab, FirePoint.position, FirePoint.rotation);
+        bullet.GetComponent<Bullet>().SetDamage(_weaponManager.CurrentWeapon.Damage);
         bullet.transform.rotation *= Quaternion.Euler(0, 0, -90f);
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 

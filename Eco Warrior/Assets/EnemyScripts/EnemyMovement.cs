@@ -13,8 +13,8 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] HealthbarBehavior healthbarBehavior;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] public float health = 0;
-    //[SerializeField] public float health = 2;
     [SerializeField] public float maxHealth = 10;
+
 
     void Start()
     {

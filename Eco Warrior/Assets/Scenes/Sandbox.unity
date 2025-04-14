@@ -337,6 +337,7 @@ MonoBehaviour:
   _availableWeapons:
   - {fileID: 11400000, guid: 5946f12a48a469047890f67e3e3027d3, type: 2}
   - {fileID: 11400000, guid: ca4f4100259e0654f95108d96da9c336, type: 2}
+  - {fileID: 11400000, guid: a454931c5fb4232419d1490316f7fbb7, type: 2}
   _gunHolder: {fileID: 1653310366}
 --- !u!1001 &1671471412
 PrefabInstance:
@@ -358,6 +359,14 @@ PrefabInstance:
       propertyPath: _toolSpriteRenderer
       value: 
       objectReference: {fileID: 1653310367}
+    - target: {fileID: 1251458615317572886, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
+      propertyPath: m_Size.x
+      value: 0.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 1251458615317572886, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
+      propertyPath: m_Size.y
+      value: 0.22
+      objectReference: {fileID: 0}
     - target: {fileID: 1251458615317572886, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
       propertyPath: m_Sprite
       value: 

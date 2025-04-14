@@ -23,7 +23,7 @@ public class TargetPlayer : MonoBehaviour
         if (target == null) return;
         IsTargetInRange();
         if (isPlayerInRange)
-            IngageTarget();
+            EngageTarget();
     }
     private void IsTargetInRange()
     {
@@ -33,7 +33,7 @@ public class TargetPlayer : MonoBehaviour
         else
             isPlayerInRange = false; //Player is to far away
     }
-    private void IngageTarget()
+    private void EngageTarget()
     {
         if (Vector2.Distance(transform.position, target.position) > distanceBetween)
             transform.position = Vector2.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
