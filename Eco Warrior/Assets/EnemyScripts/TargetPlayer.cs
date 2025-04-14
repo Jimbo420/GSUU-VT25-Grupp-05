@@ -12,30 +12,34 @@ public class TargetPlayer : MonoBehaviour
 
     [SerializeField] public float distanceBetween;
     [SerializeField] public float ingageDistance;
-    [SerializeField] public float moveSpeed = 5f;
+    [SerializeField] public float moveSpeed = 2f;
+    [SerializeField] private float stopDistance = 2f;
     [SerializeField] private bool isPlayerInRange = false;
+
+    private EnemyMovement enemyMovement;
+    private Transform player;
+    private Transform enemy;
+
+
     void Start()
     {
-        target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        enemy = GameObject.FindGameObjectWithTag("Enemy").transform;
     }
     void Update()
     {
-        if (target == null) return;
-        IsTargetInRange();
-        if (isPlayerInRange)
-            EngageTarget();
+        
     }
-    private void IsTargetInRange()
+
+    public bool PlayerIsInRangeOfEnemy(float range)
     {
-        float distance = Vector2.Distance(transform.position, target.position);
-        if (distance <= ingageDistance) //Player is in range
-            isPlayerInRange = true;
-        else
-            isPlayerInRange = false; //Player is to far away
+        float distance = Vector2.Distance(player.position, enemy.position);
+        return distance <= range;
     }
-    private void EngageTarget()
+    
+    public void EngageTarget()
     {
-        if (Vector2.Distance(transform.position, target.position) > distanceBetween)
-            transform.position = Vector2.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
+        if (Vector2.Distance(transform.position, player.position) > distanceBetween)
+            transform.position = Vector2.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
     }
 }

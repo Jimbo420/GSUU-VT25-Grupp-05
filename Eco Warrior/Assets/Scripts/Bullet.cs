@@ -17,6 +17,7 @@ public class Bullet : MonoBehaviour
         if (enemy == null) return;
 
         enemy.HitDamage(_damage);
+        Debug.Log("Hit" + _damage);
         Destroy(gameObject);
     }
     void Start()
