@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b76c625b98857d46a66cbb73509d4ee, type: 3}
   m_Name: SMG
   m_EditorClassIdentifier: 
-  WeaponType: 0
-  SideSprite: {fileID: 0}
-  WeaponSprite: {fileID: 0}
-  FireRate: 0
-  Accuracy: 0
+  WeaponType: 2
+  SideSprite: {fileID: -8237366272624925708, guid: 9dc9272008e7fe34b9519bb7cf7d6ff9, type: 3}
+  WeaponSprite: {fileID: -6464952085082107714, guid: 45858d9b45c2fde47b0eb106e1fa563d, type: 3}
+  FireRate: 5
+  Accuracy: 1
   Damage: 0
-  BulletSpeed: 0
+  BulletSpeed: 12
   FirePointOffset: {x: 0, y: 0}
-  GunHolderOffset: {x: 0, y: 0}
+  GunHolderOffset: {x: 0.8, y: -0.2}

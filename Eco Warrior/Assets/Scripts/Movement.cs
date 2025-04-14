@@ -18,7 +18,6 @@ public class Movement : MonoBehaviour
     private Rigidbody2D _rb;
     private Vector2 _movement;
     private Animator _animator;
-    //private int i = 160;
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -29,16 +28,6 @@ public class Movement : MonoBehaviour
     void Update()
     {
         _rb.linearVelocity = _movement * _moveSpeed;
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    if(_healthbar.fillRect is null) Debug.Log("Healthbar rect is null");
-        //    _healthbar.fillRect.offsetMax =
-        //        new Vector2(_healthbar.fillRect.offsetMax.x - 10f, _healthbar.fillRect.offsetMax.y);
-        //    i -= 10;
-        //    if(i == 80) _healthbar.fillRect.GetComponent<Image>().color = Color.yellow;
-        //    else if (i == 40) _healthbar.fillRect.GetComponent<Image>().color = Color.red;
-        //    if(i == 0) Destroy(gameObject);
-        //}
     }
 
     private readonly Dictionary<(float, float), float> _movementDictionary = new()
@@ -57,6 +46,7 @@ public class Movement : MonoBehaviour
     public void MoveCharacter(InputAction.CallbackContext context)
     {
         _animator.SetBool("isWalking", true);
+        //If the user no longer gives input
         if (context.canceled)
         {
             _animator.SetBool("isWalking", false);
@@ -75,6 +65,7 @@ public class Movement : MonoBehaviour
 
     private void ToolRotation()
     {
+        //Depending on where the player is looking, rotate the weapon
         Vector2 direction = _movement.normalized;
         float x = Mathf.Round(direction.x);
         float y = Mathf.Round(direction.y);
@@ -83,14 +74,19 @@ public class Movement : MonoBehaviour
         if ((int)x == 1) rotateX = 180f;
         _toolTransform.rotation = Quaternion.Euler(rotateX, 0, _rotationAngle);
 
+        //Depending on Rotation, switch which sprite is used
+        Sprite selectedSprite = _weaponManager.CurrentWeapon.WeaponSprite;
+        if (x != 0)
+        {
+            selectedSprite = _weaponManager.CurrentWeapon.SideSprite;
+        }
+        else if (x != 0 && y != 0)
+        {
+            selectedSprite = _weaponManager.CurrentWeapon.SideSprite;
+        }
 
-        if (x is 1 or -1)
-            _toolSpriteRenderer.sprite = _weaponManager.CurrentWeapon.SideSprite;
+        _toolSpriteRenderer.sprite = selectedSprite;
 
-        if (y is 1 or -1)
-            _toolSpriteRenderer.sprite = _weaponManager.CurrentWeapon.WeaponSprite;
-        if(y is 1 or -1 && x is 1 or -1) _toolSpriteRenderer.sprite = _weaponManager.CurrentWeapon.SideSprite;
-        
         _weaponManager.UpdateWeaponOrientation((int)x, (int)y);
     }
 
