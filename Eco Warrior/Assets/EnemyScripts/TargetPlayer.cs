@@ -10,11 +10,10 @@ public class TargetPlayer : MonoBehaviour
     public float fireCooldown = 0.25F;
     public float fireTime = 0.25F;
 
-    [SerializeField] public float distanceBetween;
-    [SerializeField] public float ingageDistance;
     [SerializeField] public float moveSpeed = 2f;
-    [SerializeField] private float stopDistance = 5f;
-    [SerializeField] private float rangeBetween = 10f;
+    private float stopDistance = 3f;
+    private float rangeBetween = 10f;
+    private float distance;
 
     private EnemyMovement enemyMovement;
     private Transform player;
@@ -25,6 +24,7 @@ public class TargetPlayer : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         enemy = GameObject.FindGameObjectWithTag("Enemy").transform;
+        enemyMovement = GetComponent<EnemyMovement>();
     }
     void Update()
     {
@@ -33,14 +33,17 @@ public class TargetPlayer : MonoBehaviour
 
     public bool PlayerIsInRangeOfEnemy()
     {
-        float distance = Vector2.Distance(player.position, enemy.position);
+        float distance = Vector2.Distance(player.position, transform.position);
         return distance <= rangeBetween;
     }
     
     public void EngageTarget()
     {
-        float distance = Vector2.Distance(transform.position, player.position);
+        distance = Vector2.Distance(transform.position, player.position);
         if (distance > stopDistance)
-            transform.position = Vector2.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
+        {
+            enemyMovement.SetTarget(player.position);
+            enemyMovement.Walk();
+        }
     }
 }

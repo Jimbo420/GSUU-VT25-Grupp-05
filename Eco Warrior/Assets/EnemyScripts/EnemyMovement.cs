@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class EnemyMovement : MonoBehaviour
 {
     private Rigidbody2D rb;
-    private Animator animator;
+    public Animator animator;
 
     [SerializeField] HealthbarBehavior healthbarBehavior;
     [SerializeField] private float moveSpeed = 2f;
@@ -47,19 +47,42 @@ public class EnemyMovement : MonoBehaviour
         if (targetPlayer.PlayerIsInRangeOfEnemy())
         {
             isPlayerInRange = true;
-            animator.SetBool("isWalking", false);
             targetPlayer.EngageTarget();
-            //Debug.Log("InRange: True");
         }
         else
         {
             isPlayerInRange = false;
             Guard();
-            //Debug.Log("InRange: False");
+        }
+    }
+    public void SetTarget(Vector2 newTarget)
+    {
+        currentTarget = newTarget;
+    }
+    
+    public void Walk()
+    {
+        transform.position = Vector2.MoveTowards(transform.position, currentTarget, moveSpeed * Time.deltaTime);
+
+        Vector2 direction = (currentTarget - (Vector2)transform.position).normalized;
+        animator.SetFloat("InputX", direction.x);
+        animator.SetFloat("InputY", direction.y);
+        animator.SetBool("isWalking", true);
+
+        if (!isPlayerInRange && Vector2.Distance(transform.position, currentTarget) < 0.1f)
+        {
+            isIdle = true;
+            idleTimer = Random.Range(waitTimeMin, waitTimeMax);
         }
     }
 
-    
+    private void NewPosition()
+    {
+        float x = Random.Range(-patrolCordinates.x / 2f, patrolCordinates.x / 2f);
+        float y = Random.Range(-patrolCordinates.y / 2f, patrolCordinates.y / 2f);
+        currentTarget = startPosition + new Vector2(x, y);
+    }
+
     private void Guard()
     {
         if (isIdle)
@@ -77,28 +100,7 @@ public class EnemyMovement : MonoBehaviour
         }
         Walk();
     }
-    public void Walk()
-    {
-        transform.position = Vector2.MoveTowards(transform.position, currentTarget, moveSpeed * Time.deltaTime);
 
-        Vector2 direction = (currentTarget - (Vector2)transform.position).normalized;
-        animator.SetFloat("InputX", direction.x);
-        animator.SetFloat("InputY", direction.y);
-        animator.SetBool("isWalking", true);
-
-        if (Vector2.Distance(transform.position, currentTarget) < 0.1f)
-        {
-            isIdle = true;
-            idleTimer = Random.Range(waitTimeMin, waitTimeMax);
-        }
-    }
-
-    private void NewPosition()
-    {
-        float x = Random.Range(-patrolCordinates.x / 2f, patrolCordinates.x / 2f);
-        float y = Random.Range(-patrolCordinates.y / 2f, patrolCordinates.y / 2f);
-        currentTarget = startPosition + new Vector2(x, y);
-    }
     public void HitDamage(float hitDamage)
     {
         health -= hitDamage;
