@@ -15,19 +15,18 @@ public class HealthbarBehavior : MonoBehaviour
     {
         slider = GetComponentInChildren<Slider>();
         fillImage = slider.fillRect.GetComponentInChildren<Image>();
-        fillImage.color = Color.Lerp(low, high, slider.normalizedValue);
     }
 
     void Update()
     {
-
+        fillImage.color = Color.Lerp(low, high, slider.normalizedValue); //Fills the slider with correct color set between low and high color
     }
 
     public void Health(float health, float maxhealth)
     {
+        //Slider value by enemeys health
         slider.gameObject.SetActive(health < maxhealth);
         slider.maxValue = maxhealth;
         slider.value = health;
-        fillImage.color = Color.Lerp(low, high, slider.normalizedValue);
     }
 }
