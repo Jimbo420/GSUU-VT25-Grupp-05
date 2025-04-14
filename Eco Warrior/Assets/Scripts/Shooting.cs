@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 public class Shooting : MonoBehaviour
 {
     [SerializeField] Transform FirePoint;
@@ -10,6 +11,7 @@ public class Shooting : MonoBehaviour
    
     void FixedUpdate()
     {
+        if (EventSystem.current.IsPointerOverGameObject() || ItemDragHandler.IsDragging) return;
         if (!Input.GetButton("Fire1") || !(Time.time >= _nextFireTime)) return;
 
         Shoot();

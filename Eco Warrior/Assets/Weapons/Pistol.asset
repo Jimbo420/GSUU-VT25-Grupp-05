@@ -17,7 +17,7 @@ MonoBehaviour:
   WeaponSprite: {fileID: -9179697191488741018, guid: a834d2fd314f87040b4648da4abefa68, type: 3}
   FireRate: 2
   Accuracy: 0
-  Damage: 0
+  Damage: 20
   BulletSpeed: 8
   FirePointOffset: {x: 0, y: 0}
   GunHolderOffset: {x: 0.6, y: -0.4}
