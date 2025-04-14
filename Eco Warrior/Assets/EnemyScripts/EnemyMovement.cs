@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 
 public class EnemyMovement : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     private Rigidbody2D rb;
     private Animator animator;
 
@@ -26,8 +25,6 @@ public class EnemyMovement : MonoBehaviour
 
     private float idleTimer = 0f;
     private bool isIdle = false;
-    
-
 
     void Start()
     {

@@ -13,9 +13,8 @@ public class TargetPlayer : MonoBehaviour
     [SerializeField] public float distanceBetween;
     [SerializeField] public float ingageDistance;
     [SerializeField] public float moveSpeed = 2f;
-    [SerializeField] private float stopDistance = 2f;
-    [SerializeField] private bool isPlayerInRange = false;
-    private float rangeBetween = 10f;
+    [SerializeField] private float stopDistance = 5f;
+    [SerializeField] private float rangeBetween = 10f;
 
     private EnemyMovement enemyMovement;
     private Transform player;
@@ -40,7 +39,8 @@ public class TargetPlayer : MonoBehaviour
     
     public void EngageTarget()
     {
-        if (Vector2.Distance(transform.position, player.position) > distanceBetween)
+        float distance = Vector2.Distance(transform.position, player.position);
+        if (distance > stopDistance)
             transform.position = Vector2.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
     }
 }
