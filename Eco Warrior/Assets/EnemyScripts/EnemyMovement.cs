@@ -62,7 +62,7 @@ public class EnemyMovement : MonoBehaviour
 
     public void Heal()
     {
-        for(float healValue = health; healValue <= maxHealth; healValue++)
+        for(float healValue = health; healValue < maxHealth; healValue++)
         {
             health = healValue;
             healthbarBehavior.Health(healValue, maxHealth);
