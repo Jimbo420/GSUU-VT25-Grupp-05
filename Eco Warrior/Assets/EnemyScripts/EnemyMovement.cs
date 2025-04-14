@@ -22,11 +22,11 @@ public class EnemyMovement : MonoBehaviour
     private Vector2 startPosition;
     private Vector2 currentTarget;
 
-    public TargetPlayer targetPlayer;
+    [SerializeField] public TargetPlayer targetPlayer;
 
     private float idleTimer = 0f;
     private bool isIdle = false;
-    private float rangeBetween = 10f;
+    
 
 
     void Start()
@@ -34,28 +34,31 @@ public class EnemyMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         healthbarBehavior = GetComponentInChildren<HealthbarBehavior>();
+        targetPlayer = GetComponent<TargetPlayer>();
+        EnemyStartup();
+    }
 
+    private void EnemyStartup()
+    {
         health = maxHealth;
         healthbarBehavior.Health(health, maxHealth);
-
-        
         startPosition = transform.position;
         NewPosition();
     }
     void Update()
     {
-        if (targetPlayer.PlayerIsInRangeOfEnemy(rangeBetween))
+        if (targetPlayer.PlayerIsInRangeOfEnemy())
         {
             isPlayerInRange = true;
             animator.SetBool("isWalking", false);
             targetPlayer.EngageTarget();
-            Debug.Log("InRange: True");
+            //Debug.Log("InRange: True");
         }
         else
         {
             isPlayerInRange = false;
             Guard();
-            Debug.Log("InRange: False");
+            //Debug.Log("InRange: False");
         }
     }
 

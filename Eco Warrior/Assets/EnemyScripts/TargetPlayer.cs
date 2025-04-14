@@ -15,6 +15,7 @@ public class TargetPlayer : MonoBehaviour
     [SerializeField] public float moveSpeed = 2f;
     [SerializeField] private float stopDistance = 2f;
     [SerializeField] private bool isPlayerInRange = false;
+    private float rangeBetween = 10f;
 
     private EnemyMovement enemyMovement;
     private Transform player;
@@ -31,10 +32,10 @@ public class TargetPlayer : MonoBehaviour
         
     }
 
-    public bool PlayerIsInRangeOfEnemy(float range)
+    public bool PlayerIsInRangeOfEnemy()
     {
         float distance = Vector2.Distance(player.position, enemy.position);
-        return distance <= range;
+        return distance <= rangeBetween;
     }
     
     public void EngageTarget()
