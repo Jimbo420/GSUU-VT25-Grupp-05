@@ -231,8 +231,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46f2aba6dc50e4a418cd341e91ae983a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
   healthbarBehavior: {fileID: 0}
+  moveSpeed: 5
   hitpoints: 0
   health: 0
   maxHealth: 25
@@ -449,7 +449,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 4723107735738678597, guid: 5815ed8e569f11241844e86c7bb4cd0b, type: 3}
+  m_Sprite: {fileID: 794771719245926436, guid: d04f9d9c02661a14f8e40e9a19d4acc4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -486,7 +486,7 @@ Animator:
   m_GameObject: {fileID: 341055467}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0d55487e0bdacff48b9ec45d4927368a, type: 2}
+  m_Controller: {fileID: 9100000, guid: 46e78a9790853764d9612cc18f5db78f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

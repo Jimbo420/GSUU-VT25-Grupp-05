@@ -1,3 +1,5 @@
+using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,8 +12,8 @@ public class EnemyMovement : MonoBehaviour
 
     [SerializeField] HealthbarBehavior healthbarBehavior;
     [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] public float hitpoints = 1;
-    [SerializeField] public float health;
+    [SerializeField] public float health = 0;
+    //[SerializeField] public float health = 2;
     [SerializeField] public float maxHealth = 10;
 
     void Start()
@@ -20,8 +22,8 @@ public class EnemyMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         healthbarBehavior = GetComponentInChildren<HealthbarBehavior>();
 
-        hitpoints = maxHealth;
-        healthbarBehavior.Health(hitpoints, maxHealth);
+        health = maxHealth;
+        healthbarBehavior.Health(health, maxHealth);
     }
     void Update()
     {
@@ -29,6 +31,8 @@ public class EnemyMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
             HitDamage(1);
+        else if (Input.GetKeyDown(KeyCode.H))
+            Heal();
     }
 
     public void Move(InputAction.CallbackContext context)
@@ -50,10 +54,19 @@ public class EnemyMovement : MonoBehaviour
     }
     public void HitDamage(float hitDamage)
     {
-        hitpoints -= hitDamage;
-        healthbarBehavior.Health(hitpoints, maxHealth);
-        if (hitpoints <= 0)
+        health -= hitDamage;
+        healthbarBehavior.Health(health, maxHealth);
+        if (health <= 0)
             Dead();
+    }
+
+    public void Heal()
+    {
+        for(float healValue = health; healValue <= maxHealth; healValue++)
+        {
+            health = healValue;
+            healthbarBehavior.Health(healValue, maxHealth);
+        }
     }
     public void Dead()
     {
