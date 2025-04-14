@@ -13,8 +13,9 @@ public class HealthbarBehavior : MonoBehaviour
     public Vector3 offset;
     void Start()
     {
-        fillImage = slider.fillRect.GetComponentInChildren<Image>();
         slider = GetComponentInChildren<Slider>();
+        fillImage = slider.fillRect.GetComponentInChildren<Image>();
+        fillImage.color = Color.Lerp(low, high, slider.normalizedValue);
     }
 
     void Update()
