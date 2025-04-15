@@ -9,6 +9,7 @@ public class EnemyMovement : MonoBehaviour
     public Animator animator;
 
     [SerializeField] HealthbarBehavior healthbarBehavior;
+    [SerializeField] PolygonCollider2D polygonCollider;
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] public float health = 0;
     [SerializeField] public float maxHealth = 25;
@@ -32,6 +33,7 @@ public class EnemyMovement : MonoBehaviour
         animator = GetComponent<Animator>();
         healthbarBehavior = GetComponentInChildren<HealthbarBehavior>();
         targetPlayer = GetComponent<TargetPlayer>();
+        polygonCollider = GetComponentInChildren<PolygonCollider2D>();
         EnemyStartup();
     }
 
@@ -68,6 +70,7 @@ public class EnemyMovement : MonoBehaviour
         animator.SetFloat("InputX", direction.x);
         animator.SetFloat("InputY", direction.y);
         animator.SetBool("isWalking", true);
+        
 
         if (!isPlayerInRange && Vector2.Distance(transform.position, currentTarget) < 0.1f)
         {
@@ -88,13 +91,11 @@ public class EnemyMovement : MonoBehaviour
         if (isIdle)
         {
             idleTimer -= Time.deltaTime;
-
             if (idleTimer <= 0f)
             {
                 isIdle = false;
                 NewPosition();
             }
-
             animator.SetBool("isWalking", false);
             return;
         }

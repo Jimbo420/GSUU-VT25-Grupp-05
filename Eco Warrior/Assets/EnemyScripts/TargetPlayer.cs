@@ -16,10 +16,10 @@ public class TargetPlayer : MonoBehaviour
     private float distance;
 
     private EnemyMovement enemyMovement;
-    private Transform player;
+    public Transform player;
     private Transform enemy;
 
-
+    private bool hasLineOfSight = false;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -30,13 +30,15 @@ public class TargetPlayer : MonoBehaviour
     {
         
     }
-
     public bool PlayerIsInRangeOfEnemy()
     {
-        float distance = Vector2.Distance(player.position, transform.position);
-        return distance <= rangeBetween;
+        if(hasLineOfSight)
+        {
+            float distance = Vector2.Distance(player.position, transform.position); //Calculates the distance between player and enemy
+            return distance <= rangeBetween;
+        }
+        return false;
     }
-    
     public void EngageTarget()
     {
         distance = Vector2.Distance(transform.position, player.position);
@@ -44,6 +46,15 @@ public class TargetPlayer : MonoBehaviour
         {
             enemyMovement.SetTarget(player.position);
             enemyMovement.Walk();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        RaycastHit2D raycast = Physics2D.Raycast(transform.position, player.transform.position - transform.position);
+        if(raycast.collider != null)
+        {
+            hasLineOfSight = raycast.collider.CompareTag("Player");
         }
     }
 }
