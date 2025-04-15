@@ -32,12 +32,13 @@ public class TargetPlayer : MonoBehaviour
     }
     public bool PlayerIsInRangeOfEnemy()
     {
-        if(hasLineOfSight)
-        {
+        //if(hasLineOfSight)
+        //{
             float distance = Vector2.Distance(player.position, transform.position); //Calculates the distance between player and enemy
             return distance <= rangeBetween;
-        }
-        return false;
+        //}
+        //else
+        //    return false;
     }
     public void EngageTarget()
     {
@@ -51,10 +52,25 @@ public class TargetPlayer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        RaycastHit2D raycast = Physics2D.Raycast(transform.position, player.transform.position - transform.position);
-        if(raycast.collider != null)
+        if (player == null) return;
+
+        Vector2 origin = transform.position;
+        Vector2 direction = (player.position - transform.position).normalized;
+
+        int enemyLayer = LayerMask.NameToLayer("Enemy");
+        int layerMask = ~(1 << enemyLayer);
+
+        RaycastHit2D hit = Physics2D.Raycast(origin, direction, rangeBetween+5f, layerMask);
+
+        if (hit.collider != null)
         {
-            hasLineOfSight = raycast.collider.CompareTag("Player");
+            hasLineOfSight = hit.collider.CompareTag("Player");
+            Debug.Log($"LOS: {hasLineOfSight}, Hit: {hit.collider.name}");
+        }
+        else
+        {
+            hasLineOfSight = false;
+            Debug.Log($"LOS: {hasLineOfSight}");
         }
     }
 }
