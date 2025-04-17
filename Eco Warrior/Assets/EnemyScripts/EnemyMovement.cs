@@ -5,53 +5,103 @@ using UnityEngine.InputSystem;
 
 public class EnemyMovement : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     private Rigidbody2D rb;
-    private Vector2 moveInput;
-    private Animator animator;
+    public Animator animator;
 
     [SerializeField] HealthbarBehavior healthbarBehavior;
-    [SerializeField] private float moveSpeed = 5f;
+    [SerializeField] PolygonCollider2D polygonCollider;
+    [SerializeField] private float moveSpeed = 2f;
     [SerializeField] public float health = 0;
-    [SerializeField] public float maxHealth = 10;
+    [SerializeField] public float maxHealth = 25;
 
+    [SerializeField] private Vector2 patrolCordinates = new Vector2(5f, 7f);
+    [SerializeField] private bool isPlayerInRange = false;
+    [SerializeField] private float waitTimeMin = 1f;
+    [SerializeField] private float waitTimeMax = 3f;
+
+    private Vector2 startPosition;
+    private Vector2 currentTarget;
+
+    [SerializeField] public TargetPlayer targetPlayer;
+
+    private float idleTimer = 0f;
+    private bool isIdle = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         healthbarBehavior = GetComponentInChildren<HealthbarBehavior>();
+        targetPlayer = GetComponent<TargetPlayer>();
+        polygonCollider = GetComponentInChildren<PolygonCollider2D>();
+        EnemyStartup();
+    }
 
+    private void EnemyStartup()
+    {
         health = maxHealth;
         healthbarBehavior.Health(health, maxHealth);
+        startPosition = transform.position;
+        NewPosition();
     }
     void Update()
     {
-        rb.linearVelocity = moveInput * moveSpeed;
-
-        if (Input.GetKeyDown(KeyCode.Space))
-            HitDamage(1);
-        else if (Input.GetKeyDown(KeyCode.H))
-            Heal();
-    }
-
-    public void Move(InputAction.CallbackContext context)
-    {
-        animator.SetBool("isWalking", true);
-        if(context.canceled)
+        if (targetPlayer.PlayerIsInRangeOfEnemy())
         {
-            animator.SetBool("isWalking", false);
-            animator.SetFloat("LastInputX", moveInput.x);
-            animator.SetFloat("LastInputY", moveInput.y);
+            isPlayerInRange = true;
+            targetPlayer.EngageTarget();
         }
-        moveInput = context.ReadValue<Vector2>();
-        animator.SetFloat("InputX", moveInput.x);
-        animator.SetFloat("InputY", moveInput.y);
+        else
+        {
+            isPlayerInRange = false;
+            Guard();
+        }
     }
-    public void GiveDamage()
+    public void SetTarget(Vector2 newTarget)
     {
-
+        currentTarget = newTarget;
     }
+    
+    public void Walk()
+    {
+        transform.position = Vector2.MoveTowards(transform.position, currentTarget, moveSpeed * Time.deltaTime);
+
+        Vector2 direction = (currentTarget - (Vector2)transform.position).normalized;
+        animator.SetFloat("InputX", direction.x);
+        animator.SetFloat("InputY", direction.y);
+        animator.SetBool("isWalking", true);
+        
+
+        if (!isPlayerInRange && Vector2.Distance(transform.position, currentTarget) < 0.1f)
+        {
+            isIdle = true;
+            idleTimer = Random.Range(waitTimeMin, waitTimeMax);
+        }
+    }
+
+    private void NewPosition()
+    {
+        float x = Random.Range(-patrolCordinates.x / 2f, patrolCordinates.x / 2f);
+        float y = Random.Range(-patrolCordinates.y / 2f, patrolCordinates.y / 2f);
+        currentTarget = startPosition + new Vector2(x, y);
+    }
+
+    private void Guard()
+    {
+        if (isIdle)
+        {
+            idleTimer -= Time.deltaTime;
+            if (idleTimer <= 0f)
+            {
+                isIdle = false;
+                NewPosition();
+            }
+            animator.SetBool("isWalking", false);
+            return;
+        }
+        Walk();
+    }
+
     public void HitDamage(float hitDamage)
     {
         health -= hitDamage;
