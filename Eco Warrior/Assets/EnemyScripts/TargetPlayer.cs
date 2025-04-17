@@ -6,6 +6,13 @@ public class TargetPlayer : MonoBehaviour
     private Transform target;
     private GameObject bullet;
     private Transform aim;
+
+
+    //[SerializeField] private SpriteRenderer _toolSpriteRenderer;
+    //[SerializeField] private WeaponManager _weaponManager;
+    //[SerializeField] private Transform _toolTransform;
+    //[SerializeField] private Transform _firePointTransform;
+
     public float fireDamage = 1F;
     public float fireCooldown = 0.25F;
     public float fireTime = 0.25F;
@@ -19,12 +26,15 @@ public class TargetPlayer : MonoBehaviour
     public Transform player;
     private Transform enemy;
 
+
+
     private bool hasLineOfSight = false;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         enemy = GameObject.FindGameObjectWithTag("Enemy").transform;
         enemyMovement = GetComponent<EnemyMovement>();
+        //Sprite selectedSprite = _weaponManager.CurrentWeapon.WeaponSprite;
     }
     void Update()
     {
@@ -32,13 +42,13 @@ public class TargetPlayer : MonoBehaviour
     }
     public bool PlayerIsInRangeOfEnemy()
     {
-        //if(hasLineOfSight)
-        //{
+        if (hasLineOfSight)
+        {
             float distance = Vector2.Distance(player.position, transform.position); //Calculates the distance between player and enemy
             return distance <= rangeBetween;
-        //}
-        //else
-        //    return false;
+        }
+        else
+            return false;
     }
     public void EngageTarget()
     {
@@ -55,7 +65,7 @@ public class TargetPlayer : MonoBehaviour
         if (player == null) return;
 
         Vector2 origin = transform.position;
-        Vector2 direction = (player.position - transform.position).normalized;
+        Vector2 direction = (player.position - this.transform.position).normalized;
 
         int enemyLayer = LayerMask.NameToLayer("Enemy");
         int layerMask = ~(1 << enemyLayer);
