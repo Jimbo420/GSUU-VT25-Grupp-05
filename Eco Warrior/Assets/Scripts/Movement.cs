@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using Interfaces;
 using Unity.VisualScripting;
 using Unity.VisualScripting.InputSystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class Movement : MonoBehaviour
+public class Movement : MonoBehaviour, IDamageable
 {
     [SerializeField] private float _moveSpeed = 3f;
     [SerializeField] private Transform _toolTransform;
@@ -13,7 +14,10 @@ public class Movement : MonoBehaviour
     [SerializeField] private Slider _healthbar;
     [SerializeField] private SpriteRenderer _toolSpriteRenderer;
     [SerializeField] private WeaponManager _weaponManager;
-
+    [SerializeField] private float moveSpeed = 2f;
+    [SerializeField] public float health = 0;
+    [SerializeField] public float maxHealth = 25;
+    private HealthbarBehavior _healthbarBehavior;
     private float _rotationAngle = 0;
     private Rigidbody2D _rb;
     private Vector2 _movement;
@@ -22,6 +26,7 @@ public class Movement : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
+        _healthbarBehavior = GetComponentInChildren<HealthbarBehavior>();
     }
 
     // Update is called once per frame
@@ -90,6 +95,12 @@ public class Movement : MonoBehaviour
         _weaponManager.UpdateWeaponOrientation((int)x, (int)y);
     }
 
-    
 
+    public void HitDamage(float damage)
+    {
+        health -= damage;
+        _healthbarBehavior.Health(health, maxHealth);
+        if (health <= 0)
+            Destroy(gameObject);
+    }
 }

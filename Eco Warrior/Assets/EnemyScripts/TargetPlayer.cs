@@ -25,15 +25,22 @@ public class TargetPlayer : MonoBehaviour
     private EnemyMovement enemyMovement;
     public Transform player;
     private Transform enemy;
-
+    private WeaponManager _weaponManager;
 
 
     private bool hasLineOfSight = false;
+    private float _nextFireTime;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        if(player == null) Debug.Log("Player not found");
         enemy = GameObject.FindGameObjectWithTag("Enemy").transform;
+        if(player == null) Debug.Log("Enemy not found");
+
         enemyMovement = GetComponent<EnemyMovement>();
+        _weaponManager = GetComponentInChildren<WeaponManager>();
+        if(_weaponManager == null) Debug.Log("Is null");
         //Sprite selectedSprite = _weaponManager.CurrentWeapon.WeaponSprite;
     }
     void Update()
@@ -57,6 +64,9 @@ public class TargetPlayer : MonoBehaviour
         {
             enemyMovement.SetTarget(player.position);
             enemyMovement.Walk();
+            if (!(Time.time >= _nextFireTime)) return;
+            _weaponManager.Shoot();
+            _nextFireTime = Time.time + (1f/_weaponManager.CurrentWeapon.FireRate);
         }
     }
 

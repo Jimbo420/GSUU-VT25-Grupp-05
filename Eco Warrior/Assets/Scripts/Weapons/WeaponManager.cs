@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class WeaponManager : MonoBehaviour
 {
@@ -8,26 +9,41 @@ public class WeaponManager : MonoBehaviour
     [SerializeField] private WeaponData[] _availableWeapons;
     [SerializeField] private Transform _gunHolder;
     private int _currentWeaponIndex = 0;
+    [SerializeField] GameObject bulletPrefab;
 
     void Start()
     {
-        SetWeapon(_availableWeapons[0]);
+        SwitchWeapon();
     }
-    private void Update()
+    public void Shoot()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            if (_currentWeaponIndex < _availableWeapons.Length - 1) 
-                _currentWeaponIndex++;
-            else
-                _currentWeaponIndex = 0;
-            
-            SetWeapon(_availableWeapons[_currentWeaponIndex]);
-        }
+        Quaternion originalRotation = _firePoint.rotation;
+     
+        //Create Bullet inaccuracy depending on the current weapon 
+        float angleOffset = Random.Range(CurrentWeapon.Accuracy, CurrentWeapon.Accuracy);
+        _firePoint.rotation *= Quaternion.Euler(0, 0, angleOffset);
+
+        //Create bullet and apply forces + rotation
+        GameObject bullet = Instantiate(bulletPrefab, _firePoint.position, _firePoint.rotation);
+        bullet.GetComponent<Bullet>().SetDamage(CurrentWeapon.Damage);      
+        bullet.GetComponent<Bullet>().SetShooter(transform.parent.gameObject);
+
+        bullet.transform.rotation *= Quaternion.Euler(0, 0, -90f);
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+
+        //Add Force to the bullet in direction of fire point
+        rb.AddForce(_firePoint.up * CurrentWeapon.BulletSpeed, ForceMode2D.Impulse);
+
+        //Reset the bullet rotation
+        _firePoint.rotation = originalRotation;
     }
-    public void SetWeapon(WeaponData weapon)
+    public void SwitchWeapon()
     {
-        CurrentWeapon = weapon;
+        if (_currentWeaponIndex < _availableWeapons.Length - 1) 
+            _currentWeaponIndex++;
+        else
+            _currentWeaponIndex = 0;
+        CurrentWeapon = _availableWeapons[_currentWeaponIndex];
         UpdateWeaponSprite();
         UpdateFirePointPosition();
     }

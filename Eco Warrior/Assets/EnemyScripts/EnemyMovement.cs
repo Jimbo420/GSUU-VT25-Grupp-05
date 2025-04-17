@@ -1,9 +1,10 @@
 using System.Threading;
+using Interfaces;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class EnemyMovement : MonoBehaviour
+public class EnemyMovement : MonoBehaviour, IDamageable
 {
     private Rigidbody2D rb;
     public Animator animator;
