@@ -11,23 +11,19 @@ public class WeaponManager : MonoBehaviour
 
     void Start()
     {
-        SetWeapon(_availableWeapons[0]);
+        SwitchWeapon();
     }
-    private void Update()
+    public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            if (_currentWeaponIndex < _availableWeapons.Length - 1) 
-                _currentWeaponIndex++;
-            else
-                _currentWeaponIndex = 0;
-            
-            SetWeapon(_availableWeapons[_currentWeaponIndex]);
-        }
+       
     }
-    public void SetWeapon(WeaponData weapon)
+    public void SwitchWeapon()
     {
-        CurrentWeapon = weapon;
+        if (_currentWeaponIndex < _availableWeapons.Length - 1) 
+            _currentWeaponIndex++;
+        else
+            _currentWeaponIndex = 0;
+        CurrentWeapon = _availableWeapons[_currentWeaponIndex];
         UpdateWeaponSprite();
         UpdateFirePointPosition();
     }
