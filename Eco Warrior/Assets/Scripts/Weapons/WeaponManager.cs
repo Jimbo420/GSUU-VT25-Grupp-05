@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class WeaponManager : MonoBehaviour
 {
@@ -8,14 +9,33 @@ public class WeaponManager : MonoBehaviour
     [SerializeField] private WeaponData[] _availableWeapons;
     [SerializeField] private Transform _gunHolder;
     private int _currentWeaponIndex = 0;
+    [SerializeField] GameObject bulletPrefab;
 
     void Start()
     {
         SwitchWeapon();
     }
-    public void Update()
+    public void Shoot()
     {
-       
+        Quaternion originalRotation = _firePoint.rotation;
+     
+        //Create Bullet inaccuracy depending on the current weapon 
+        float angleOffset = Random.Range(CurrentWeapon.Accuracy, CurrentWeapon.Accuracy);
+        _firePoint.rotation *= Quaternion.Euler(0, 0, angleOffset);
+
+        //Create bullet and apply forces + rotation
+        GameObject bullet = Instantiate(bulletPrefab, _firePoint.position, _firePoint.rotation);
+        bullet.GetComponent<Bullet>().SetDamage(CurrentWeapon.Damage);      
+        bullet.GetComponent<Bullet>().SetShooter(transform.parent.gameObject);
+
+        bullet.transform.rotation *= Quaternion.Euler(0, 0, -90f);
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+
+        //Add Force to the bullet in direction of fire point
+        rb.AddForce(_firePoint.up * CurrentWeapon.BulletSpeed, ForceMode2D.Impulse);
+
+        //Reset the bullet rotation
+        _firePoint.rotation = originalRotation;
     }
     public void SwitchWeapon()
     {

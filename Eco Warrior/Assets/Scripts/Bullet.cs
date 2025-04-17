@@ -1,23 +1,29 @@
+using Interfaces;
 using UnityEngine;
 public class Bullet : MonoBehaviour
 {
-    public float maxDistance = 10f;
+    public float maxDistance = 10f; //Maximum of distance that the bullet can travel
     private Vector3 _startPosition;
     private float _damage;
+    private GameObject _shooter;
 
     public void SetDamage(float damage)
     {
         _damage = damage;
     }
+
+    public void SetShooter(GameObject shooter)
+    {
+        _shooter = shooter;
+    }
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.CompareTag("Enemy")) return;
+        if (other.gameObject == _shooter) return;
 
-        EnemyMovement enemy = other.GetComponent<EnemyMovement>();
-        if (enemy == null) return;
+        IDamageable damageable = other.GetComponent<IDamageable>();
+        if (damageable == null) return;
 
-        enemy.HitDamage(_damage);
-        Debug.Log("Hit" + _damage);
+        damageable.HitDamage(_damage);
         Destroy(gameObject);
     }
     void Start()
