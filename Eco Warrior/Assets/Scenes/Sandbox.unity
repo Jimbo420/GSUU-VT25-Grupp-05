@@ -624,6 +624,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 869970493285833274, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
+      propertyPath: _healthbar
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 869970493285833274, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
       propertyPath: _moveSpeed
       value: 5
       objectReference: {fileID: 0}
@@ -740,6 +744,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4352453264094158474, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2116233427}
+    - targetCorrespondingSourceObject: {fileID: 4352453264094158474, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2116233428}
     - targetCorrespondingSourceObject: {fileID: 4240344278367971543, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1653310368}
@@ -1128,6 +1135,18 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &2116233428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1426254945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8df35cd06090c4d13b86bcfef085be9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
