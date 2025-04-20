@@ -10,6 +10,7 @@ public class EnemyMovement : MonoBehaviour, IDamageable
     public Animator animator;
 
     [SerializeField] HealthbarBehavior healthbarBehavior;
+    [SerializeField] private ToolRotator _toolRotator;
     [SerializeField] PolygonCollider2D polygonCollider;
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] public float health = 0;
@@ -35,6 +36,7 @@ public class EnemyMovement : MonoBehaviour, IDamageable
         healthbarBehavior = GetComponentInChildren<HealthbarBehavior>();
         targetPlayer = GetComponent<TargetPlayer>();
         polygonCollider = GetComponentInChildren<PolygonCollider2D>();
+        _toolRotator = GetComponentInChildren<ToolRotator>();
         EnemyStartup();
     }
 
@@ -71,6 +73,7 @@ public class EnemyMovement : MonoBehaviour, IDamageable
         animator.SetFloat("InputX", direction.x);
         animator.SetFloat("InputY", direction.y);
         animator.SetBool("isWalking", true);
+        _toolRotator.RotateTool(direction);
         
 
         if (!isPlayerInRange && Vector2.Distance(transform.position, currentTarget) < 0.1f)
