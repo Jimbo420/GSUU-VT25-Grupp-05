@@ -73,7 +73,7 @@ public class EnemyMovement : MonoBehaviour, IDamageable
         animator.SetFloat("InputX", direction.x);
         animator.SetFloat("InputY", direction.y);
         animator.SetBool("isWalking", true);
-        _toolRotator.RotateTool(direction);
+        _toolRotator.RotateTool( false, direction);
         
 
         if (!isPlayerInRange && Vector2.Distance(transform.position, currentTarget) < 0.1f)

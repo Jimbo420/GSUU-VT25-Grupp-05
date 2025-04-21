@@ -84,12 +84,12 @@ public class TargetPlayer : MonoBehaviour
         if (hit.collider != null)
         {
             hasLineOfSight = hit.collider.CompareTag("Player");
-            Debug.Log($"LOS: {hasLineOfSight}, Hit: {hit.collider.name}");
+            //Debug.Log($"LOS: {hasLineOfSight}, Hit: {hit.collider.name}");
         }
         else
         {
             hasLineOfSight = false;
-            Debug.Log($"LOS: {hasLineOfSight}");
+            //Debug.Log($"LOS: {hasLineOfSight}");
         }
     }
 }

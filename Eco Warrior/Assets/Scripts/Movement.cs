@@ -51,7 +51,7 @@ public class Movement : MonoBehaviour, IDamageable
         _animator.SetFloat("InputX", _movement.x);
         _animator.SetFloat("InputY", _movement.y);
 
-        if (_movement != Vector2.zero) _toolRotator.RotateTool(_movement);
+        if (_movement != Vector2.zero) _toolRotator.RotateTool( false, _movement);
 
       
     }
