@@ -13,11 +13,10 @@ MonoBehaviour:
   m_Name: Pistol
   m_EditorClassIdentifier: 
   WeaponType: 0
-  SideSprite: {fileID: 1208040086343421634, guid: db2e2d4e44b3b6f44a608719d044ab88, type: 3}
-  WeaponSprite: {fileID: -9179697191488741018, guid: a834d2fd314f87040b4648da4abefa68, type: 3}
+  WeaponSprite: {fileID: 1208040086343421634, guid: db2e2d4e44b3b6f44a608719d044ab88, type: 3}
   FireRate: 2
   Accuracy: 0
   Damage: 20
   BulletSpeed: 8
   FirePointOffset: {x: 0, y: 0}
-  GunHolderOffset: {x: 0.6, y: -0.4}
+  GunHolderOffset: {x: -0.2, y: -0.4}

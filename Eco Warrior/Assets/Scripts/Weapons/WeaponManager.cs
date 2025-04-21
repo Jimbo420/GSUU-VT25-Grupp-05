@@ -3,7 +3,7 @@ using UnityEngine.Serialization;
 
 public class WeaponManager : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer _toolSpriteRenderer;
+    private SpriteRenderer _toolSpriteRenderer;
     [SerializeField] private Transform _firePoint;
     [SerializeField] private WeaponData[] _availableWeapons;
     [SerializeField] private Transform _gunHolder;
@@ -15,6 +15,7 @@ public class WeaponManager : MonoBehaviour
     void Start()
     {
         _toolRotator = GetComponentInParent<ToolRotator>();
+        _toolSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
         CurrentWeapon = _availableWeapons[0];
         UpdateWeaponSprite();
     }
@@ -28,7 +29,6 @@ public class WeaponManager : MonoBehaviour
         Bullet bulletComponent = bullet.GetComponent<Bullet>();
         bulletComponent.SetDamage(CurrentWeapon.Damage);
         bulletComponent.SetShooter(transform.parent.gameObject);
-
         
         
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
@@ -43,7 +43,6 @@ public class WeaponManager : MonoBehaviour
             _currentWeaponIndex = 0;
         CurrentWeapon = _availableWeapons[_currentWeaponIndex];
         UpdateWeaponSprite();
-        UpdateFirePointPosition();
     }
 
     void UpdateWeaponSprite()
@@ -51,43 +50,23 @@ public class WeaponManager : MonoBehaviour
         _toolSpriteRenderer.sprite = CurrentWeapon.WeaponSprite;
     }
 
-    void UpdateFirePointPosition()
-    {
-        //Updates from where the shot is fired
-        _firePoint.localPosition = new Vector3(0, CurrentWeapon.FirePointOffset.y, 0);
-    }
 
     public void UpdateWeaponOrientation(int xDirection, int yDirection)
     {
-        //Horizontal Movement
-        if (xDirection is 1 or -1)
-        {
-            //Pistol should be moved down slightly when selected
-            if (CurrentWeapon.WeaponType == WeaponData.TypeOfWeapon.Pistol)
-                _firePoint.localPosition = new Vector3(0, 0f, 0); 
-            
-        }
-        //Vertical Movement
-        else if(yDirection is 1 or -1)
-            _firePoint.localPosition = new Vector3(0, 0, 0);
-
+        //Pistol should be moved down slightly when selected
+        if (CurrentWeapon.WeaponType == WeaponData.TypeOfWeapon.Pistol) 
+            _firePoint.localPosition = xDirection == -1 ? new Vector3(0.9f, -0.13f, 0) : new Vector3(0.9f, 0.13f, 0);
         
         UpdateWeaponAndGunHolderPosition(xDirection, yDirection);
     }
     public void UpdateWeaponAndGunHolderPosition(int x, int y)
     {
-        Vector3 newPosition = new Vector3();
 
-        //Horizontal
-        if (x != 0)
-        {
-            newPosition = new Vector3(x * CurrentWeapon.GunHolderOffset.x, CurrentWeapon.GunHolderOffset.y);
-        }
-        // Vertical
-        else if (y != 0)
-        {
-            newPosition = new Vector3(0, y * 0.9f);
-        }
+        Vector3 newPosition = new Vector3(x * CurrentWeapon.GunHolderOffset.x, CurrentWeapon.GunHolderOffset.y);
+        
+        if (y < -0.5 && CurrentWeapon.WeaponType == WeaponData.TypeOfWeapon.Pistol)
+            newPosition = new Vector3(x * CurrentWeapon.GunHolderOffset.x, 0);
+        
         _gunHolder.localPosition = newPosition;
 
     }
