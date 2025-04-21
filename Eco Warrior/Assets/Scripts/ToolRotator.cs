@@ -8,7 +8,7 @@ public class ToolRotator : MonoBehaviour
     [SerializeField] private SpriteRenderer _toolSpriteRenderer;
 
     private readonly Dictionary<(float, float), float> _movementDictionary = new()
-    {
+    {   
         {(0, 1), 90f},        // Up
         {(1, 1), -45f},      // Up-Right
         {(1, 0), 0f},      // Right
@@ -24,30 +24,25 @@ public class ToolRotator : MonoBehaviour
         _weaponManager = GetComponentInChildren<WeaponManager>();
     }
     
-    public void RotateTool(Vector2 _movement)
+    public void RotateTool(Vector2 movement)
     {
-        //Depending on where the player is looking, rotate the weapon
-        Vector2 direction = _movement.normalized;
+        if (movement == Vector2.zero) return;
+
+        Vector2 direction = movement.normalized;
         float x = Mathf.Round(direction.x);
         float y = Mathf.Round(direction.y);
         float rotateX = 0;
-        float _rotationAngle = _movementDictionary[(x, y)];
-        if ((int)x == 1) rotateX = 180f;
-        _toolTransform.rotation = Quaternion.Euler(rotateX, 0, _rotationAngle);
+        float rotationAngle = _movementDictionary[(x, y)];
 
-        //Depending on Rotation, switch which sprite is used
-        Sprite selectedSprite = _weaponManager.CurrentWeapon.WeaponSprite;
-        if (x != 0)
-        {
-            selectedSprite = _weaponManager.CurrentWeapon.SideSprite;
-        }
-        else if (x != 0 && y != 0)
-        {
-            selectedSprite = _weaponManager.CurrentWeapon.SideSprite;
-        }
+        if ((int)x == 1) rotateX = 180f;
+
+        _toolTransform.rotation = Quaternion.Euler(rotateX, 0, rotationAngle);
+
+        Sprite selectedSprite;
+        selectedSprite = x != 0 ? _weaponManager.CurrentWeapon.SideSprite : _weaponManager.CurrentWeapon.WeaponSprite;
+        
 
         _toolSpriteRenderer.sprite = selectedSprite;
-
         _weaponManager.UpdateWeaponOrientation((int)x, (int)y);
     }
 }

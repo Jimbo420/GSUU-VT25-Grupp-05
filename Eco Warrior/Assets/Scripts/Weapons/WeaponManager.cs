@@ -13,29 +13,24 @@ public class WeaponManager : MonoBehaviour
 
     void Start()
     {
-        SwitchWeapon();
+        CurrentWeapon = _availableWeapons[0];
     }
     public void Shoot()
     {
-        Quaternion originalRotation = _firePoint.rotation;
-     
-        //Create Bullet inaccuracy depending on the current weapon 
-        float angleOffset = Random.Range(CurrentWeapon.Accuracy, CurrentWeapon.Accuracy);
-        _firePoint.rotation *= Quaternion.Euler(0, 0, angleOffset);
+        
+        float angleOffset = Random.Range(-CurrentWeapon.Accuracy, CurrentWeapon.Accuracy);
+        Quaternion bulletRotation = _firePoint.rotation * Quaternion.Euler(0, 0, angleOffset - 90f);
+        
+        GameObject bullet = Instantiate(bulletPrefab, _firePoint.position, bulletRotation);
+        Bullet bulletComponent = bullet.GetComponent<Bullet>();
+        bulletComponent.SetDamage(CurrentWeapon.Damage);
+        bulletComponent.SetShooter(transform.parent.gameObject);
 
-        //Create bullet and apply forces + rotation
-        GameObject bullet = Instantiate(bulletPrefab, _firePoint.position, _firePoint.rotation);
-        bullet.GetComponent<Bullet>().SetDamage(CurrentWeapon.Damage);      
-        bullet.GetComponent<Bullet>().SetShooter(transform.parent.gameObject);
-
-        bullet.transform.rotation *= Quaternion.Euler(0, 0, -90f);
+        
+        
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        rb.AddForce(bullet.transform.up * CurrentWeapon.BulletSpeed, ForceMode2D.Impulse);
 
-        //Add Force to the bullet in direction of fire point
-        rb.AddForce(_firePoint.up * CurrentWeapon.BulletSpeed, ForceMode2D.Impulse);
-
-        //Reset the bullet rotation
-        _firePoint.rotation = originalRotation;
     }
     public void SwitchWeapon()
     {
