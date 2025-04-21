@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      EcoWarrior_0: 7252603197928023516
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

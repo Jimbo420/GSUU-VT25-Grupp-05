@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      rampart_greenhouse_effect_0: 805853956128750780
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
