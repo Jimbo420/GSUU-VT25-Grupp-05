@@ -5,8 +5,7 @@ using UnityEngine;
 public class WeaponData : ScriptableObject
 {
     [SerializeField] public TypeOfWeapon WeaponType;
-    [CanBeNull] public Sprite SideSprite = null;
-    public Sprite WeaponSprite;
+    [SerializeField] public Sprite WeaponSprite;
     public float FireRate; //How often shots are fired
     public float Accuracy; //Spread of the weapon
     public float Damage;

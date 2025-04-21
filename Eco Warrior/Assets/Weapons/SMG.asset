@@ -20,4 +20,4 @@ MonoBehaviour:
   Damage: 10
   BulletSpeed: 12
   FirePointOffset: {x: 0, y: 0}
-  GunHolderOffset: {x: 0.8, y: -0.2}
+  GunHolderOffset: {x: 0, y: -0.2}
