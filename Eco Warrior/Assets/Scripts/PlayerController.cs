@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
         if (EventSystem.current.IsPointerOverGameObject() || ItemDragHandler.IsDragging) return;
         if (!Input.GetButton("Fire1") || !(Time.time >= _nextFireTime)) return;
 
-        _weaponManager.Shoot();
+        _weaponManager.Shoot(true);
         
         //Uses FireRate to calculate when next bullet should be fired
         _nextFireTime = Time.time + (1f/_weaponManager.CurrentWeapon.FireRate);

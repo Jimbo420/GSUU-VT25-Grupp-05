@@ -5,20 +5,22 @@ public class WeaponManager : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _toolSpriteRenderer;
     [SerializeField] private Transform _firePoint;
-    public WeaponData CurrentWeapon { get; private set; }
     [SerializeField] private WeaponData[] _availableWeapons;
     [SerializeField] private Transform _gunHolder;
-    private int _currentWeaponIndex = 0;
     [SerializeField] GameObject bulletPrefab;
+    public WeaponData CurrentWeapon { get; private set; }
+    private ToolRotator _toolRotator;
+    private int _currentWeaponIndex = 0;
 
     void Start()
     {
+        _toolRotator = GetComponentInParent<ToolRotator>();
         CurrentWeapon = _availableWeapons[0];
         UpdateWeaponSprite();
     }
-    public void Shoot()
+    public void Shoot(bool isAiming = false)
     {
-        
+        if(isAiming) _toolRotator.RotateTool(isAiming);
         float angleOffset = Random.Range(-CurrentWeapon.Accuracy, CurrentWeapon.Accuracy);
         Quaternion bulletRotation = _firePoint.rotation * Quaternion.Euler(0, 0, angleOffset - 90f);
         
@@ -62,7 +64,7 @@ public class WeaponManager : MonoBehaviour
         {
             //Pistol should be moved down slightly when selected
             if (CurrentWeapon.WeaponType == WeaponData.TypeOfWeapon.Pistol)
-                _firePoint.localPosition = new Vector3(0, -0.13f, 0); 
+                _firePoint.localPosition = new Vector3(0, 0f, 0); 
             
         }
         //Vertical Movement
@@ -76,15 +78,8 @@ public class WeaponManager : MonoBehaviour
     {
         Vector3 newPosition = new Vector3();
 
-        // Diagonal
-        if (x != 0 && y != 0)
-        {
-            float offsetX = 0.65f;
-            float offsetY = y > 0 ? 0.4f : -0.4f;
-            newPosition = new Vector3(x * offsetX, offsetY);
-        }
-        // Horizontal
-        else if (x != 0)
+        //Horizontal
+        if (x != 0)
         {
             newPosition = new Vector3(x * CurrentWeapon.GunHolderOffset.x, CurrentWeapon.GunHolderOffset.y);
         }
@@ -93,11 +88,7 @@ public class WeaponManager : MonoBehaviour
         {
             newPosition = new Vector3(0, y * 0.9f);
         }
-
-
         _gunHolder.localPosition = newPosition;
-
-
 
     }
 }
