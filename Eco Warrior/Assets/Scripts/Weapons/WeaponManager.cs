@@ -5,7 +5,7 @@ public class WeaponManager : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer _toolSpriteRenderer;
     [SerializeField] private Transform _firePoint;
-    public WeaponData CurrentWeapon = null;
+    public WeaponData CurrentWeapon { get; private set; }
     [SerializeField] private WeaponData[] _availableWeapons;
     [SerializeField] private Transform _gunHolder;
     private int _currentWeaponIndex = 0;
@@ -14,6 +14,7 @@ public class WeaponManager : MonoBehaviour
     void Start()
     {
         CurrentWeapon = _availableWeapons[0];
+        UpdateWeaponSprite();
     }
     public void Shoot()
     {

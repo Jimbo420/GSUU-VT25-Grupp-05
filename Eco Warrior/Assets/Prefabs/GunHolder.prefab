@@ -103,7 +103,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _toolSpriteRenderer: {fileID: 8115311848151142871}
   _firePoint: {fileID: 578001477121940596}
-  CurrentWeapon: {fileID: 0}
   _availableWeapons:
   - {fileID: 11400000, guid: 5946f12a48a469047890f67e3e3027d3, type: 2}
   - {fileID: 11400000, guid: ca4f4100259e0654f95108d96da9c336, type: 2}
@@ -134,10 +133,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7532072663122413476}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7252406264211631307}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
