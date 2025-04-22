@@ -6,10 +6,12 @@ public class WeaponData : ScriptableObject
 {
     [SerializeField] public TypeOfWeapon WeaponType;
     [SerializeField] public Sprite WeaponSprite;
+    public float BulletSpeed { get; private set; } = 15f;
     public float FireRate; //How often shots are fired
     public float Accuracy; //Spread of the weapon
     public float Damage;
-    public float BulletSpeed; //How fast they fire (might standardize)
+    public int CurrentAmmunition;
+    public int MaxAmmunition;
 
     //Adjusts the position of where bullets are fired from and how gun is held
     public Vector2 FirePointOffset;

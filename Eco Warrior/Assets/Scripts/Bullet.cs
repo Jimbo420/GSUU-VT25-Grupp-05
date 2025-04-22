@@ -1,8 +1,7 @@
-using Interfaces;
 using UnityEngine;
 public class Bullet : MonoBehaviour
 {
-    public float maxDistance = 10f; //Maximum of distance that the bullet can travel
+    private float maxDistance = 20f; //Maximum of distance that the bullet can travel
     private Vector3 _startPosition;
     private float _damage;
     private GameObject _shooter;
@@ -19,11 +18,15 @@ public class Bullet : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject == _shooter) return;
+        
+        HealthbarBehavior healthbar = other.GetComponentInChildren<HealthbarBehavior>();
+        if (healthbar == null)
+        {
+            Debug.Log("Health is null");
+            return;
+        }
 
-        IDamageable damageable = other.GetComponent<IDamageable>();
-        if (damageable == null) return;
-
-        damageable.HitDamage(_damage);
+        healthbar.HitDamage(_damage, other.gameObject);
         Destroy(gameObject);
     }
     void Start()

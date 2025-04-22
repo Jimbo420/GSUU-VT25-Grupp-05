@@ -1,17 +1,16 @@
 using System.Threading;
-using Interfaces;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class EnemyMovement : MonoBehaviour, IDamageable
+public class EnemyMovement : MonoBehaviour
 {
-    private Rigidbody2D rb;
-    public Animator animator;
+    //private Rigidbody2D rb;
+    private Animator _animator;
 
-    [SerializeField] HealthbarBehavior healthbarBehavior;
-    [SerializeField] private ToolRotator _toolRotator;
-    [SerializeField] PolygonCollider2D polygonCollider;
+    private HealthbarBehavior healthbarBehavior;
+    private ToolRotator _toolRotator;
+    //[SerializeField] PolygonCollider2D polygonCollider;
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] public float health = 0;
     [SerializeField] public float maxHealth = 25;
@@ -24,18 +23,18 @@ public class EnemyMovement : MonoBehaviour, IDamageable
     private Vector2 startPosition;
     private Vector2 currentTarget;
 
-    [SerializeField] public TargetPlayer targetPlayer;
+    private TargetPlayer targetPlayer;
 
     private float idleTimer = 0f;
     private bool isIdle = false;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-        healthbarBehavior = GetComponentInChildren<HealthbarBehavior>();
+        //rb = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
+        //healthbarBehavior = GetComponentInChildren<HealthbarBehavior>();
         targetPlayer = GetComponent<TargetPlayer>();
-        polygonCollider = GetComponentInChildren<PolygonCollider2D>();
+        //polygonCollider = GetComponentInChildren<PolygonCollider2D>();
         _toolRotator = GetComponentInChildren<ToolRotator>();
         EnemyStartup();
     }
@@ -43,7 +42,6 @@ public class EnemyMovement : MonoBehaviour, IDamageable
     private void EnemyStartup()
     {
         health = maxHealth;
-        healthbarBehavior.Health(health, maxHealth);
         startPosition = transform.position;
         NewPosition();
     }
@@ -70,9 +68,9 @@ public class EnemyMovement : MonoBehaviour, IDamageable
         transform.position = Vector2.MoveTowards(transform.position, currentTarget, moveSpeed * Time.deltaTime);
 
         Vector2 direction = (currentTarget - (Vector2)transform.position).normalized;
-        animator.SetFloat("InputX", direction.x);
-        animator.SetFloat("InputY", direction.y);
-        animator.SetBool("isWalking", true);
+        _animator.SetFloat("InputX", direction.x);
+        _animator.SetFloat("InputY", direction.y);
+        _animator.SetBool("isWalking", true);
         _toolRotator.RotateTool( false, direction);
         
 
@@ -100,26 +98,26 @@ public class EnemyMovement : MonoBehaviour, IDamageable
                 isIdle = false;
                 NewPosition();
             }
-            animator.SetBool("isWalking", false);
+            _animator.SetBool("isWalking", false);
             return;
         }
         Walk();
     }
 
-    public void HitDamage(float hitDamage)
-    {
-        health -= hitDamage;
-        healthbarBehavior.Health(health, maxHealth);
-        if (health <= 0)
-            Dead();
-    }
+    //public void HitDamage(float hitDamage)
+    //{
+    //    health -= hitDamage;
+    //    healthbarBehavior.Health(health, maxHealth);
+    //    if (health <= 0)
+    //        Dead();
+    //}
 
     public void Heal()
     {
         for(float healValue = health; healValue < maxHealth; healValue++)
         {
             health = healValue;
-            healthbarBehavior.Health(healValue, maxHealth);
+            //healthbarBehavior.Health(healValue, maxHealth);
         }
     }
     public void Dead()

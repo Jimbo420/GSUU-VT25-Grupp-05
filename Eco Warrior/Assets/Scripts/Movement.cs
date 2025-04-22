@@ -1,21 +1,18 @@
 using System.Collections.Generic;
-using Interfaces;
 using Unity.VisualScripting;
 using Unity.VisualScripting.InputSystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class Movement : MonoBehaviour, IDamageable
+public class Movement : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed = 3f;
     [SerializeField] private Transform _firePointTransform;
     [SerializeField] private ToolRotator _toolRotator;
     [SerializeField] private Slider _healthbar;
     [SerializeField] private float moveSpeed = 2f;
-    [SerializeField] public float health = 0;
-    [SerializeField] public float maxHealth = 25;
-    private HealthbarBehavior _healthbarBehavior;
+
     private Rigidbody2D _rb;
     private Vector2 _movement;
     private Animator _animator;
@@ -23,7 +20,6 @@ public class Movement : MonoBehaviour, IDamageable
     {
         _rb = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
-        _healthbarBehavior = GetComponentInChildren<HealthbarBehavior>();
         _toolRotator = GetComponent<ToolRotator>();
     }
 
@@ -58,12 +54,4 @@ public class Movement : MonoBehaviour, IDamageable
 
    
 
-
-    public void HitDamage(float damage)
-    {
-        health -= damage;
-        _healthbarBehavior.Health(health, maxHealth);
-        if (health <= 0)
-            Destroy(gameObject);
-    }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -14,13 +15,21 @@ public class WeaponManager : MonoBehaviour
 
     void Start()
     {
+        ReloadAmmunition();
         _toolRotator = GetComponentInParent<ToolRotator>();
         _toolSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
         CurrentWeapon = _availableWeapons[0];
         UpdateWeaponSprite();
     }
+
+    void ReloadAmmunition()
+    {
+        foreach (var weapon in _availableWeapons)
+            weapon.CurrentAmmunition = weapon.MaxAmmunition;
+    }
     public void Shoot(bool isAiming = false)
     {
+        if (CurrentWeapon.CurrentAmmunition == 0) return;
         if(isAiming) _toolRotator.RotateTool(isAiming);
         float angleOffset = Random.Range(-CurrentWeapon.Accuracy, CurrentWeapon.Accuracy);
         Quaternion bulletRotation = _firePoint.rotation * Quaternion.Euler(0, 0, angleOffset - 90f);
@@ -33,7 +42,7 @@ public class WeaponManager : MonoBehaviour
         
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         rb.AddForce(bullet.transform.up * CurrentWeapon.BulletSpeed, ForceMode2D.Impulse);
-
+        CurrentWeapon.CurrentAmmunition--;
     }
     public void SwitchWeapon()
     {
@@ -43,6 +52,7 @@ public class WeaponManager : MonoBehaviour
             _currentWeaponIndex = 0;
         CurrentWeapon = _availableWeapons[_currentWeaponIndex];
         UpdateWeaponSprite();
+        UpdateWeaponAndGunHolderPosition();
     }
 
     void UpdateWeaponSprite()
@@ -51,19 +61,21 @@ public class WeaponManager : MonoBehaviour
     }
 
 
-    public void UpdateWeaponOrientation(int xDirection, int yDirection)
+    public void UpdateWeaponOrientation(float xDirection, float yDirection)
     {
         //Pistol should be moved down slightly when selected
-        if (CurrentWeapon.WeaponType == WeaponData.TypeOfWeapon.Pistol) 
-            _firePoint.localPosition = xDirection == -1 ? new Vector3(0.9f, -0.13f, 0) : new Vector3(0.9f, 0.13f, 0);
-        
+        if (CurrentWeapon.WeaponType == WeaponData.TypeOfWeapon.Pistol)
+            _firePoint.localPosition = (int)xDirection == -1 ? new Vector3(0.9f, -0.13f, 0) : new Vector3(0.9f, 0.13f, 0);
+        else
+            _firePoint.localPosition = new Vector3(0.9f, 0, 0);
+
         UpdateWeaponAndGunHolderPosition(xDirection, yDirection);
     }
-    public void UpdateWeaponAndGunHolderPosition(int x, int y)
+    public void UpdateWeaponAndGunHolderPosition(float x = 0, float y = 0)
     {
+        Vector3 newPosition;
+        newPosition = Mathf.RoundToInt(x) != 0 ? new Vector3(x * CurrentWeapon.GunHolderOffset.x, CurrentWeapon.GunHolderOffset.y) : new Vector3(0, 0);
 
-        Vector3 newPosition = new Vector3(x * CurrentWeapon.GunHolderOffset.x, CurrentWeapon.GunHolderOffset.y);
-        
         if (y < -0.5 && CurrentWeapon.WeaponType == WeaponData.TypeOfWeapon.Pistol)
             newPosition = new Vector3(x * CurrentWeapon.GunHolderOffset.x, 0);
         
