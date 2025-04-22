@@ -1,0 +1,303 @@
+fileFormatVersion: 2
+guid: 504e62139583dc0429f5cc7641ab5837
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 8082146186048183423
+    second: Conveyor Belts sprite sheet_0
+  - first:
+      213: -7863333471368167943
+    second: Conveyor Belts sprite sheet_1
+  - first:
+      213: 7280317325634342116
+    second: Conveyor Belts sprite sheet_2
+  - first:
+      213: 8780142750146488694
+    second: Conveyor Belts sprite sheet_3
+  - first:
+      213: 3752278780602842318
+    second: Conveyor Belts sprite sheet_4
+  - first:
+      213: -5963569000646782215
+    second: Conveyor Belts sprite sheet_5
+  - first:
+      213: 4202894483998805487
+    second: Conveyor Belts sprite sheet_6
+  - first:
+      213: -6143157023445869900
+    second: Conveyor Belts sprite sheet_7
+  - first:
+      213: 5172100190204160116
+    second: Conveyor Belts sprite sheet_8
+  - first:
+      213: -8698436811162563019
+    second: Conveyor Belts sprite sheet_9
+  - first:
+      213: 3613952855041656054
+    second: Conveyor Belts sprite sheet_10
+  - first:
+      213: 6464281621991213047
+    second: Conveyor Belts sprite sheet_11
+  - first:
+      213: -2213563367524309662
+    second: Conveyor Belts sprite sheet_12
+  - first:
+      213: 8363286701342850506
+    second: Conveyor Belts sprite sheet_13
+  - first:
+      213: 5024077014936146285
+    second: Conveyor Belts sprite sheet_14
+  - first:
+      213: -3881427365867446728
+    second: Conveyor Belts sprite sheet_15
+  - first:
+      213: -7241202936840051534
+    second: Conveyor Belts sprite sheet_16
+  - first:
+      213: 8789842061582773072
+    second: Conveyor Belts sprite sheet_17
+  - first:
+      213: -2334621285587247203
+    second: Conveyor Belts sprite sheet_18
+  - first:
+      213: 8545440569531285990
+    second: Conveyor Belts sprite sheet_19
+  - first:
+      213: 5174991122367658299
+    second: Conveyor Belts sprite sheet_20
+  - first:
+      213: -3332266283658430667
+    second: Conveyor Belts sprite sheet_21
+  - first:
+      213: 484635666146639093
+    second: Conveyor Belts sprite sheet_22
+  - first:
+      213: -2195994577335047582
+    second: Conveyor Belts sprite sheet_23
+  - first:
+      213: 4770227826545424554
+    second: Conveyor Belts sprite sheet_24
+  - first:
+      213: -4374626268627548684
+    second: Conveyor Belts sprite sheet_25
+  - first:
+      213: -3233419332584153501
+    second: Conveyor Belts sprite sheet_26
+  - first:
+      213: -7131052344286129357
+    second: Conveyor Belts sprite sheet_27
+  - first:
+      213: 5177455759565377416
+    second: Conveyor Belts sprite sheet_28
+  - first:
+      213: -7297158759789022456
+    second: Conveyor Belts sprite sheet_29
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Conveyor Belts sprite sheet_5
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 46
+        width: 47
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 319a67464b1a62b448b0f37924c6e0b3
+      internalID: -395912635
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Belts sprite sheet_6
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 46
+        width: 47
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86fd118ca47fd6c49bbef0f9274e4a1e
+      internalID: 695381429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Conveyor Belts sprite sheet_7
+      rect:
+        serializedVersion: 2
+        x: 99
+        y: 46
+        width: 47
+        height: 12
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d0dfbb60fc6214c4aa22a673cf13ddb1
+      internalID: -1293364536
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: dc09ad5096d861443ae8249315e320ae
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Conveyor Belts sprite sheet_0: 779543151
+      Conveyor Belts sprite sheet_1: 1414769392
+      Conveyor Belts sprite sheet_10: 1516989255
+      Conveyor Belts sprite sheet_11: -350756530
+      Conveyor Belts sprite sheet_12: 1853863528
+      Conveyor Belts sprite sheet_13: 1524859446
+      Conveyor Belts sprite sheet_14: -116900976
+      Conveyor Belts sprite sheet_15: -639105924
+      Conveyor Belts sprite sheet_16: -2077467045
+      Conveyor Belts sprite sheet_17: -980330243
+      Conveyor Belts sprite sheet_18: -1277116437
+      Conveyor Belts sprite sheet_19: 856047465
+      Conveyor Belts sprite sheet_2: 1398700682
+      Conveyor Belts sprite sheet_20: -862060448
+      Conveyor Belts sprite sheet_21: 272940032
+      Conveyor Belts sprite sheet_22: 364851515
+      Conveyor Belts sprite sheet_23: -589834865
+      Conveyor Belts sprite sheet_24: 1719091157
+      Conveyor Belts sprite sheet_25: -1213611266
+      Conveyor Belts sprite sheet_26: 313065255
+      Conveyor Belts sprite sheet_27: -464635335
+      Conveyor Belts sprite sheet_28: -352429261
+      Conveyor Belts sprite sheet_29: -600121657
+      Conveyor Belts sprite sheet_3: -53617262
+      Conveyor Belts sprite sheet_4: -2038372264
+      Conveyor Belts sprite sheet_5: -395912635
+      Conveyor Belts sprite sheet_6: 695381429
+      Conveyor Belts sprite sheet_7: -1293364536
+      Conveyor Belts sprite sheet_8: 1808756590
+      Conveyor Belts sprite sheet_9: -86888821
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
