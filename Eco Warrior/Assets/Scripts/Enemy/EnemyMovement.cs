@@ -15,10 +15,13 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] public float health = 0;
     [SerializeField] public float maxHealth = 25;
 
-    [SerializeField] private Vector2 patrolCordinates = new Vector2(5f, 7f);
+    //[SerializeField] private Vector2 patrolCordinates = new Vector2(5f, 7f);
     [SerializeField] private bool isPlayerInRange = false;
     [SerializeField] private float waitTimeMin = 1f;
     [SerializeField] private float waitTimeMax = 3f;
+
+    [SerializeField] Transform[] WayPoints;
+    private int wayPointIndex = -1;
 
     private Vector2 startPosition;
     private Vector2 currentTarget;
@@ -42,7 +45,8 @@ public class EnemyMovement : MonoBehaviour
     private void EnemyStartup()
     {
         health = maxHealth;
-        startPosition = transform.position;
+        //startPosition = transform.position;
+        //startPosition = transform.position;
         NewPosition();
     }
     void Update()
@@ -83,9 +87,19 @@ public class EnemyMovement : MonoBehaviour
 
     private void NewPosition()
     {
-        float x = Random.Range(-patrolCordinates.x / 2f, patrolCordinates.x / 2f);
-        float y = Random.Range(-patrolCordinates.y / 2f, patrolCordinates.y / 2f);
-        currentTarget = startPosition + new Vector2(x, y);
+        //float x = Random.Range(-patrolCordinates.x / 2f, patrolCordinates.x / 2f);
+        //float y = Random.Range(-patrolCordinates.y / 2f, patrolCordinates.y / 2f);
+        //currentTarget = startPosition + new Vector2(x, y);
+        //transform.position = WayPoints[wayPointIndex].transform.position;
+
+        if (WayPoints == null || WayPoints.Length == 0)
+        {
+            Debug.LogError("WayPoints-arrayen är tom på fienden " + gameObject.name);
+            return;
+        }
+
+        wayPointIndex = Random.Range(0, WayPoints.Length);
+        currentTarget = WayPoints[wayPointIndex].position;
     }
 
     private void Guard()
