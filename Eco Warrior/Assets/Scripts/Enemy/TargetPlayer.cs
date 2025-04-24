@@ -2,29 +2,12 @@ using UnityEngine;
 
 public class TargetPlayer : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    private Transform target;
-    private GameObject bullet;
-    private Transform aim;
-
-
-    //[SerializeField] private SpriteRenderer _toolSpriteRenderer;
-    //[SerializeField] private WeaponManager _weaponManager;
-    //[SerializeField] private Transform _toolTransform;
-    //[SerializeField] private Transform _firePointTransform;
-
-    public float fireDamage = 1F;
-    public float fireCooldown = 0.25F;
-    public float fireTime = 0.25F;
-
-    [SerializeField] public float moveSpeed = 2f;
     private float stopDistance = 3f;
     private float rangeBetween = 10f;
     private float distance;
 
     private EnemyMovement enemyMovement;
     public Transform player;
-    private Transform enemy;
     private WeaponManager _weaponManager;
 
 
@@ -34,8 +17,6 @@ public class TargetPlayer : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        
-        enemy = GameObject.FindGameObjectWithTag("Enemy").transform;
 
         enemyMovement = GetComponent<EnemyMovement>();
         _weaponManager = GetComponentInChildren<WeaponManager>();

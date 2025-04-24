@@ -38,6 +38,6 @@ public class ToolRotator : MonoBehaviour
 
         _toolSpriteRenderer.sprite = _weaponManager.CurrentWeapon.WeaponSprite;
 
-        _weaponManager.UpdateWeaponOrientation(Mathf.RoundToInt(direction.x), Mathf.RoundToInt(direction.y));
+        _weaponManager.UpdateWeaponOrientation(direction.x, direction.y);
     }
 }
