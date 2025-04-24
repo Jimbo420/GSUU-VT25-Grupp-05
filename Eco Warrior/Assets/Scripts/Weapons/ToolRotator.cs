@@ -5,12 +5,14 @@ using UnityEngine;
 public class ToolRotator : MonoBehaviour
 {
     private WeaponManager _weaponManager;
-    [SerializeField] private Transform _toolTransform;
-    [SerializeField] private SpriteRenderer _toolSpriteRenderer;
+    private Transform _toolTransform;
+    private SpriteRenderer _toolSpriteRenderer;
 
     void Start()
     {
         _weaponManager = GetComponentInChildren<WeaponManager>();
+        _toolTransform = transform.Find("GunHolder");
+        _toolSpriteRenderer = _toolTransform.Find("Gun").GetComponent<SpriteRenderer>();
     }
 
     public void RotateTool(bool isAiming, Vector2 movement = default)

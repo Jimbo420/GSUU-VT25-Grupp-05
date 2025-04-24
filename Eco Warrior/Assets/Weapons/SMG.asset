@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: SMG
   m_EditorClassIdentifier: 
   WeaponType: 2
-  WeaponSprite: {fileID: -8237366272624925708, guid: 9dc9272008e7fe34b9519bb7cf7d6ff9, type: 3}
+  WeaponSprite: {fileID: -5412910156287300836, guid: acde48cd9f98e0248a0afd15efbedf60, type: 3}
   FireRate: 5
   Accuracy: 1
   Damage: 10
   CurrentAmmunition: 30
   MaxAmmunition: 30
+  HasUnlimitedAmmo: 0
   FirePointOffset: {x: 0, y: 0}
   GunHolderOffset: {x: 0, y: -0.2}
