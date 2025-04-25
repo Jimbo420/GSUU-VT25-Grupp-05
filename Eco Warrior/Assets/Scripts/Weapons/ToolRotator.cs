@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class ToolRotator : MonoBehaviour
 {
-    private WeaponManager _weaponManager;
     private Transform _toolTransform;
     private SpriteRenderer _toolSpriteRenderer;
 
     void Start()
     {
-        _weaponManager = GetComponentInChildren<WeaponManager>();
         _toolTransform = transform.Find("GunHolder");
         _toolSpriteRenderer = _toolTransform.Find("Gun").GetComponent<SpriteRenderer>();
     }
@@ -38,9 +36,9 @@ public class ToolRotator : MonoBehaviour
 
         _toolSpriteRenderer.flipY = direction.x < 0;
 
-        _toolSpriteRenderer.sprite = _weaponManager.CurrentWeapon.WeaponSprite;
+        _toolSpriteRenderer.sprite = GetComponentInChildren<WeaponManager>().CurrentWeapon.WeaponSprite;
 
         
-        _weaponManager.UpdateWeaponOrientation(direction.x, direction.y);
+        GetComponentInChildren<WeaponVisuals>().UpdateWeaponOrientation(direction.x, direction.y);
     }
 }

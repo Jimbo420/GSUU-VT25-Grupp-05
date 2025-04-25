@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6577695097804788382}
   - component: {fileID: 6601886095053107798}
   - component: {fileID: 5312880270157390015}
+  - component: {fileID: 6300859560327913653}
   m_Layer: 5
   m_Name: Pistol-Item
   m_TagString: Untagged
@@ -101,3 +102,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68b4555aedefa46a43b8b6e0d3e82c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6300859560327913653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2363878218025278567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9aed5004cb4473428442914b3580030, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WeaponData: {fileID: 11400000, guid: 5946f12a48a469047890f67e3e3027d3, type: 2}
