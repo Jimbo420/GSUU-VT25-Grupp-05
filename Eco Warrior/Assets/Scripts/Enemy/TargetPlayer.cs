@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class TargetPlayer : MonoBehaviour
@@ -61,7 +62,7 @@ public class TargetPlayer : MonoBehaviour
         int layerMask = ~(1 << enemyLayer);
 
         RaycastHit2D hit = Physics2D.Raycast(origin, direction, rangeBetween+5f, layerMask);
-
+        
         if (hit.collider != null)
         {
             hasLineOfSight = hit.collider.CompareTag("Player");
@@ -69,8 +70,29 @@ public class TargetPlayer : MonoBehaviour
         }
         else
         {
+            for (int i = 0; i > 4; i++)
+            {
+                var hasse = new WaitForSeconds(1);
+                Debug.Log($"Second: {hasse}");
+                Vector2 playersLastKnownPosition = player.position;
+                enemyMovement.SetTarget(playersLastKnownPosition);
+            }
             hasLineOfSight = false;
+            StartCoroutine(ChaseWithDelay());
+            //enemyMovement.SetTarget(new Vector2(0f, 0f));
             //Debug.Log($"LOS: {hasLineOfSight}");
         }
+    }
+
+    IEnumerator ChaseWithDelay()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            Debug.Log($"Second: {i + 1}");
+            enemyMovement.SetTarget(player.position);
+            yield return new WaitForSeconds(1f);
+        }
+
+        hasLineOfSight = false;
     }
 }

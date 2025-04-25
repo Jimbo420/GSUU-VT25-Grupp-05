@@ -20,11 +20,13 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float waitTimeMin = 1f;
     [SerializeField] private float waitTimeMax = 3f;
 
-    [SerializeField] Transform[] WayPoints;
+    [SerializeField] public Transform[] WayPoints;
+
     private int wayPointIndex = -1;
 
     private Vector2 startPosition;
     private Vector2 currentTarget;
+    private int newWayPoint;
 
     private TargetPlayer targetPlayer;
 
@@ -69,16 +71,25 @@ public class EnemyMovement : MonoBehaviour
     
     public void Walk()
     {
-        transform.position = Vector2.MoveTowards(transform.position, currentTarget, moveSpeed * Time.deltaTime);
+        Vector2 direction = new Vector2();
+        if (targetPlayer.PlayerIsInRangeOfEnemy() == false)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, WayPoints[newWayPoint].position, moveSpeed * Time.deltaTime);
+            direction = WayPoints[newWayPoint].position - transform.position.normalized;
+        }
+        else
+        {
+            transform.position = Vector2.MoveTowards(transform.position, currentTarget, moveSpeed * Time.deltaTime);
+            direction = (currentTarget - (Vector2)transform.position).normalized;
+        }
 
-        Vector2 direction = (currentTarget - (Vector2)transform.position).normalized;
         _animator.SetFloat("InputX", direction.x);
         _animator.SetFloat("InputY", direction.y);
         _animator.SetBool("isWalking", true);
-        _toolRotator.RotateTool( false, direction);
-        
+        _toolRotator.RotateTool(false, direction);
 
-        if (!isPlayerInRange && Vector2.Distance(transform.position, currentTarget) < 0.1f)
+
+        if (!isPlayerInRange && Vector2.Distance(transform.position, WayPoints[newWayPoint].position) < 0.1f)
         {
             isIdle = true;
             idleTimer = Random.Range(waitTimeMin, waitTimeMax);
@@ -91,15 +102,10 @@ public class EnemyMovement : MonoBehaviour
         //float y = Random.Range(-patrolCordinates.y / 2f, patrolCordinates.y / 2f);
         //currentTarget = startPosition + new Vector2(x, y);
         //transform.position = WayPoints[wayPointIndex].transform.position;
+        var tempWaypoints = Random.Range(0, WayPoints.Length);
+        if (newWayPoint != tempWaypoints)
+            newWayPoint = tempWaypoints;
 
-        if (WayPoints == null || WayPoints.Length == 0)
-        {
-            Debug.LogError("WayPoints-arrayen är tom på fienden " + gameObject.name);
-            return;
-        }
-
-        wayPointIndex = Random.Range(0, WayPoints.Length);
-        currentTarget = WayPoints[wayPointIndex].position;
     }
 
     private void Guard()
