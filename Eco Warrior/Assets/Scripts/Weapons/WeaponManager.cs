@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
@@ -6,6 +8,7 @@ using UnityEngine.Serialization;
 public class WeaponManager : MonoBehaviour
 {
     private SpriteRenderer _toolSpriteRenderer;
+    [SerializeField] private TMP_Text _ammoText;
     [SerializeField] private Transform _firePoint;
     [SerializeField] private WeaponData[] _availableWeapons;
     [SerializeField] private Transform _gunHolder;
@@ -16,10 +19,11 @@ public class WeaponManager : MonoBehaviour
 
     void Start()
     {
-        ReloadAmmunition();
         _toolRotator = GetComponentInParent<ToolRotator>();
         _toolSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
         CurrentWeapon = _availableWeapons[0];
+        ReloadAmmunition();
         UpdateWeaponSprite();
     }
 
@@ -28,10 +32,23 @@ public class WeaponManager : MonoBehaviour
     {
         foreach (var weapon in _availableWeapons)
             weapon.CurrentAmmunition = weapon.MaxAmmunition;
+        UpdateAmmunition();
+    }
+
+    void UpdateAmmunition()
+    {
+        if (CurrentWeapon.HasUnlimitedAmmo)
+        {
+            _ammoText.text = "\u221e/\u221e";
+        }
+        else
+        {
+            _ammoText.text = $"{CurrentWeapon.CurrentAmmunition}/{CurrentWeapon.MaxAmmunition}";
+        }
+        
     }
     public void Shoot(bool isAiming = false)
     {
-
         if (!CurrentWeapon.HasUnlimitedAmmo && CurrentWeapon.CurrentAmmunition == 0) return;
         
         //If the player is shooting with mouse, first rotate the weapon
@@ -51,6 +68,7 @@ public class WeaponManager : MonoBehaviour
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         rb.AddForce(bullet.transform.up * CurrentWeapon.BulletSpeed, ForceMode2D.Impulse);
         CurrentWeapon.CurrentAmmunition--;
+        UpdateAmmunition();
     }
 
     /// <summary>
@@ -65,6 +83,8 @@ public class WeaponManager : MonoBehaviour
         CurrentWeapon = _availableWeapons[_currentWeaponIndex];
         UpdateWeaponSprite();
         UpdateWeaponAndGunHolderPosition();
+        UpdateAmmunition();
+
     }
     /// <summary>
     /// When switching weapon, the sprite needs to be updated

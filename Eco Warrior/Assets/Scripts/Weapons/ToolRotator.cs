@@ -36,7 +36,7 @@ public class ToolRotator : MonoBehaviour
         // Rotate weapon based on angle
         _toolTransform.localEulerAngles = new Vector3(0f, 0f, angle);
 
-        _toolSpriteRenderer.flipY = direction.x > 0;
+        _toolSpriteRenderer.flipY = direction.x < 0;
 
         _toolSpriteRenderer.sprite = _weaponManager.CurrentWeapon.WeaponSprite;
 
