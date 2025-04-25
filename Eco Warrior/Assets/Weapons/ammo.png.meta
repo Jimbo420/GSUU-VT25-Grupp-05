@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: 66112af7b054c454383d960f7c293eca
+guid: d5c3e4490645b6743984e9ce9b9c5cf5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2774292885203057686
-    second: item-image_0
+      213: 2853566114444752598
+    second: ammo_0
+  - first:
+      213: -6741822026156145403
+    second: ammo_1
+  - first:
+      213: -6058229231348979346
+    second: ammo_2
+  - first:
+      213: -1887406100666834301
+    second: ammo_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +46,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -46,7 +55,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -75,7 +84,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -100,13 +109,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: item-image_0
+      name: ammo_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 80
-        height: 80
+        x: 77
+        y: 137
+        width: 78
+        height: 227
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +124,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 61cfb652ea4408620800000000000000
-      internalID: 2774292885203057686
+      spriteID: 6d632922347e99720800000000000000
+      internalID: 2853566114444752598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ammo_1
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 137
+        width: 77
+        height: 227
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5050f00469c3072a0800000000000000
+      internalID: -6741822026156145403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ammo_2
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 137
+        width: 77
+        height: 227
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e696e89ac98dceba0800000000000000
+      internalID: -6058229231348979346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ammo_3
+      rect:
+        serializedVersion: 2
+        x: 346
+        y: 137
+        width: 76
+        height: 227
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 38229deb6269ec5e0800000000000000
+      internalID: -1887406100666834301
       vertices: []
       indices: 
       edges: []
@@ -125,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -134,7 +209,11 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      ammo_0: 2853566114444752598
+      ammo_1: -6741822026156145403
+      ammo_2: -6058229231348979346
+      ammo_3: -1887406100666834301
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

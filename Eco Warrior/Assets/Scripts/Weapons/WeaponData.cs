@@ -12,6 +12,7 @@ public class WeaponData : ScriptableObject
     public float Damage;
     public int CurrentAmmunition;
     public int MaxAmmunition;
+    public bool HasUnlimitedAmmo;
 
     //Adjusts the position of where bullets are fired from and how gun is held
     public Vector2 FirePointOffset;
