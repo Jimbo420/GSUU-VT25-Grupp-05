@@ -100,7 +100,7 @@ Animator:
   m_GameObject: {fileID: 5163614272817568893}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ed5c201fd7d80a641893271b349271c2, type: 2}
+  m_Controller: {fileID: 9100000, guid: 4d321695fdd232d408407ada84d1e761, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 0.5
-  damageCooldown: 1
+  damageCooldown: 2
 --- !u!58 &5610802114726509359
 CircleCollider2D:
   m_ObjectHideFlags: 0

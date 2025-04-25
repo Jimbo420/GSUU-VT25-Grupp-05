@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GasGuzzlerGus : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class GasGuzzlerGus : MonoBehaviour
     [Header("Movement Settings")]
     [Tooltip("Movement speed when chasing the player.")]
     [SerializeField] private float moveSpeed = 1f;
+    private float currentMoveSpeed;
     [Tooltip("Movement speed when moving towards a gasoline tank.")]
     [SerializeField] private float gasTankMoveSpeed = 6f;
 
@@ -80,9 +82,16 @@ public class GasGuzzlerGus : MonoBehaviour
     private Vector2 lastPosition;
     private float stuckTimer;
     [Tooltip("Time in seconds before Gus is considered stuck.")]
-    [SerializeField] private float stuckThreshold = 3f;
+    [SerializeField] private float stuckThreshold = 3f; // Increased to reduce false positives
     [Tooltip("Minimum distance Gus must move to not be considered stuck.")]
-    [SerializeField] private float stuckDistanceThreshold = 0.1f;
+    [SerializeField] private float stuckDistanceThreshold = 0.2f; // Increased to reduce false positives
+
+    // Teleport cooldown
+    private float teleportCooldown = 5f; // Cooldown in seconds
+    private float lastTeleportTime = 0f;
+
+    // Gasoline spawn interval
+    private float currentSpawnInterval = 20f; // Default spawn interval
 
     void Start()
     {
@@ -93,12 +102,20 @@ public class GasGuzzlerGus : MonoBehaviour
         lastPosition = transform.position;
         stuckTimer = 0f;
         startingLocation = transform.position;
+
+        // Initialize current move speed
+        currentMoveSpeed = moveSpeed;
     }
 
     void Update()
     {
+        if (enableDebugLogs)
+            Debug.Log("Update is running...");
+
         if (isSpeechActive) // Prevent actions during speech
         {
+            if (enableDebugLogs)
+                Debug.Log("Update skipped: Speech is active.");
             animator.SetFloat("Speed", 0);
             return;
         }
@@ -111,6 +128,8 @@ public class GasGuzzlerGus : MonoBehaviour
 
         if (!isEncounterActive || isSpecialAttackActive || isPlayerLocked)
         {
+            if (enableDebugLogs)
+                Debug.Log($"Update skipped: EncounterActive={isEncounterActive}, SpecialAttackActive={isSpecialAttackActive}, PlayerLocked={isPlayerLocked}");
             animator.SetFloat("Speed", 0);
             return;
         }
@@ -126,9 +145,19 @@ public class GasGuzzlerGus : MonoBehaviour
         {
             float distanceToPlayer = Vector2.Distance(transform.position, player.position);
             if (distanceToPlayer > attackRange)
+            {
                 ChasePlayer();
+            }
             else if (Time.time > lastAttackTime + attackCooldown)
+            {
                 StartAttack();
+            }
+            else
+            {
+                // Fallback: If Gus is idle for too long, force him to move
+                Debug.LogWarning("Gus is idle. Forcing movement toward the player.");
+                ChasePlayer();
+            }
 
             Vector2 direction = (player.position - transform.position).normalized;
             animator.SetFloat("IdleX", Mathf.Round(direction.x));
@@ -140,18 +169,90 @@ public class GasGuzzlerGus : MonoBehaviour
         CheckBoundary();
     }
 
+
+    private void CheckBoundary()
+    {
+        float distanceFromStart = Vector3.Distance(transform.position, startingLocation);
+
+        if (distanceFromStart > boundaryRadius && Time.time > lastTeleportTime + teleportCooldown)
+        {
+            Debug.LogWarning($"Gus is outside the boundary! Distance: {distanceFromStart}, Radius: {boundaryRadius}. Teleporting back to starting location...");
+            transform.position = startingLocation;
+
+            // Reset movement to avoid getting stuck after teleporting
+            stuckTimer = 0f;
+            lastPosition = transform.position;
+
+            // Update the last teleport time
+            lastTeleportTime = Time.time;
+        }
+    }
+
+    private void CheckIfStuck()
+    {
+        float distanceMoved = Vector2.Distance(transform.position, lastPosition);
+
+        if (distanceMoved < stuckDistanceThreshold)
+        {
+            stuckTimer += Time.deltaTime;
+
+            if (stuckTimer >= stuckThreshold)
+            {
+                Debug.LogWarning($"Gus is stuck! Distance moved: {distanceMoved}, Threshold: {stuckDistanceThreshold}. Resetting state...");
+                ResetStuckState();
+            }
+        }
+        else
+        {
+            stuckTimer = 0f; // Reset the timer if movement is detected
+        }
+
+        lastPosition = transform.position;
+    }
+
+    private void ResetStuckState()
+    {
+        Debug.LogWarning("Gus is stuck! Resetting state...");
+        stuckTimer = 0f; // Reset the stuck timer
+        lastPosition = transform.position; // Update the last position
+
+        // Reset critical states
+        isSpecialAttackActive = false;
+        isPlayerLocked = false;
+
+        // Force Gus to chase the player
+        ChasePlayer();
+    }
+
+    private void MoveTowards(Vector2 target, float speed)
+    {
+        Vector2 direction = (target - (Vector2)transform.position).normalized;
+        Vector2 newPosition = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
+
+        // Debug log to verify movement
+        if (Vector2.Distance(transform.position, newPosition) < 0.01f)
+        {
+            Debug.LogWarning("Gus is not moving. Check for obstacles or state conflicts.");
+        }
+
+        transform.position = newPosition;
+        animator.SetFloat("IdleX", Mathf.Round(direction.x));
+        animator.SetFloat("IdleY", Mathf.Round(direction.y));
+        animator.SetFloat("Speed", speed);
+    }
+
     private void StartEncounter()
     {
         isEncounterActive = true;
         StartConversation("So you're the one who's been meddling in my factory! You will pay dearly for this!");
 
-        // Start spawning gasoline tanks after the encounter begins
-        InvokeRepeating(nameof(SpawnGasolineTank), 10f, 20f);
+        // Start spawning gasoline tanks with the default interval
+        InvokeRepeating(nameof(SpawnGasolineTank), 10f, currentSpawnInterval);
     }
 
     void ChasePlayer()
     {
-        MoveTowards(player.position, moveSpeed);
+        MoveTowards(player.position, currentMoveSpeed);
     }
 
     void StartAttack()
@@ -230,15 +331,29 @@ public class GasGuzzlerGus : MonoBehaviour
 
         if (currentHealth <= maxHealth * 0.75f && !phaseTriggered[0])
         {
-            TriggerPhase(0, "You dare challenge me further? I'll make this your grave!");
+            TriggerPhase(0, "Get out of my factory!");
+            currentMoveSpeed *= 1.25f; // Increase speed for phase 1
+            currentSpawnInterval = 15f; // Spawn gasoline more frequently
+            RestartGasolineSpawnTimer();
+            transform.localScale *= 1.1f;
         }
         else if (currentHealth <= maxHealth * 0.5f && !phaseTriggered[1])
         {
-            TriggerPhase(1, "This battle is far from over! Witness my power!");
+            TriggerPhase(1, "Now I'm getting mad! More gasoline!");
+            currentMoveSpeed *= 1.25f; // Increase speed for phase 2
+            attackDamage *= 2f; // Increase damage for phase 2
+            currentSpawnInterval = 10f; // Spawn gasoline even more frequently
+            RestartGasolineSpawnTimer();
+            SpawnGasolineTank(); // Spawn a gasoline tank immediately
+            transform.localScale *= 1.1f;
         }
         else if (currentHealth <= maxHealth * 0.25f && !phaseTriggered[2])
         {
-            TriggerPhase(2, "You've pushed me to my limits, but I'll not fall easily!");
+            TriggerPhase(2, "ARGHHHHH! I WILL SUE YOU FLAT BROKE!");
+            currentMoveSpeed *= 1.5f; // Increase speed for phase 3
+            currentSpawnInterval = 5f; // Spawn gasoline very frequently
+            RestartGasolineSpawnTimer();
+            transform.localScale *= 1.2f;
         }
     }
 
@@ -248,10 +363,28 @@ public class GasGuzzlerGus : MonoBehaviour
         phaseTriggered[phaseIndex] = true;
     }
 
+    private void RestartGasolineSpawnTimer()
+    {
+        CancelInvoke(nameof(SpawnGasolineTank)); // Stop the current timer
+        InvokeRepeating(nameof(SpawnGasolineTank), 0f, currentSpawnInterval); // Start a new timer with the updated interval
+    }
+
     private void SpawnGasolineTank()
     {
         if (!isEncounterActive) return;
         Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+
+        // Check if a tank already exists at the spawn point
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(spawnPoint.position, 1f);
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.CompareTag("GasolineTank"))
+            {
+                Debug.Log("A gasoline tank already exists at this spawn point. Skipping spawn.");
+                return;
+            }
+        }
+
         Instantiate(gasolineTankPrefab, spawnPoint.position, Quaternion.identity);
     }
 
@@ -282,56 +415,69 @@ public class GasGuzzlerGus : MonoBehaviour
 
     private void StartSpecialAttack()
     {
+        if (isSpecialAttackActive)
+        {
+            Debug.LogWarning("Special attack already active. Ignoring additional call.");
+            return;
+        }
+
+        Debug.Log("Starting special attack.");
         StartCoroutine(SpecialAttackPattern());
     }
 
     private IEnumerator SpecialAttackPattern()
     {
+        Debug.Log("SpecialAttackPattern started.");
         isSpecialAttackActive = true;
 
-        for (int i = 0; i < specialAttackIterations; i++)
+        float timeout = 10f; // Maximum time for the special attack
+        float startTime = Time.time;
+
+        try
         {
-            Vector2 chargeDirection = (player.position - transform.position).normalized;
-
-            animator.SetFloat("IdleX", Mathf.Round(chargeDirection.x));
-            animator.SetFloat("IdleY", Mathf.Round(chargeDirection.y));
-            animator.SetFloat("Speed", specialAttackSpeed * 2f);
-
-            float elapsedTime = 0f;
-            float lastFireSpawnTime = 0f;
-
-            while (elapsedTime < chargeDistance / chargeSpeed)
+            for (int i = 0; i < specialAttackIterations; i++)
             {
-                transform.position += (Vector3)(chargeDirection * chargeSpeed * Time.deltaTime);
+                Debug.Log($"Special attack iteration {i + 1}/{specialAttackIterations}.");
+                Vector2 chargeDirection = (player.position - transform.position).normalized;
 
-                if (elapsedTime - lastFireSpawnTime >= fireSpawnInterval)
+                animator.SetFloat("IdleX", Mathf.Round(chargeDirection.x));
+                animator.SetFloat("IdleY", Mathf.Round(chargeDirection.y));
+                animator.SetFloat("Speed", specialAttackSpeed * 2f);
+
+                float elapsedTime = 0f;
+                float lastFireSpawnTime = 0f;
+
+                while (elapsedTime < chargeDistance / chargeSpeed)
                 {
-                    SpawnFireTrail(transform.position);
-                    lastFireSpawnTime = elapsedTime;
+                    transform.position += (Vector3)(chargeDirection * chargeSpeed * Time.deltaTime);
+
+                    if (elapsedTime - lastFireSpawnTime >= fireSpawnInterval)
+                    {
+                        SpawnFireTrail(transform.position);
+                        lastFireSpawnTime = elapsedTime;
+                    }
+
+                    elapsedTime += Time.deltaTime;
+                    yield return null;
+
+                    // Timeout check
+                    if (Time.time - startTime > timeout)
+                    {
+                        Debug.LogError("SpecialAttackPattern timed out!");
+                        yield break;
+                    }
                 }
 
-                elapsedTime += Time.deltaTime;
-                yield return null;
+                yield return new WaitForSeconds(1f);
             }
-
-            Collider2D hitPlayer = Physics2D.OverlapCircle(transform.position, 1f);
-            if (hitPlayer != null && hitPlayer.CompareTag("Player"))
-            {
-                Rigidbody2D playerRb = hitPlayer.GetComponent<Rigidbody2D>();
-                if (playerRb != null)
-                {
-                    Vector2 knockbackDir = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
-                    playerRb.AddForce(knockbackDir * knockbackForce, ForceMode2D.Impulse);
-                }
-                hitPlayer.GetComponent<HealthbarBehavior>().HitDamage(attackDamage, gameObject);
-            }
-
-            yield return new WaitForSeconds(1f);
         }
-
-        animator.SetFloat("Speed", 0);
-        animator.SetTrigger("Idle");
-        isSpecialAttackActive = false;
+        finally
+        {
+            Debug.Log("SpecialAttackPattern completed or interrupted.");
+            isSpecialAttackActive = false; // Ensure the flag is reset
+            animator.SetFloat("Speed", 0);
+            animator.SetTrigger("Idle");
+        }
     }
 
     private void StartConversation(string message)
@@ -371,60 +517,13 @@ public class GasGuzzlerGus : MonoBehaviour
         GameObject fireInstance = Instantiate(fireTrailPrefab, position, Quaternion.identity);
 
         // Randomize scale
-        float randomScale = Random.Range(2f, 4f);
+        float randomScale = Random.Range(3f, 5f);
         fireInstance.transform.localScale = new Vector3(randomScale, randomScale, 1f);
 
         // Randomize rotation
-        float randomRotation = Random.Range(-30f, 30f);
+        float randomRotation = Random.Range(-50f, 50f);
         fireInstance.transform.rotation = Quaternion.Euler(0f, 0f, randomRotation);
 
         Destroy(fireInstance, 8f);
-    }
-
-    private void MoveTowards(Vector2 target, float speed)
-    {
-        Vector2 direction = (target - (Vector2)transform.position).normalized;
-        transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
-        animator.SetFloat("IdleX", Mathf.Round(direction.x));
-        animator.SetFloat("IdleY", Mathf.Round(direction.y));
-        animator.SetFloat("Speed", speed);
-    }
-
-    private void CheckIfStuck()
-    {
-        float distanceMoved = Vector2.Distance(transform.position, lastPosition);
-
-        if (distanceMoved < stuckDistanceThreshold)
-        {
-            stuckTimer += Time.deltaTime;
-
-            if (stuckTimer >= stuckThreshold)
-            {
-                Debug.LogWarning("Gus is stuck! Resetting state...");
-                ResetStuckState();
-            }
-        }
-        else
-        {
-            stuckTimer = 0f;
-        }
-
-        lastPosition = transform.position;
-    }
-
-    private void ResetStuckState()
-    {
-        isSpecialAttackActive = false;
-        isPlayerLocked = false;
-        ChasePlayer();
-    }
-
-    private void CheckBoundary()
-    {
-        if (Vector3.Distance(transform.position, startingLocation) > boundaryRadius)
-        {
-            Debug.LogWarning("Gus is outside the boundary! Teleporting back to starting location...");
-            transform.position = startingLocation;
-        }
     }
 }
