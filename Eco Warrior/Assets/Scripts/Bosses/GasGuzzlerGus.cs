@@ -1,70 +1,69 @@
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class GasGuzzlerGus : MonoBehaviour
 {
-    // Boss Variables
-    public Transform player;          // Reference to the player
-    public float moveSpeed = 3f;      // Gus's movement speed
-    public float attackRange = 2f;    // Radius of Gus's attack area
-    public float attackCooldown = 2f; // Cooldown time between attacks
-    [SerializeField] private float attackDamage = 3f;  // Damage dealt to the player during attack
-    [SerializeField] private float knockbackForce = 5f; // Knockback force applied to the player
-
-    [SerializeField] private float maxHealth = 100f;   // Gus's maximum health
-    private float currentHealth;       // Gus's current health
-
-    // Health System and Phases
-    private bool hasStartedConversation = false;       // Tracks room entry conversation
-    private bool[] phaseTriggered = new bool[3];       // Tracks health phases (75%, 50%, 25%)
-
-    // Chat Bubble System
-    public GameObject chatBubblePrefab;  // Prefab for the chat bubble
-    public Transform chatBubbleParent;  // Parent transform for positioning the chat bubble
-    private GameObject activeChatBubble; // Tracks the active chat bubble
-
-    // Player Lock
+    public Transform player;
+    public float moveSpeed = 3f;
+    public float gasTankMoveSpeed = 6f;
+    public float attackRange = 2f;
+    public float attackCooldown = 2f;
+    [SerializeField] private float attackDamage = 3f;
+    [SerializeField] private float knockbackForce = 5f;
+    [SerializeField] private float maxHealth = 100f;
+    private float currentHealth;
+    private bool hasStartedConversation = false;
+    private bool[] phaseTriggered = new bool[3];
+    public GameObject chatBubblePrefab;
+    public Transform chatBubbleParent;
+    private GameObject activeChatBubble;
     private bool isPlayerLocked = false;
-
-    // Animator and Healthbar
     private Animator animator;
     public HealthbarBehavior healthBar;
-
-    // Attack Timer
     private float lastAttackTime;
+    public GameObject gasolineTankPrefab;
+    public Transform[] spawnPoints;
+    private bool isSpecialAttackActive = false;
+    public float specialAttackSpeed = 12f;
+    public float encounterStartDistance = 5f;
+    private bool isEncounterActive = false;
 
     void Start()
     {
         animator = GetComponent<Animator>();
         currentHealth = maxHealth;
-        healthBar.Health(currentHealth, maxHealth); // Initialize the health bar
+        healthBar.Health(currentHealth, maxHealth);
+        InvokeRepeating(nameof(SpawnGasolineTank), 10f, 20f);
     }
 
     void Update()
     {
-        if (!hasStartedConversation && IsPlayerClose())
+        if (!isEncounterActive && Vector2.Distance(transform.position, player.position) < encounterStartDistance)
         {
-            StartConversation("So you're the one who's been meddling in my factory! Time to pay!");
-            hasStartedConversation = true;
+            StartEncounter();
+            return;
         }
 
-        CheckHealthPhases();
+        if (!isEncounterActive || isSpecialAttackActive || isPlayerLocked)
+        {
+            animator.SetFloat("Speed", 0);
+            return;
+        }
 
-        if (!isPlayerLocked)
+        GameObject closestTank = FindClosestGasolineTank();
+        if (closestTank != null)
+        {
+            MoveTowards(closestTank.transform.position, gasTankMoveSpeed);
+            if (Vector2.Distance(transform.position, closestTank.transform.position) < 1f)
+                ConsumeGasolineTank(closestTank);
+        }
+        else
         {
             float distanceToPlayer = Vector2.Distance(transform.position, player.position);
-
             if (distanceToPlayer > attackRange)
-            {
                 ChasePlayer();
-            }
-            else
-            {
-                if (Time.time > lastAttackTime + attackCooldown)
-                {
-                    StartAttack();
-                }
-            }
+            else if (Time.time > lastAttackTime + attackCooldown)
+                StartAttack();
 
             Vector2 direction = (player.position - transform.position).normalized;
             animator.SetFloat("IdleX", Mathf.Round(direction.x));
@@ -72,14 +71,15 @@ public class GasGuzzlerGus : MonoBehaviour
         }
     }
 
+    private void StartEncounter()
+    {
+        isEncounterActive = true;
+        StartConversation("So you're the one who's been meddling in my factory! You will pay dearly for this!");
+    }
+
     void ChasePlayer()
     {
-        Vector2 direction = (player.position - transform.position).normalized;
-        transform.position = Vector2.MoveTowards(transform.position, player.position, moveSpeed * Time.deltaTime);
-
-        animator.SetFloat("IdleX", Mathf.Round(direction.x));
-        animator.SetFloat("IdleY", Mathf.Round(direction.y));
-        animator.SetFloat("Speed", moveSpeed);
+        MoveTowards(player.position, moveSpeed);
     }
 
     void StartAttack()
@@ -100,9 +100,7 @@ public class GasGuzzlerGus : MonoBehaviour
                 if (playerHealth != null)
                 {
                     playerHealth.HitDamage(attackDamage, hit.gameObject);
-                    Debug.Log($"Gus attacked the player and dealt {attackDamage} damage!");
                 }
-
                 ApplyKnockback(hit);
             }
         }
@@ -126,7 +124,6 @@ public class GasGuzzlerGus : MonoBehaviour
     {
         float knockbackDuration = 0.2f;
         float elapsedTime = 0f;
-
         Vector2 startPosition = playerRb.position;
         Vector2 targetPosition = startPosition + direction * knockbackForce;
         playerRb.linearVelocity = Vector2.zero;
@@ -140,90 +137,163 @@ public class GasGuzzlerGus : MonoBehaviour
         }
 
         playerRb.MovePosition(targetPosition);
-        Debug.Log("Knockback interpolation complete!");
     }
 
     public void HitDamage(float damage)
     {
         currentHealth -= damage;
         healthBar.Health(currentHealth, maxHealth);
-        Debug.Log($"GasGuzzlerGus took {damage} damage! Current Health: {currentHealth}");
         if (currentHealth <= 0)
-        {
             Die();
-        }
     }
 
     void Die()
     {
-        Debug.Log("GasGuzzlerGus has been defeated!");
         Destroy(gameObject);
     }
 
     private bool IsPlayerClose()
     {
-        return Vector2.Distance(transform.position, player.position) < attackRange * 2; // Adjust room entry range
+        return Vector2.Distance(transform.position, player.position) < attackRange * 2;
     }
 
     private void StartConversation(string message)
     {
-        if (activeChatBubble != null) // Prevent multiple bubbles
-        {
+        if (activeChatBubble != null)
             return;
-        }
 
-        isPlayerLocked = true; // Lock the player during conversation
-        player.GetComponent<Movement>().isLocked = true; // Lock player movement
-        player.GetComponent<PlayerController>().isLocked = true; // Lock shooting and other actions
-        animator.SetFloat("Speed", 0); // Stop Gus's running animation
-        animator.SetTrigger("Idle");  // Set idle animation
+        isPlayerLocked = true;
+        player.GetComponent<Movement>().isLocked = true;
+        player.GetComponent<PlayerController>().isLocked = true;
+        animator.SetFloat("Speed", 0);
+        animator.SetTrigger("Idle");
 
         activeChatBubble = Instantiate(chatBubblePrefab, chatBubbleParent);
-        activeChatBubble.transform.localScale = Vector3.one;
-        activeChatBubble.transform.localPosition = Vector3.zero; // Center chat bubble above Gus
         activeChatBubble.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = message;
-
         StartCoroutine(EndConversation());
     }
 
     private IEnumerator EndConversation()
     {
-        yield return new WaitForSeconds(3f); // Conversation duration
-
+        yield return new WaitForSeconds(3f);
         if (activeChatBubble != null)
         {
-            Destroy(activeChatBubble); // Remove chat bubble
-            activeChatBubble = null;  // Reset reference
+            Destroy(activeChatBubble);
+            activeChatBubble = null;
         }
-
-        isPlayerLocked = false; // Unlock player movement
-        player.GetComponent<Movement>().isLocked = false; // Unlock player movement
-        player.GetComponent<PlayerController>().isLocked = false; // Unlock shooting and other actions
-        animator.ResetTrigger("Idle"); // Resume normal animations
+        isPlayerLocked = false;
+        player.GetComponent<Movement>().isLocked = false;
+        player.GetComponent<PlayerController>().isLocked = false;
+        animator.ResetTrigger("Idle");
     }
 
     private void CheckHealthPhases()
     {
         if (currentHealth <= maxHealth * 0.75f && !phaseTriggered[0])
         {
-            StartConversation("You dare challenge me further? I'll make this your grave!");
-            phaseTriggered[0] = true;
+            TriggerPhase(0, "You dare challenge me further? I'll make this your grave!");
         }
         else if (currentHealth <= maxHealth * 0.5f && !phaseTriggered[1])
         {
-            StartConversation("This battle is far from over! Witness my power!");
-            phaseTriggered[1] = true;
+            TriggerPhase(1, "This battle is far from over! Witness my power!");
         }
         else if (currentHealth <= maxHealth * 0.25f && !phaseTriggered[2])
         {
-            StartConversation("You've pushed me to my limits, but I'll not fall easily!");
-            phaseTriggered[2] = true;
+            TriggerPhase(2, "You've pushed me to my limits, but I'll not fall easily!");
         }
     }
 
-    private void OnDrawGizmosSelected()
+    private void TriggerPhase(int phaseIndex, string message)
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
+        StartConversation(message);
+        phaseTriggered[phaseIndex] = true;
+    }
+
+    private void SpawnGasolineTank()
+    {
+        Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+        Instantiate(gasolineTankPrefab, spawnPoint.position, Quaternion.identity);
+    }
+
+    private GameObject FindClosestGasolineTank()
+    {
+        GameObject[] tanks = GameObject.FindGameObjectsWithTag("GasolineTank");
+        GameObject closestTank = null;
+        float minDistance = Mathf.Infinity;
+
+        foreach (GameObject tank in tanks)
+        {
+            float distance = Vector2.Distance(transform.position, tank.transform.position);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                closestTank = tank;
+            }
+        }
+
+        return closestTank;
+    }
+
+    private void ConsumeGasolineTank(GameObject tank)
+    {
+        Destroy(tank);
+        StartSpecialAttack();
+    }
+
+    private void StartSpecialAttack()
+    {
+        StartCoroutine(SpecialAttackPattern());
+    }
+
+    private IEnumerator SpecialAttackPattern()
+    {
+        isSpecialAttackActive = true;
+
+        for (int i = 0; i < 3; i++)
+        {
+            Vector2 chargeDirection = (player.position - transform.position).normalized;
+
+            animator.SetFloat("IdleX", Mathf.Round(chargeDirection.x));
+            animator.SetFloat("IdleY", Mathf.Round(chargeDirection.y));
+            animator.SetFloat("Speed", specialAttackSpeed * 2f);
+
+            float chargeDistance = 15f;
+            float chargeSpeed = specialAttackSpeed * 3f;
+            float elapsedTime = 0f;
+
+            while (elapsedTime < chargeDistance / chargeSpeed)
+            {
+                transform.position += (Vector3)(chargeDirection * chargeSpeed * Time.deltaTime);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            Collider2D hitPlayer = Physics2D.OverlapCircle(transform.position, 1f);
+            if (hitPlayer != null && hitPlayer.CompareTag("Player"))
+            {
+                Rigidbody2D playerRb = hitPlayer.GetComponent<Rigidbody2D>();
+                if (playerRb != null)
+                {
+                    Vector2 knockbackDir = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
+                    playerRb.AddForce(knockbackDir * knockbackForce, ForceMode2D.Impulse);
+                }
+                hitPlayer.GetComponent<HealthbarBehavior>().HitDamage(attackDamage, gameObject);
+            }
+
+            yield return new WaitForSeconds(1f);
+        }
+
+        animator.SetFloat("Speed", 0);
+        animator.SetTrigger("Idle");
+        isSpecialAttackActive = false;
+    }
+
+    private void MoveTowards(Vector2 target, float speed)
+    {
+        Vector2 direction = (target - (Vector2)transform.position).normalized;
+        transform.position = Vector2.MoveTowards(transform.position, target, speed * Time.deltaTime);
+        animator.SetFloat("IdleX", Mathf.Round(direction.x));
+        animator.SetFloat("IdleY", Mathf.Round(direction.y));
+        animator.SetFloat("Speed", speed);
     }
 }
