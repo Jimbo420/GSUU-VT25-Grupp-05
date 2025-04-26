@@ -106,7 +106,7 @@ MonoBehaviour:
   fillImage: {fileID: 0}
   low: {r: 0.78113204, g: 0, b: 0, a: 1}
   high: {r: 0.2819624, g: 1, b: 0, a: 1}
-  offset: {x: 0, y: 0, z: 0}
+  _maxHealth: 25
 --- !u!1 &929893288958649951
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,8 +216,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.4181615, y: -1.1181619, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 388658434354745354}
   - {fileID: 2599878835727101992}
@@ -322,8 +322,6 @@ MonoBehaviour:
   _toolRotator: {fileID: 2043682637280092995}
   _healthbar: {fileID: 0}
   moveSpeed: 2
-  health: 200
-  maxHealth: 200
 --- !u!114 &4437951985315232002
 MonoBehaviour:
   m_ObjectHideFlags: 0

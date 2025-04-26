@@ -1316,7 +1316,7 @@ GameObject:
   - component: {fileID: 7320893949796537507}
   - component: {fileID: 3449810437001011380}
   m_Layer: 0
-  m_Name: Rectangular Palette
+  m_Name: Floor and walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
