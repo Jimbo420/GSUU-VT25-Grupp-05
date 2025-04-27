@@ -1,5 +1,4 @@
-using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TargetPlayer : MonoBehaviour
 {
@@ -9,35 +8,35 @@ public class TargetPlayer : MonoBehaviour
 
     private EnemyMovement enemyMovement;
     public Transform player;
+    
     private WeaponManager _weaponManager;
-
 
     private bool hasLineOfSight = false;
     private float _nextFireTime;
+    private float lostSightTimer = 0f;
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-
+        player = GameObject.FindGameObjectWithTag("Player").transform; 
         enemyMovement = GetComponent<EnemyMovement>();
         _weaponManager = GetComponentInChildren<WeaponManager>();
-        
-        //Sprite selectedSprite = _weaponManager.CurrentWeapon.WeaponSprite;
     }
+
     void Update()
     {
-        
+        if (lostSightTimer > 0)
+            lostSightTimer -= Time.deltaTime;
     }
+
     public bool PlayerIsInRangeOfEnemy()
     {
-        if (hasLineOfSight)
-        {
-            float distance = Vector2.Distance(player.position, transform.position); //Calculates the distance between player and enemy
+        float distance = Vector2.Distance(player.position, transform.position);
+        if (hasLineOfSight || lostSightTimer > 0)
             return distance <= rangeBetween;
-        }
         else
             return false;
     }
+
     public void EngageTarget()
     {
         distance = Vector2.Distance(transform.position, player.position);
@@ -45,10 +44,10 @@ public class TargetPlayer : MonoBehaviour
         {
             enemyMovement.SetTarget(player.position);
             enemyMovement.Walk();
-        } 
-        if (!(Time.time >= _nextFireTime)) return; 
+        }
+        if (!(Time.time >= _nextFireTime)) return;
         _weaponManager.Shoot();
-        _nextFireTime = Time.time + (1f/_weaponManager.CurrentWeapon.FireRate);
+        _nextFireTime = Time.time + (1f / _weaponManager.CurrentWeapon.FireRate);
     }
 
     private void FixedUpdate()
@@ -56,43 +55,32 @@ public class TargetPlayer : MonoBehaviour
         if (player == null) return;
 
         Vector2 origin = transform.position;
-        Vector2 direction = (player.position - this.transform.position).normalized;
+        Vector2 direction = (player.position - transform.position).normalized;
 
         int enemyLayer = LayerMask.NameToLayer("Enemy");
         int layerMask = ~(1 << enemyLayer);
 
-        RaycastHit2D hit = Physics2D.Raycast(origin, direction, rangeBetween+5f, layerMask);
-        
+        RaycastHit2D hit = Physics2D.Raycast(origin, direction, rangeBetween + 5f, layerMask);
+
         if (hit.collider != null)
         {
-            hasLineOfSight = hit.collider.CompareTag("Player");
-            //Debug.Log($"LOS: {hasLineOfSight}, Hit: {hit.collider.name}");
+            if (hit.collider.CompareTag("Player"))
+            {
+                hasLineOfSight = true;
+                lostSightTimer = 0f;
+            }
+            else
+            {
+                if (hasLineOfSight)
+                    lostSightTimer = 10;
+                hasLineOfSight = false;
+            }
         }
         else
         {
-            for (int i = 0; i > 4; i++)
-            {
-                var hasse = new WaitForSeconds(1);
-                Debug.Log($"Second: {hasse}");
-                Vector2 playersLastKnownPosition = player.position;
-                enemyMovement.SetTarget(playersLastKnownPosition);
-            }
+            if (hasLineOfSight)
+                lostSightTimer = 10f;
             hasLineOfSight = false;
-            StartCoroutine(ChaseWithDelay());
-            //enemyMovement.SetTarget(new Vector2(0f, 0f));
-            //Debug.Log($"LOS: {hasLineOfSight}");
         }
-    }
-
-    IEnumerator ChaseWithDelay()
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            Debug.Log($"Second: {i + 1}");
-            enemyMovement.SetTarget(player.position);
-            yield return new WaitForSeconds(1f);
-        }
-
-        hasLineOfSight = false;
     }
 }

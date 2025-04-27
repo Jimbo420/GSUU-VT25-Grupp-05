@@ -29,6 +29,7 @@ public class EnemyMovement : MonoBehaviour
     private int newWayPoint;
 
     private TargetPlayer targetPlayer;
+    public Transform collisionObsticle;
 
     private float idleTimer = 0f;
     private bool isIdle = false;
@@ -41,6 +42,7 @@ public class EnemyMovement : MonoBehaviour
         targetPlayer = GetComponent<TargetPlayer>();
         //polygonCollider = GetComponentInChildren<PolygonCollider2D>();
         _toolRotator = GetComponentInChildren<ToolRotator>();
+        collisionObsticle = GameObject.FindGameObjectWithTag("CollisionObsticle").transform;
         EnemyStartup();
     }
 
@@ -60,6 +62,10 @@ public class EnemyMovement : MonoBehaviour
         }
         else
         {
+            if (isPlayerInRange)
+            {
+
+            }
             isPlayerInRange = false;
             Guard();
         }
@@ -67,6 +73,15 @@ public class EnemyMovement : MonoBehaviour
     public void SetTarget(Vector2 newTarget)
     {
         currentTarget = newTarget;
+    }
+
+    void AvoidCollision(Vector2 currentTarget)
+    {
+        float collisionDistance = Vector2.Distance(transform.position, collisionObsticle.position);
+        if (collisionDistance > 4)
+        {
+
+        }
     }
     
     public void Walk()
@@ -98,14 +113,9 @@ public class EnemyMovement : MonoBehaviour
 
     private void NewPosition()
     {
-        //float x = Random.Range(-patrolCordinates.x / 2f, patrolCordinates.x / 2f);
-        //float y = Random.Range(-patrolCordinates.y / 2f, patrolCordinates.y / 2f);
-        //currentTarget = startPosition + new Vector2(x, y);
-        //transform.position = WayPoints[wayPointIndex].transform.position;
         var tempWaypoints = Random.Range(0, WayPoints.Length);
         if (newWayPoint != tempWaypoints)
             newWayPoint = tempWaypoints;
-
     }
 
     private void Guard()
