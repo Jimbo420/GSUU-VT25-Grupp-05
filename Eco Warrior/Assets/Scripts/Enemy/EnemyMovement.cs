@@ -78,10 +78,25 @@ public class EnemyMovement : MonoBehaviour
     void AvoidCollision(Vector2 currentTarget)
     {
         float collisionDistance = Vector2.Distance(transform.position, collisionObsticle.position);
-        if (collisionDistance > 4)
+        if (collisionDistance > 2)
         {
+            //var playersClosestX = targetPlayer.player.position.x;
+            float maxDistance = 0f;
+            int bestWaypoint = newWayPoint;
 
+            for (int i = 0; i < WayPoints.Length; i++)
+            {
+                float distanceToObstacle = Vector2.Distance(WayPoints[i].position, collisionObsticle.position);
+                if (distanceToObstacle > maxDistance)
+                {
+                    maxDistance = distanceToObstacle;
+                    bestWaypoint = i;
+                }
+            }
+            newWayPoint = bestWaypoint;
         }
+        else
+            return;
     }
     
     public void Walk()
