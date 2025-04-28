@@ -24,14 +24,14 @@ public class TargetPlayer : MonoBehaviour
 
     void Update()
     {
-        if (lostSightTimer > 0)
-            lostSightTimer -= Time.deltaTime;
+        //if (lostSightTimer > 0)
+        //    lostSightTimer -= Time.deltaTime;
     }
 
     public bool PlayerIsInRangeOfEnemy()
     {
         float distance = Vector2.Distance(player.position, transform.position);
-        if (hasLineOfSight || lostSightTimer > 0)
+        if (hasLineOfSight /*|| lostSightTimer > 0*/)
             return distance <= rangeBetween;
         else
             return false;
@@ -64,22 +64,23 @@ public class TargetPlayer : MonoBehaviour
 
         if (hit.collider != null)
         {
-            if (hit.collider.CompareTag("Player"))
-            {
-                hasLineOfSight = true;
-                lostSightTimer = 0f;
-            }
-            else
-            {
-                if (hasLineOfSight)
-                    lostSightTimer = 10;
-                hasLineOfSight = false;
-            }
+            hasLineOfSight = hit.collider.CompareTag("Player");
+            //if (hit.collider.CompareTag("Player"))
+            //{
+            //    hasLineOfSight = true;
+            //    //lostSightTimer = 0f;
+            //}
+            //else
+            //{
+            //    //if (hasLineOfSight)
+            //        //lostSightTimer = 10;
+            //    hasLineOfSight = false;
+            //}
         }
         else
         {
-            if (hasLineOfSight)
-                lostSightTimer = 10f;
+            //if (hasLineOfSight)
+                //lostSightTimer = 10f;
             hasLineOfSight = false;
         }
     }

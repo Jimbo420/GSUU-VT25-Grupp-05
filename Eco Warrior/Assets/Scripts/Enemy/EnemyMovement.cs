@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -75,25 +77,34 @@ public class EnemyMovement : MonoBehaviour
         currentTarget = newTarget;
     }
 
-    void AvoidCollision(Vector2 currentTarget)
+    void AvoidCollision()
     {
         float collisionDistance = Vector2.Distance(transform.position, collisionObsticle.position);
-        if (collisionDistance > 2)
+        if (collisionDistance < 2)
         {
-            //var playersClosestX = targetPlayer.player.position.x;
-            float maxDistance = 0f;
-            int bestWaypoint = newWayPoint;
-
+            List<Vector2> collisions = new List<Vector2>();
             for (int i = 0; i < WayPoints.Length; i++)
             {
-                float distanceToObstacle = Vector2.Distance(WayPoints[i].position, collisionObsticle.position);
-                if (distanceToObstacle > maxDistance)
-                {
-                    maxDistance = distanceToObstacle;
-                    bestWaypoint = i;
-                }
+                Vector2 obsticle = WayPoints[i].position;
+                collisions.Add(obsticle);
             }
-            newWayPoint = bestWaypoint;
+
+            //var hasse = collisions.Where(a => a.);
+
+            //var playersClosestX = targetPlayer.player.position.x;
+            //float maxDistance = 0f;
+            //int bestWaypoint = newWayPoint;
+
+            //for (int i = 0; i < WayPoints.Length; i++)
+            //{
+            //    float distanceToObstacle = Vector2.Distance(WayPoints[i].position, collisionObsticle.position);
+            //    if (distanceToObstacle > maxDistance)
+            //    {
+            //        maxDistance = distanceToObstacle;
+            //        bestWaypoint = i;
+            //    }
+            //}
+            //newWayPoint = bestWaypoint;
         }
         else
             return;
@@ -102,6 +113,7 @@ public class EnemyMovement : MonoBehaviour
     public void Walk()
     {
         Vector2 direction = new Vector2();
+        AvoidCollision();
         if (targetPlayer.PlayerIsInRangeOfEnemy() == false)
         {
             transform.position = Vector2.MoveTowards(transform.position, WayPoints[newWayPoint].position, moveSpeed * Time.deltaTime);
