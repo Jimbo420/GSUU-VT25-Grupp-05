@@ -4,6 +4,7 @@ using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.AI;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float waitTimeMax = 3f;
 
     [SerializeField] public Transform[] WayPoints;
+    private NavMeshAgent agent;
 
     private int wayPointIndex = -1;
 
@@ -44,6 +46,7 @@ public class EnemyMovement : MonoBehaviour
         targetPlayer = GetComponent<TargetPlayer>();
         //polygonCollider = GetComponentInChildren<PolygonCollider2D>();
         _toolRotator = GetComponentInChildren<ToolRotator>();
+        agent = GetComponent<NavMeshAgent>();
         collisionObsticle = GameObject.FindGameObjectWithTag("CollisionObsticle").transform;
         EnemyStartup();
     }
@@ -53,6 +56,10 @@ public class EnemyMovement : MonoBehaviour
         health = maxHealth;
         //startPosition = transform.position;
         //startPosition = transform.position;
+        if (WayPoints.Length > 0)
+        {
+            agent.SetDestination(WayPoints[newWayPoint].position);
+        }
         NewPosition();
     }
     void Update()
@@ -64,10 +71,6 @@ public class EnemyMovement : MonoBehaviour
         }
         else
         {
-            if (isPlayerInRange)
-            {
-
-            }
             isPlayerInRange = false;
             Guard();
         }
@@ -116,13 +119,15 @@ public class EnemyMovement : MonoBehaviour
         AvoidCollision();
         if (targetPlayer.PlayerIsInRangeOfEnemy() == false)
         {
-            transform.position = Vector2.MoveTowards(transform.position, WayPoints[newWayPoint].position, moveSpeed * Time.deltaTime);
-            direction = WayPoints[newWayPoint].position - transform.position.normalized;
+            //transform.position = Vector2.MoveTowards(transform.position, WayPoints[newWayPoint].position, moveSpeed * Time.deltaTime);
+            //direction = WayPoints[newWayPoint].position - transform.position.normalized;
+            agent.SetDestination(WayPoints[newWayPoint].position);
         }
         else
         {
-            transform.position = Vector2.MoveTowards(transform.position, currentTarget, moveSpeed * Time.deltaTime);
-            direction = (currentTarget - (Vector2)transform.position).normalized;
+            //transform.position = Vector2.MoveTowards(transform.position, currentTarget, moveSpeed * Time.deltaTime);
+            //direction = (currentTarget - (Vector2)transform.position).normalized;
+            agent.SetDestination(currentTarget);
         }
 
         _animator.SetFloat("InputX", direction.x);
@@ -131,7 +136,7 @@ public class EnemyMovement : MonoBehaviour
         _toolRotator.RotateTool(false, direction);
 
 
-        if (!isPlayerInRange && Vector2.Distance(transform.position, WayPoints[newWayPoint].position) < 0.1f)
+        if (!isPlayerInRange && agent.remainingDistance < 0.5f && !agent.pathPending)
         {
             isIdle = true;
             idleTimer = Random.Range(waitTimeMin, waitTimeMax);

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
 public class TargetPlayer : MonoBehaviour
 {
@@ -8,7 +9,8 @@ public class TargetPlayer : MonoBehaviour
 
     private EnemyMovement enemyMovement;
     public Transform player;
-    
+    private NavMeshAgent agent;
+
     private WeaponManager _weaponManager;
 
     private bool hasLineOfSight = false;
@@ -17,7 +19,8 @@ public class TargetPlayer : MonoBehaviour
 
     void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform; 
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        agent = GetComponent<NavMeshAgent>();
         enemyMovement = GetComponent<EnemyMovement>();
         _weaponManager = GetComponentInChildren<WeaponManager>();
     }
