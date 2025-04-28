@@ -34,22 +34,21 @@ public class EnemyMovement : MonoBehaviour
 
     private TargetPlayer targetPlayer;
     public Transform collisionObsticle;
+    public Transform enemy;
 
     private float idleTimer = 0f;
     private bool isIdle = false;
 
     void Start()
     {
-        //rb = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
-        //healthbarBehavior = GetComponentInChildren<HealthbarBehavior>();
         targetPlayer = GetComponent<TargetPlayer>();
-        //polygonCollider = GetComponentInChildren<PolygonCollider2D>();
         _toolRotator = GetComponentInChildren<ToolRotator>();
         agent = GetComponent<NavMeshAgent>();
         agent.updateUpAxis = false;
         agent.updateRotation = false;
         collisionObsticle = GameObject.FindGameObjectWithTag("CollisionObsticle").transform;
+        enemy = GameObject.FindGameObjectWithTag("Enemy").transform;
         EnemyStartup();
     }
 
@@ -75,7 +74,7 @@ public class EnemyMovement : MonoBehaviour
     {
         currentTarget = newTarget;
     }
-    
+
     public void Walk()
     {
         if (targetPlayer.PlayerIsInRangeOfEnemy() == false)
