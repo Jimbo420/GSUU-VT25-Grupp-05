@@ -46,7 +46,7 @@ public class TargetPlayer : MonoBehaviour
         if (distance > stopDistance)
         {
             enemyMovement.SetTarget(player.position);
-            //enemyMovement.Walk();
+            enemyMovement.Walk();
         }
         if (!(Time.time >= _nextFireTime)) return;
         _weaponManager.Shoot();

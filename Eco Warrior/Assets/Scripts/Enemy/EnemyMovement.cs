@@ -56,12 +56,6 @@ public class EnemyMovement : MonoBehaviour
     private void EnemyStartup()
     {
         health = maxHealth;
-        //startPosition = transform.position;
-        //startPosition = transform.position;
-        //if (WayPoints.Length > 0)
-        //{
-        //    agent.SetDestination(WayPoints[newWayPoint].position);
-        //}
         NewPosition();
     }
     void Update()
@@ -81,29 +75,23 @@ public class EnemyMovement : MonoBehaviour
     {
         currentTarget = newTarget;
     }
-
     
     public void Walk()
     {
         if (targetPlayer.PlayerIsInRangeOfEnemy() == false)
-        {
-            //transform.position = Vector2.MoveTowards(transform.position, WayPoints[newWayPoint].position, moveSpeed * Time.deltaTime);
-            //direction = WayPoints[newWayPoint].position - transform.position.normalized;
             agent.SetDestination(WayPoints[newWayPoint].position);
-        }
         else
-        {
-            //transform.position = Vector2.MoveTowards(transform.position, currentTarget, moveSpeed * Time.deltaTime);
-            //direction = (currentTarget - (Vector2)transform.position).normalized;
             agent.SetDestination(currentTarget);
-        }
+        EnemyWalkAnimation();
+    }
 
+    private void EnemyWalkAnimation()
+    {
         Vector2 direction = agent.velocity.normalized;
         _animator.SetFloat("InputX", direction.x);
         _animator.SetFloat("InputY", direction.y);
         _animator.SetBool("isWalking", direction.magnitude > 0.1f);
         _toolRotator.RotateTool(false, direction);
-
 
         if (!isPlayerInRange && agent.remainingDistance < 0.5f && !agent.pathPending)
         {
