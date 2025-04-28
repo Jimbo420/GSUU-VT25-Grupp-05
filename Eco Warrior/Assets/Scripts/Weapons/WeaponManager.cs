@@ -10,6 +10,7 @@ public class WeaponManager : MonoBehaviour
     [SerializeField] private Transform _gunHolder;
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] private AudioSource weaponAudioSource;
+    [SerializeField] private AudioSource weaponAudioSource;
 
     public WeaponData CurrentWeapon { get; private set; }
     private ToolRotator _toolRotator;
@@ -45,6 +46,7 @@ public class WeaponManager : MonoBehaviour
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
         rb.AddForce(bullet.transform.up * CurrentWeapon.BulletSpeed, ForceMode2D.Impulse);
         CurrentWeapon.CurrentAmmunition--;
+
 
         if (weaponAudioSource != null && CurrentWeapon.ShotSound != null)
         {

@@ -46,7 +46,7 @@ public class TargetPlayer : MonoBehaviour
             enemyMovement.Walk();
         } 
         if (!(Time.time >= _nextFireTime)) return; 
-        _weaponManager.Shoot();
+        //_weaponManager.Shoot();
         _nextFireTime = Time.time + (1f/_weaponManager.CurrentWeapon.FireRate);
     }
 
