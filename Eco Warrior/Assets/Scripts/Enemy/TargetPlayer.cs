@@ -46,7 +46,7 @@ public class TargetPlayer : MonoBehaviour
         if (distance > stopDistance)
         {
             enemyMovement.SetTarget(player.position);
-            enemyMovement.Walk();
+            //enemyMovement.Walk();
         }
         if (!(Time.time >= _nextFireTime)) return;
         _weaponManager.Shoot();
@@ -64,8 +64,8 @@ public class TargetPlayer : MonoBehaviour
         int layerMask = ~(1 << enemyLayer);
 
         RaycastHit2D hit = Physics2D.Raycast(origin, direction, rangeBetween + 5f, layerMask);
-
-        if (hit.collider != null)
+        //|| hit.collider.gameObject.layer != LayerMask.NameToLayer("Wall")
+        if (hit.collider != null )
         {
             hasLineOfSight = hit.collider.CompareTag("Player");
             //if (hit.collider.CompareTag("Player"))

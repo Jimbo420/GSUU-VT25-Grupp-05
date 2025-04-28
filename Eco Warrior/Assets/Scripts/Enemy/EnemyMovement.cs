@@ -85,7 +85,6 @@ public class EnemyMovement : MonoBehaviour
     
     public void Walk()
     {
-        Vector2 direction = new Vector2();
         if (targetPlayer.PlayerIsInRangeOfEnemy() == false)
         {
             //transform.position = Vector2.MoveTowards(transform.position, WayPoints[newWayPoint].position, moveSpeed * Time.deltaTime);
@@ -99,14 +98,14 @@ public class EnemyMovement : MonoBehaviour
             agent.SetDestination(currentTarget);
         }
 
+        Vector2 direction = agent.velocity.normalized;
         _animator.SetFloat("InputX", direction.x);
         _animator.SetFloat("InputY", direction.y);
-        _animator.SetBool("isWalking", true);
+        _animator.SetBool("isWalking", direction.magnitude > 0.1f);
         _toolRotator.RotateTool(false, direction);
 
-        //&& agent.remainingDistance < 0.5f && !agent.pathPending
 
-        if (Vector2.Distance(transform.position, WayPoints[newWayPoint].position) < 0.1f)
+        if (!isPlayerInRange && agent.remainingDistance < 0.5f && !agent.pathPending)
         {
             isIdle = true;
             idleTimer = Random.Range(waitTimeMin, waitTimeMax);
