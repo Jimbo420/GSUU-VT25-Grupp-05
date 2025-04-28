@@ -1,9 +1,9 @@
 using System.Collections.Generic;
-using System.Linq;
+//using System.Linq;
 using System.Threading;
-using Unity.VisualScripting;
+//using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
+//using UnityEngine.InputSystem;
 using UnityEngine.AI;
 
 public class EnemyMovement : MonoBehaviour
@@ -24,7 +24,7 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float waitTimeMax = 3f;
 
     [SerializeField] public Transform[] WayPoints;
-    private NavMeshAgent agent;
+    public NavMeshAgent agent;
 
     private int wayPointIndex = -1;
 
@@ -47,6 +47,8 @@ public class EnemyMovement : MonoBehaviour
         //polygonCollider = GetComponentInChildren<PolygonCollider2D>();
         _toolRotator = GetComponentInChildren<ToolRotator>();
         agent = GetComponent<NavMeshAgent>();
+        agent.updateUpAxis = false;
+        agent.updateRotation = false;
         collisionObsticle = GameObject.FindGameObjectWithTag("CollisionObsticle").transform;
         EnemyStartup();
     }
@@ -56,10 +58,10 @@ public class EnemyMovement : MonoBehaviour
         health = maxHealth;
         //startPosition = transform.position;
         //startPosition = transform.position;
-        if (WayPoints.Length > 0)
-        {
-            agent.SetDestination(WayPoints[newWayPoint].position);
-        }
+        //if (WayPoints.Length > 0)
+        //{
+        //    agent.SetDestination(WayPoints[newWayPoint].position);
+        //}
         NewPosition();
     }
     void Update()
@@ -80,43 +82,10 @@ public class EnemyMovement : MonoBehaviour
         currentTarget = newTarget;
     }
 
-    void AvoidCollision()
-    {
-        float collisionDistance = Vector2.Distance(transform.position, collisionObsticle.position);
-        if (collisionDistance < 2)
-        {
-            List<Vector2> collisions = new List<Vector2>();
-            for (int i = 0; i < WayPoints.Length; i++)
-            {
-                Vector2 obsticle = WayPoints[i].position;
-                collisions.Add(obsticle);
-            }
-
-            //var hasse = collisions.Where(a => a.);
-
-            //var playersClosestX = targetPlayer.player.position.x;
-            //float maxDistance = 0f;
-            //int bestWaypoint = newWayPoint;
-
-            //for (int i = 0; i < WayPoints.Length; i++)
-            //{
-            //    float distanceToObstacle = Vector2.Distance(WayPoints[i].position, collisionObsticle.position);
-            //    if (distanceToObstacle > maxDistance)
-            //    {
-            //        maxDistance = distanceToObstacle;
-            //        bestWaypoint = i;
-            //    }
-            //}
-            //newWayPoint = bestWaypoint;
-        }
-        else
-            return;
-    }
     
     public void Walk()
     {
         Vector2 direction = new Vector2();
-        AvoidCollision();
         if (targetPlayer.PlayerIsInRangeOfEnemy() == false)
         {
             //transform.position = Vector2.MoveTowards(transform.position, WayPoints[newWayPoint].position, moveSpeed * Time.deltaTime);
@@ -135,8 +104,9 @@ public class EnemyMovement : MonoBehaviour
         _animator.SetBool("isWalking", true);
         _toolRotator.RotateTool(false, direction);
 
+        //&& agent.remainingDistance < 0.5f && !agent.pathPending
 
-        if (!isPlayerInRange && agent.remainingDistance < 0.5f && !agent.pathPending)
+        if (Vector2.Distance(transform.position, WayPoints[newWayPoint].position) < 0.1f)
         {
             isIdle = true;
             idleTimer = Random.Range(waitTimeMin, waitTimeMax);
