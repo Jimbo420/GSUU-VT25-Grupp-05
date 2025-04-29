@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using Assets.Scripts;
 using Unity.VisualScripting;
 using Unity.VisualScripting.InputSystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class Movement : MonoBehaviour
+public class Movement : MonoBehaviour, IPlaySound
 {
     [SerializeField] private float _moveSpeed = 3f;
     [SerializeField] private Transform _firePointTransform;
@@ -36,15 +37,7 @@ public class Movement : MonoBehaviour
 
         if (isWalking)
         {
-            stepTimer += Time.deltaTime;
-            if (stepTimer >= stepInterval)
-            {
-                Debug.Log("Försöker spela fotstegsljud!");
-
-                // Spela ljudet EN gång (PlayOneShot är bättre om du vill kunna spela överlappande ljud)
-                footstepsSource.PlayOneShot(footstepsClip);
-                stepTimer = 0f;
-            }
+            
         }
         else
         {
@@ -55,14 +48,16 @@ public class Movement : MonoBehaviour
 
     public void MoveCharacter(InputAction.CallbackContext context)
     {
+        Play();
+        
         _animator.SetBool("isWalking", true);
-        //If the user no longer gives input
+        
+        //If the user no longer gives input 
         if (context.canceled)
         {
             _animator.SetBool("isWalking", false);
             _animator.SetFloat("LastInputX", _movement.x);
             _animator.SetFloat("LastInputY", _movement.y);
-
         }
         _movement = context.ReadValue<Vector2>();
         _animator.SetFloat("InputX", _movement.x);
@@ -73,6 +68,11 @@ public class Movement : MonoBehaviour
       
     }
 
-   
-
+    public void Play()
+    {
+       //footstepsSource.volume = 2f;
+        footstepsSource.clip = footstepsClip;
+        footstepsSource.Play();
+        footstepsSource.loop = true;
+    }
 }

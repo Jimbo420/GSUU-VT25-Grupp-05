@@ -8285,6 +8285,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 7040950522097966927, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
+    - {fileID: 5900543468621974265, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8540956150595832193, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
       insertIndex: -1
@@ -8494,6 +8495,22 @@ PrefabInstance:
       propertyPath: _ammoText
       value: 
       objectReference: {fileID: 724774681}
+    - target: {fileID: -8910237529088113037, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
+      propertyPath: _reloadAudio
+      value: 
+      objectReference: {fileID: 8300000, guid: d0636815d8062f34bb3f7feb5ef47b67, type: 3}
+    - target: {fileID: -8910237529088113037, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
+      propertyPath: _reloadSource
+      value: 
+      objectReference: {fileID: 1942794899}
+    - target: {fileID: -4408848269928213173, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
+      propertyPath: footstepsClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 07e1735015d2e554b979b994c1083326, type: 3}
+    - target: {fileID: -4408848269928213173, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
+      propertyPath: footstepsSource
+      value: 
+      objectReference: {fileID: 1942794899}
     - target: {fileID: 6037138791799478460, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
       propertyPath: m_Name
       value: GunHolder
@@ -8669,6 +8686,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1712989833}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1942794899 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 9141103611147217711, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
+  m_PrefabInstance: {fileID: 1274364938}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1988456066
 GameObject:
   m_ObjectHideFlags: 0
