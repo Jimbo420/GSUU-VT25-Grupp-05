@@ -35,7 +35,8 @@ public class EnemyMovement : MonoBehaviour
         //healthbarBehavior = GetComponentInChildren<HealthbarBehavior>();
         targetPlayer = GetComponent<TargetPlayer>();
         //polygonCollider = GetComponentInChildren<PolygonCollider2D>();
-        _toolRotator = GetComponentInChildren<ToolRotator>();
+        _toolRotator = GetComponent<ToolRotator>();
+        if(_toolRotator is null) Debug.Log("Tool is null");
         EnemyStartup();
     }
 
@@ -71,6 +72,7 @@ public class EnemyMovement : MonoBehaviour
         _animator.SetFloat("InputX", direction.x);
         _animator.SetFloat("InputY", direction.y);
         _animator.SetBool("isWalking", true);
+         
         _toolRotator.RotateTool( false, direction);
         
 
