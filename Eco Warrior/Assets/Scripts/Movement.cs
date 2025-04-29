@@ -20,10 +20,6 @@ public class Movement : MonoBehaviour
     private Rigidbody2D _rb;
     private Vector2 _movement;
     private Animator _animator;
-
-    // Add a locking flag
-    public bool isLocked = false;
-
     void Start()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -31,16 +27,9 @@ public class Movement : MonoBehaviour
         _toolRotator = GetComponent<ToolRotator>();
     }
 
+    // Update is called once per frame
     void Update()
     {
-        // Prevent movement if locked
-        if (isLocked)
-        {
-            _rb.linearVelocity = Vector2.zero; // Stop the player's velocity
-            return;
-        }
-
-        // Apply movement if not locked
         _rb.linearVelocity = _movement * _moveSpeed;
 
         bool isWalking = _movement != Vector2.zero; 
@@ -66,30 +55,24 @@ public class Movement : MonoBehaviour
 
     public void MoveCharacter(InputAction.CallbackContext context)
     {
-        // Prevent player input if locked
-        if (isLocked)
-        {
-            _movement = Vector2.zero; // Reset movement vector
-            _animator.SetBool("isWalking", false); // Ensure no walking animation
-            return;
-        }
-
         _animator.SetBool("isWalking", true);
-
-        // If the user no longer gives input
+        //If the user no longer gives input
         if (context.canceled)
         {
             _animator.SetBool("isWalking", false);
             _animator.SetFloat("LastInputX", _movement.x);
             _animator.SetFloat("LastInputY", _movement.y);
-        }
 
-        // Process movement input
+        }
         _movement = context.ReadValue<Vector2>();
         _animator.SetFloat("InputX", _movement.x);
         _animator.SetFloat("InputY", _movement.y);
 
-        if (_movement != Vector2.zero)
-            _toolRotator.RotateTool(false, _movement);
+        if (_movement != Vector2.zero) _toolRotator.RotateTool( false, _movement);
+
+      
     }
+
+   
+
 }

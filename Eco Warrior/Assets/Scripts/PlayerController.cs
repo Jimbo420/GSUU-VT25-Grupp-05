@@ -7,9 +7,6 @@ public class PlayerController : MonoBehaviour
     private WeaponManager _weaponManager;
     private float _nextFireTime;
 
-    // Lock state to disable all inputs (movement, shooting, etc.)
-    public bool isLocked = false;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -37,7 +34,6 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (isLocked) return; // Prevent shooting when locked
         if (EventSystem.current.IsPointerOverGameObject() || ItemDragHandler.IsDragging) return;
         if (!Input.GetButton("Fire1") || !(Time.time >= _nextFireTime)) return;
 
