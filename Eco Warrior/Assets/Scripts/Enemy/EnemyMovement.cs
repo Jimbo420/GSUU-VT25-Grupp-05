@@ -8,47 +8,37 @@ using UnityEngine.AI;
 
 public class EnemyMovement : MonoBehaviour
 {
-    //private Rigidbody2D rb;
-    private Animator _animator;
-
-    private HealthbarBehavior healthbarBehavior;
-    private ToolRotator _toolRotator;
-    //[SerializeField] PolygonCollider2D polygonCollider;
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] public float health = 0;
     [SerializeField] public float maxHealth = 25;
-
-    //[SerializeField] private Vector2 patrolCordinates = new Vector2(5f, 7f);
     [SerializeField] private bool isPlayerInRange = false;
     [SerializeField] private float waitTimeMin = 1f;
     [SerializeField] private float waitTimeMax = 3f;
-
     [SerializeField] public Transform[] WayPoints;
-    public NavMeshAgent agent;
 
-    private int wayPointIndex = -1;
-
-    private Vector2 startPosition;
-    private Vector2 currentTarget;
     private int newWayPoint;
+    private float idleTimer = 0f;
+    private bool isIdle = false;
 
+    public NavMeshAgent agent;
+    private Animator _animator;
+    private ToolRotator _toolRotator;
+    private Vector2 currentTarget;
     private TargetPlayer targetPlayer;
     public Transform collisionObsticle;
     public Transform enemy;
 
-    private float idleTimer = 0f;
-    private bool isIdle = false;
 
     void Start()
     {
         _animator = GetComponent<Animator>();
         targetPlayer = GetComponent<TargetPlayer>();
         _toolRotator = GetComponentInChildren<ToolRotator>();
+        collisionObsticle = GameObject.FindGameObjectWithTag("CollisionObsticle").transform;
+        enemy = GameObject.FindGameObjectWithTag("Enemy").transform;
         agent = GetComponent<NavMeshAgent>();
         agent.updateUpAxis = false;
         agent.updateRotation = false;
-        collisionObsticle = GameObject.FindGameObjectWithTag("CollisionObsticle").transform;
-        enemy = GameObject.FindGameObjectWithTag("Enemy").transform;
         EnemyStartup();
     }
 
