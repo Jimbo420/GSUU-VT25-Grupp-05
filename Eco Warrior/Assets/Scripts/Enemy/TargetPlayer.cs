@@ -1,4 +1,5 @@
-using UnityEngine;
+﻿using UnityEngine;
+//using UnityEngine.AI;
 
 public class TargetPlayer : MonoBehaviour
 {
@@ -8,35 +9,37 @@ public class TargetPlayer : MonoBehaviour
 
     private EnemyMovement enemyMovement;
     public Transform player;
-    private WeaponManager _weaponManager;
+    //private NavMeshAgent agent;
 
+    private WeaponManager _weaponManager;
 
     private bool hasLineOfSight = false;
     private float _nextFireTime;
+    private float lostSightTimer = 0f;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-
+        //agent = GetComponent<NavMeshAgent>();
         enemyMovement = GetComponent<EnemyMovement>();
         _weaponManager = GetComponentInChildren<WeaponManager>();
-        
-        //Sprite selectedSprite = _weaponManager.CurrentWeapon.WeaponSprite;
     }
+
     void Update()
     {
-        
+        //if (lostSightTimer > 0)
+        //    lostSightTimer -= Time.deltaTime;
     }
+
     public bool PlayerIsInRangeOfEnemy()
     {
-        if (hasLineOfSight)
-        {
-            float distance = Vector2.Distance(player.position, transform.position); //Calculates the distance between player and enemy
+        float distance = Vector2.Distance(player.position, transform.position);
+        if (hasLineOfSight /*|| lostSightTimer > 0*/)
             return distance <= rangeBetween;
-        }
         else
             return false;
     }
+
     public void EngageTarget()
     {
         distance = Vector2.Distance(transform.position, player.position);
@@ -44,10 +47,10 @@ public class TargetPlayer : MonoBehaviour
         {
             enemyMovement.SetTarget(player.position);
             enemyMovement.Walk();
-        } 
-        if (!(Time.time >= _nextFireTime)) return; 
-        //_weaponManager.Shoot();
-        _nextFireTime = Time.time + (1f/_weaponManager.CurrentWeapon.FireRate);
+        }
+        if (!(Time.time >= _nextFireTime)) return;
+        _weaponManager.Shoot();
+        _nextFireTime = Time.time + (1f / _weaponManager.CurrentWeapon.FireRate);
     }
 
     private void FixedUpdate()
@@ -55,22 +58,33 @@ public class TargetPlayer : MonoBehaviour
         if (player == null) return;
 
         Vector2 origin = transform.position;
-        Vector2 direction = (player.position - this.transform.position).normalized;
+        Vector2 direction = (player.position - transform.position).normalized;
 
         int enemyLayer = LayerMask.NameToLayer("Enemy");
         int layerMask = ~(1 << enemyLayer);
 
-        RaycastHit2D hit = Physics2D.Raycast(origin, direction, rangeBetween+5f, layerMask);
-
-        if (hit.collider != null)
+        RaycastHit2D hit = Physics2D.Raycast(origin, direction, rangeBetween + 5f, layerMask);
+        //|| hit.collider.gameObject.layer != LayerMask.NameToLayer("Wall")
+        if (hit.collider != null )
         {
             hasLineOfSight = hit.collider.CompareTag("Player");
-            //Debug.Log($"LOS: {hasLineOfSight}, Hit: {hit.collider.name}");
+            //if (hit.collider.CompareTag("Player"))
+            //{
+            //    hasLineOfSight = true;
+            //    //lostSightTimer = 0f;
+            //}
+            //else
+            //{
+            //    //if (hasLineOfSight)
+            //        //lostSightTimer = 10;
+            //    hasLineOfSight = false;
+            //}
         }
         else
         {
+            //if (hasLineOfSight)
+                //lostSightTimer = 10f;
             hasLineOfSight = false;
-            //Debug.Log($"LOS: {hasLineOfSight}");
         }
     }
 }
