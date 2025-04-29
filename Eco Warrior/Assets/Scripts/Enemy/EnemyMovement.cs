@@ -33,7 +33,7 @@ public class EnemyMovement : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
         targetPlayer = GetComponent<TargetPlayer>();
-        _toolRotator = GetComponentInChildren<ToolRotator>();
+        _toolRotator = GetComponent<ToolRotator>();
         collisionObsticle = GameObject.FindGameObjectWithTag("CollisionObsticle").transform;
         enemy = GameObject.FindGameObjectWithTag("Enemy").transform;
         agent = GetComponent<NavMeshAgent>();
@@ -80,7 +80,7 @@ public class EnemyMovement : MonoBehaviour
         _animator.SetFloat("InputX", direction.x);
         _animator.SetFloat("InputY", direction.y);
         _animator.SetBool("isWalking", direction.magnitude > 0.1f);
-        _toolRotator.RotateTool(false, direction);
+        //_toolRotator.RotateTool(false, direction);
 
         if (!isPlayerInRange && agent.remainingDistance < 0.5f && !agent.pathPending)
         {
