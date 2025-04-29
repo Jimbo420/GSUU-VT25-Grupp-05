@@ -1,49 +1,50 @@
+using System.Collections.Generic;
+//using System.Linq;
 using System.Threading;
-using Unity.VisualScripting;
+//using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
+//using UnityEngine.InputSystem;
+using UnityEngine.AI;
 
 public class EnemyMovement : MonoBehaviour
 {
-    //private Rigidbody2D rb;
-    private Animator _animator;
-
-    private HealthbarBehavior healthbarBehavior;
-    private ToolRotator _toolRotator;
-    //[SerializeField] PolygonCollider2D polygonCollider;
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] public float health = 0;
     [SerializeField] public float maxHealth = 25;
-
-    [SerializeField] private Vector2 patrolCordinates = new Vector2(5f, 7f);
     [SerializeField] private bool isPlayerInRange = false;
     [SerializeField] private float waitTimeMin = 1f;
     [SerializeField] private float waitTimeMax = 3f;
+    [SerializeField] public Transform[] WayPoints;
 
-    private Vector2 startPosition;
-    private Vector2 currentTarget;
-
-    private TargetPlayer targetPlayer;
-
+    private int newWayPoint;
     private float idleTimer = 0f;
     private bool isIdle = false;
 
+    public NavMeshAgent agent;
+    private Animator _animator;
+    private ToolRotator _toolRotator;
+    private Vector2 currentTarget;
+    private TargetPlayer targetPlayer;
+    public Transform collisionObsticle;
+    public Transform enemy;
+
+
     void Start()
     {
-        //rb = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
-        //healthbarBehavior = GetComponentInChildren<HealthbarBehavior>();
         targetPlayer = GetComponent<TargetPlayer>();
-        //polygonCollider = GetComponentInChildren<PolygonCollider2D>();
-        _toolRotator = GetComponent<ToolRotator>();
-        if(_toolRotator is null) Debug.Log("Tool is null");
+        _toolRotator = GetComponentInChildren<ToolRotator>();
+        collisionObsticle = GameObject.FindGameObjectWithTag("CollisionObsticle").transform;
+        enemy = GameObject.FindGameObjectWithTag("Enemy").transform;
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateUpAxis = false;
+        agent.updateRotation = false;
         EnemyStartup();
     }
 
     private void EnemyStartup()
     {
         health = maxHealth;
-        startPosition = transform.position;
         NewPosition();
     }
     void Update()
@@ -63,20 +64,25 @@ public class EnemyMovement : MonoBehaviour
     {
         currentTarget = newTarget;
     }
-    
+
     public void Walk()
     {
-        transform.position = Vector2.MoveTowards(transform.position, currentTarget, moveSpeed * Time.deltaTime);
+        if (targetPlayer.PlayerIsInRangeOfEnemy() == false)
+            agent.SetDestination(WayPoints[newWayPoint].position);
+        else
+            agent.SetDestination(currentTarget);
+        EnemyWalkAnimation();
+    }
 
-        Vector2 direction = (currentTarget - (Vector2)transform.position).normalized;
+    private void EnemyWalkAnimation()
+    {
+        Vector2 direction = agent.velocity.normalized;
         _animator.SetFloat("InputX", direction.x);
         _animator.SetFloat("InputY", direction.y);
-        _animator.SetBool("isWalking", true);
-         
-        _toolRotator.RotateTool( false, direction);
-        
+        _animator.SetBool("isWalking", direction.magnitude > 0.1f);
+        _toolRotator.RotateTool(false, direction);
 
-        if (!isPlayerInRange && Vector2.Distance(transform.position, currentTarget) < 0.1f)
+        if (!isPlayerInRange && agent.remainingDistance < 0.5f && !agent.pathPending)
         {
             isIdle = true;
             idleTimer = Random.Range(waitTimeMin, waitTimeMax);
@@ -85,9 +91,9 @@ public class EnemyMovement : MonoBehaviour
 
     private void NewPosition()
     {
-        float x = Random.Range(-patrolCordinates.x / 2f, patrolCordinates.x / 2f);
-        float y = Random.Range(-patrolCordinates.y / 2f, patrolCordinates.y / 2f);
-        currentTarget = startPosition + new Vector2(x, y);
+        var tempWaypoints = Random.Range(0, WayPoints.Length);
+        if (newWayPoint != tempWaypoints)
+            newWayPoint = tempWaypoints;
     }
 
     private void Guard()
