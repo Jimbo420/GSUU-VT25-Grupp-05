@@ -10,6 +10,7 @@ public class WeaponManager : MonoBehaviour
     [SerializeField] private WeaponData[] _availableWeapons;
     [SerializeField] private Transform _gunHolder;
     private InventoryController _inventoryController;
+    [SerializeField] private AudioSource weaponAudioSource;
 
     public WeaponData CurrentWeapon { get; private set; }
    
