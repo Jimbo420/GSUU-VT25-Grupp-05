@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using TreeEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering.Universal;
 
 public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -39,7 +41,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
     {
         _canvasGroup.blocksRaycasts = true; //You can click on it again
         _canvasGroup.alpha = 1f; //No longer transparent
-        Slot dropSlot = eventData.pointerEnter?.GetComponent<Slot>();
+        Slot dropSlot = eventData.pointerEnter?.GetComponentInParent<Slot>();
         Slot originalSlot = _originalParent.GetComponent<Slot>();
         if (dropSlot != null)
         {
@@ -60,6 +62,7 @@ public class ItemDragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, I
         }
         else
         {
+            Debug.Log("No slot detected");
             transform.SetParent(_originalParent);
         }
         GetComponent<RectTransform>().anchoredPosition = Vector2.zero; //Centers in the slot

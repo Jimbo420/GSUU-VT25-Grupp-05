@@ -12,7 +12,11 @@ public class Movement : MonoBehaviour
     [SerializeField] private ToolRotator _toolRotator;
     [SerializeField] private Slider _healthbar;
     [SerializeField] private float moveSpeed = 2f;
+    [SerializeField] private AudioSource footstepsSource;
+    [SerializeField] private AudioClip footstepsClip;
+    [SerializeField] private float stepInterval = 0.4f;
 
+    private float stepTimer = 0f;
     private Rigidbody2D _rb;
     private Vector2 _movement;
     private Animator _animator;
@@ -38,6 +42,26 @@ public class Movement : MonoBehaviour
 
         // Apply movement if not locked
         _rb.linearVelocity = _movement * _moveSpeed;
+
+        bool isWalking = _movement != Vector2.zero; 
+
+        if (isWalking)
+        {
+            stepTimer += Time.deltaTime;
+            if (stepTimer >= stepInterval)
+            {
+                Debug.Log("Försöker spela fotstegsljud!");
+
+                // Spela ljudet EN gång (PlayOneShot är bättre om du vill kunna spela överlappande ljud)
+                footstepsSource.PlayOneShot(footstepsClip);
+                stepTimer = 0f;
+            }
+        }
+        else
+        {
+            stepTimer = stepInterval; // Gör så att nästa gång du börjar gå spelas ljudet direkt
+        }
+
     }
 
     public void MoveCharacter(InputAction.CallbackContext context)
