@@ -182,6 +182,7 @@ public class BossEncounter : MonoBehaviour
             movement.moveSpeed *= 1.5f;
             attack.attackDamage *= 2f;
             transform.localScale *= 1.2f; // Increase size by 20%
+            spawner.SpawnGasolineTank();
         }
         else if (phaseIndex == 2)
         {
@@ -189,8 +190,6 @@ public class BossEncounter : MonoBehaviour
             movement.moveSpeed *= 1.75f;
             attack.attackDamage *= 2.5f;
             transform.localScale *= 1.3f; // Increase size by 30%
-
-            // Spawn enemies at all enemy spawn points
             spawner.SpawnEnemiesAtAllPoints();
         }
     }
@@ -297,6 +296,14 @@ public class BossEncounter : MonoBehaviour
 
             while (elapsedTime < chargeDuration)
             {
+                // Perform a raycast to detect obstacles
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, chargeDirection, chargeSpeed * Time.deltaTime, LayerMask.GetMask("Walls"));
+                if (hit.collider != null)
+                {
+                    Debug.Log($"Charge stopped due to collision with {hit.collider.name}");
+                    break; // Stop the charge if a wall is detected
+                }
+
                 // Move Gus toward the player
                 transform.position += (Vector3)(chargeDirection * chargeSpeed * Time.deltaTime);
                 elapsedTime += Time.deltaTime;

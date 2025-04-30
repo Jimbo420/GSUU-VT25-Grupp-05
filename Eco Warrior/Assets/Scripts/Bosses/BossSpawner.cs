@@ -56,7 +56,7 @@ public class BossSpawner : MonoBehaviour
         }
     }
 
-    private void SpawnGasolineTank()
+    public void SpawnGasolineTank()
     {
         if (gasolineTankPrefab == null || gasolineTankSpawnPoints.Length == 0)
         {

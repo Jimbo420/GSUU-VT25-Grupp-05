@@ -2,7 +2,10 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    private float maxDistance = 20f; // Maximum distance the bullet can travel
+    [Header("Bullet Settings")]
+    [SerializeField] private float maxDistance = 20f; // Maximum distance the bullet can travel
+    [SerializeField] private LayerMask damageableLayers; // Layers the bullet can damage
+
     private Vector3 _startPosition;
     private float _damage;
     private GameObject _shooter;
@@ -19,7 +22,14 @@ public class Bullet : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject == _shooter) return; // Ignore the shooter
+        // Ignore the shooter
+        if (other.gameObject == _shooter) return;
+
+        // Ignore objects not on the damageable layers
+        if ((damageableLayers.value & (1 << other.gameObject.layer)) == 0)
+        {
+            return;
+        }
 
         // Check if the target implements IDamageable
         IDamageable damageable = other.GetComponent<IDamageable>();
@@ -51,6 +61,7 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
+        // Destroy the bullet if it exceeds its maximum travel distance
         float distanceTravelled = Vector3.Distance(_startPosition, transform.position);
         if (distanceTravelled >= maxDistance)
         {
@@ -58,7 +69,3 @@ public class Bullet : MonoBehaviour
         }
     }
 }
-
-
-
-

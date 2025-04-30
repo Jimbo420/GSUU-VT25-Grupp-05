@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 109035146}
   - component: {fileID: 109035145}
   - component: {fileID: 109035144}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -361,7 +361,7 @@ GameObject:
   - component: {fileID: 148652030}
   - component: {fileID: 148652029}
   - component: {fileID: 148652028}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Square (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -730,7 +730,7 @@ GameObject:
   - component: {fileID: 442402476}
   - component: {fileID: 442402475}
   - component: {fileID: 442402474}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Square (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1217,7 +1217,7 @@ GameObject:
   - component: {fileID: 828572418}
   - component: {fileID: 828572417}
   - component: {fileID: 828572416}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Square (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1594,7 +1594,7 @@ GameObject:
   - component: {fileID: 1358366876}
   - component: {fileID: 1358366878}
   - component: {fileID: 1358366877}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Square (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1943,7 +1943,7 @@ GameObject:
   - component: {fileID: 1752827634}
   - component: {fileID: 1752827633}
   - component: {fileID: 1752827632}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Square (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2077,7 +2077,7 @@ GameObject:
   - component: {fileID: 1796326201}
   - component: {fileID: 1796326203}
   - component: {fileID: 1796326202}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Square (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2355,6 +2355,14 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 88696091}
+    - target: {fileID: 2130014385957467140, guid: 4cbe5c0ba5eff9e4aa0efd715157397f, type: 3}
+      propertyPath: attackDamage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2130014385957467140, guid: 4cbe5c0ba5eff9e4aa0efd715157397f, type: 3}
+      propertyPath: knockbackForce
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 3419262687199279930, guid: 4cbe5c0ba5eff9e4aa0efd715157397f, type: 3}
       propertyPath: 'enemySpawnPoints.Array.data[0]'
       value: 
