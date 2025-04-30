@@ -67,10 +67,15 @@ public class EnemyMovement : MonoBehaviour
 
     public void Walk()
     {
+        if(agent is null) Debug.Log("Target Player is null");
         if (targetPlayer.PlayerIsInRangeOfEnemy() == false)
+        {
             agent.SetDestination(WayPoints[newWayPoint].position);
+        }
         else
+        {
             agent.SetDestination(currentTarget);
+        }
         EnemyWalkAnimation();
     }
 

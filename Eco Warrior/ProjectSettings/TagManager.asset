@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - Key
   - CollisionObsticle
+  - Floor
   layers:
   - Default
   - TransparentFX
