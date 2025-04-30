@@ -39,6 +39,7 @@ public class HealthbarBehavior : MonoBehaviour
     public void HitDamage(float damage, GameObject entity)
     {
         _health -= damage;
+        Debug.Log("Damage: " + damage);
         Health(_health, _maxHealth);
         if (_health <= 0)
             Destroy(entity);
