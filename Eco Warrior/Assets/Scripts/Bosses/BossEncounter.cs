@@ -26,6 +26,10 @@ public class BossEncounter : MonoBehaviour
     public float chargeDistance = 10f;
     public float chargeSpeed = 36f;
 
+    [Header("Audio Settings")]
+    [Tooltip("Audio clip for the special attack sound.")]
+    [SerializeField] private AudioClip specialAttackClip; // AudioClip for the special attack sound
+
     [Header("First Encounter Settings")]
     [Tooltip("Initial dialogue message for the first encounter.")]
     public string firstEncounterMessage = "So you're the one who's been meddling in my factory! You will pay dearly for this!";
@@ -282,6 +286,12 @@ public class BossEncounter : MonoBehaviour
         for (int i = 0; i < specialAttackIterations; i++)
         {
             Debug.Log($"Special attack iteration {i + 1}/{specialAttackIterations}");
+
+            // Play the special attack sound at the start of each charge
+            if (movement.footstepAudioSource != null && specialAttackClip != null)
+            {
+                movement.footstepAudioSource.PlayOneShot(specialAttackClip);
+            }
 
             // Calculate the charge direction toward the player
             Vector2 chargeDirection = (player.position - transform.position).normalized;

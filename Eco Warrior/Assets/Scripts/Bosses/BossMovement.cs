@@ -12,7 +12,7 @@ public class BossMovement : MonoBehaviour
     private float originalMoveSpeed; // To store the default move speed
 
     [Header("Footstep Settings")]
-    [SerializeField] private AudioSource footstepAudioSource; // AudioSource for footstep sounds
+    [SerializeField] public AudioSource footstepAudioSource; // AudioSource for footstep sounds
     [SerializeField] private AudioClip[] footstepClips; // Array of footstep sound effects
     [SerializeField] private float footstepInterval = 0.5f; // Time between footsteps
 
