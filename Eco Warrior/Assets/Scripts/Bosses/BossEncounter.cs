@@ -35,7 +35,6 @@ public class BossEncounter : MonoBehaviour
     private BossHealth health;
     private BossMovement movement;
     private BossSpawner spawner;
-    private Animator animator;
 
     private bool[] phaseTriggered;
     private bool isEncounterActive = false;
@@ -51,7 +50,6 @@ public class BossEncounter : MonoBehaviour
         health = GetComponent<BossHealth>();
         movement = GetComponent<BossMovement>();
         spawner = GetComponent<BossSpawner>();
-        animator = GetComponent<Animator>();
 
         // Initialize phase tracking
         phaseTriggered = new bool[phases.Length];
