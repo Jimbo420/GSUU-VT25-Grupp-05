@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - Key
   - GasolineTank
+  - CollisionObsticle
+  - Floor
   layers:
   - Default
   - TransparentFX
@@ -20,6 +22,10 @@ TagManager:
   - Triggers
   - Bullet
   - Walls
+  - Wall
+  - Floor
+  - 
+  - 
   - 
   - 
   - 

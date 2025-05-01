@@ -119,17 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &301997003 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4722220800096293833, guid: c730b63fd51a0074e97c57624b19a444, type: 3}
-  m_PrefabInstance: {fileID: 5490591510000210726}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &808936866
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -404,10 +393,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 5876749510781678322, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
-      propertyPath: _ammoText
-      value: 
-      objectReference: {fileID: 301997003}
     - target: {fileID: 7317319118178472923, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

@@ -1,6 +1,7 @@
+using Assets.Scripts;
 using UnityEngine;
 
-public class WeaponShooter : MonoBehaviour
+public class WeaponShooter : MonoBehaviour, IPlaySound
 {
 
     private WeaponManager _weaponManager;
@@ -8,6 +9,9 @@ public class WeaponShooter : MonoBehaviour
     private Transform _firePoint;
     private WeaponVisuals _weaponVisuals;
     private ToolRotator _toolRotator;
+    [SerializeField] private AudioSource footstepsSource;
+    [SerializeField] private AudioClip footstepsClip;
+   
 
     void Awake()
     {
@@ -39,11 +43,19 @@ public class WeaponShooter : MonoBehaviour
         rb.AddForce(bullet.transform.up * _weaponManager.CurrentWeapon.BulletSpeed, ForceMode2D.Impulse);
         _weaponManager.CurrentWeapon.CurrentAmmunition--;
         this.GetComponent<WeaponUI>().UpdateAmmunition();
+        Play();
     }
 
     public void ReloadAllWeapons(WeaponData[] weapons)
     {
         foreach (var weapon in weapons)
             weapon.CurrentAmmunition = weapon.MaxAmmunition;
+    }
+
+    public void Play()
+    {
+        footstepsSource.volume = 0.05f;
+
+        footstepsSource.PlayOneShot(footstepsClip);
     }
 }

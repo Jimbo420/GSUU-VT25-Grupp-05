@@ -23,6 +23,18 @@ public class WeaponManager : MonoBehaviour
         GetComponent<WeaponShooter>().ReloadAllWeapons(_availableWeapons);
     }
 
+    //TODO Move to Player Controller
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            GetComponent<WeaponUI>().Play();
+            GetComponent<WeaponShooter>().ReloadAllWeapons(_availableWeapons);
+            GetComponent<WeaponUI>().UpdateAmmunition();
+
+        }
+    }
+
     public void EquipWeapon(int index)
     {
         List<Slot> slots = _inventoryController.GetSlots();
