@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BossEncounter : MonoBehaviour
@@ -12,23 +13,12 @@ public class BossEncounter : MonoBehaviour
     public Transform player;
 
     [Header("Phase Settings")]
-    [Tooltip("Health thresholds for each phase (in percentage).")]
-    public float[] phaseThresholds = { 0.75f, 0.5f, 0.25f };
-    [Tooltip("Messages for each phase.")]
-    public string[] phaseMessages = {
-        "Get out of my factory!",
-        "Now I'm getting mad! More gasoline!",
-        "ARGHHHHH! BACKUP! I NEED BACKUP!"
-    };
+    [Tooltip("Phases for the boss encounter.")]
+    public BossPhase[] phases; // Array of BossPhase ScriptableObjects
 
     [Header("Special Attack Settings")]
-    public int specialAttackIterations = 3;
-    public float chargeDistance = 10f;
-    public float chargeSpeed = 36f;
-
-    [Header("Audio Settings")]
-    [Tooltip("Audio clip for the special attack sound.")]
-    [SerializeField] private AudioClip specialAttackClip; // AudioClip for the special attack sound
+    [Tooltip("Special attack for the boss.")]
+    public BossSpecialAttack specialAttack;
 
     [Header("First Encounter Settings")]
     [Tooltip("Initial dialogue message for the first encounter.")]
@@ -42,34 +32,29 @@ public class BossEncounter : MonoBehaviour
     [Tooltip("Parent transform for the chat bubble.")]
     public Transform chatBubbleParent;
 
-    [Header("Fire Trail Settings")]
-    [Tooltip("Prefab for the fire trail.")]
-    public GameObject fireTrailPrefab;
-
     private BossHealth health;
     private BossMovement movement;
-    private BossAttack attack;
     private BossSpawner spawner;
     private Animator animator;
 
     private bool[] phaseTriggered;
-    private bool isSpecialAttackActive = false;
-    public bool isEncounterActive = false;
+    private bool isEncounterActive = false;
     private bool isFirstEncounterComplete = false;
-    private float lastSpecialAttackTime;
     private GameObject activeChatBubble;
+
+    // Public read-only property to expose isEncounterActive
+    public bool IsEncounterActive => isEncounterActive;
 
     void Awake()
     {
         // Get references to other components
         health = GetComponent<BossHealth>();
         movement = GetComponent<BossMovement>();
-        attack = GetComponent<BossAttack>();
         spawner = GetComponent<BossSpawner>();
         animator = GetComponent<Animator>();
 
         // Initialize phase tracking
-        phaseTriggered = new bool[phaseThresholds.Length];
+        phaseTriggered = new bool[phases.Length];
     }
 
     void Update()
@@ -94,10 +79,9 @@ public class BossEncounter : MonoBehaviour
 
     private IEnumerator FirstEncounterRoutine()
     {
-        // Lock movement and attacks during the first encounter dialogue
+        // Lock movement during the first encounter dialogue
         Debug.Log("First encounter started.");
-        movement.enabled = false; // Disable movement logic
-        attack.enabled = false; // Disable attacks
+        movement.enabled = false;
 
         // Display the first encounter dialogue using a chat bubble
         ShowChatBubble(firstEncounterMessage);
@@ -108,15 +92,91 @@ public class BossEncounter : MonoBehaviour
         // Remove the chat bubble
         HideChatBubble();
 
-        // Unlock movement and attacks
-        movement.enabled = true; // Enable movement logic
-        attack.enabled = true; // Enable attacks
+        // Unlock movement
+        movement.enabled = true;
 
-        // Start spawning gasoline tanks
-        spawner.StartSpawning();
+        // Start spawning gasoline tanks (if applicable)
+        if (spawner != null)
+        {
+            spawner.StartSpawningAtDefaultPoints(spawner.defaultPrefab, spawner.defaultSpawnInterval);
+        }
 
         isFirstEncounterComplete = true;
         Debug.Log("First encounter completed. Boss is now active.");
+    }
+
+    private void HandlePhases()
+    {
+        float currentHealthPercentage = health.currentHealth / health.maxHealth;
+
+        for (int i = 0; i < phases.Length; i++)
+        {
+            if (!phaseTriggered[i] && currentHealthPercentage <= phases[i].healthThreshold)
+            {
+                TriggerPhase(i);
+            }
+        }
+    }
+
+    private void TriggerPhase(int phaseIndex)
+    {
+        BossPhase phase = phases[phaseIndex];
+        Debug.Log($"Phase {phaseIndex + 1} triggered: {phase.phaseMessage}");
+        phaseTriggered[phaseIndex] = true;
+
+        // Display the phase message in a chat bubble
+        ShowChatBubble(phase.phaseMessage);
+
+        // Apply modifiers
+        foreach (var modifier in phase.modifiers)
+        {
+            ApplyModifier(modifier);
+        }
+
+        // Trigger phase start events
+        phase.onPhaseStart?.Invoke();
+
+        // Handle spawning
+        if (phase.spawnPrefab != null)
+        {
+            switch (phase.spawnPointType)
+            {
+                case BossPhase.SpawnPointType.Default:
+                    spawner.SpawnAtDefaultPoints(phase.spawnPrefab, phase.useAllSpawnPoints, phase.spawnQuantity);
+                    break;
+
+                case BossPhase.SpawnPointType.Special:
+                    spawner.SpawnAtSpecialPoints(phase.spawnPrefab, phase.useAllSpawnPoints, phase.spawnQuantity);
+                    break;
+
+                case BossPhase.SpawnPointType.Custom:
+                    if (phase.customSpawnPoints != null && phase.customSpawnPoints.Length > 0)
+                    {
+                        spawner.StartSpawning(phase.spawnPrefab, spawner.defaultSpawnInterval, new List<Transform>(phase.customSpawnPoints));
+                    }
+                    else
+                    {
+                        Debug.LogWarning("No custom spawn points defined for this phase.");
+                    }
+                    break;
+            }
+        }
+    }
+
+    private void ApplyModifier(Modifier modifier)
+    {
+        switch (modifier.key)
+        {
+            case "MoveSpeed":
+                movement.moveSpeed *= modifier.value;
+                break;
+            case "Size":
+                transform.localScale *= modifier.value;
+                break;
+            default:
+                Debug.LogWarning($"Unknown modifier key: {modifier.key}");
+                break;
+        }
     }
 
     private void ShowChatBubble(string message)
@@ -145,219 +205,15 @@ public class BossEncounter : MonoBehaviour
         }
     }
 
-    private void HandlePhases()
+    public void TriggerSpecialAttack()
     {
-        float currentHealthPercentage = health.currentHealth / health.maxHealth;
-
-        for (int i = 0; i < phaseThresholds.Length; i++)
+        if (specialAttack != null)
         {
-            if (!phaseTriggered[i] && currentHealthPercentage <= phaseThresholds[i])
-            {
-                TriggerPhase(i);
-            }
-        }
-
-        // Prioritize gasoline tanks if available
-        if (isFirstEncounterComplete && !isSpecialAttackActive)
-        {
-            MoveToGasolineTank();
-        }
-    }
-
-    private void TriggerPhase(int phaseIndex)
-    {
-        Debug.Log($"Phase {phaseIndex + 1} triggered: {phaseMessages[phaseIndex]}");
-        phaseTriggered[phaseIndex] = true;
-
-        // Display the phase message in a chat bubble
-        ShowChatBubble(phaseMessages[phaseIndex]);
-
-        // Adjust behavior based on the phase
-        if (phaseIndex == 0)
-        {
-            // Phase 1: Slightly faster and slightly larger
-            movement.moveSpeed *= 1.25f;
-            attack.attackDamage *= 1.5f;
-            transform.localScale *= 1.1f; // Increase size by 10%
-        }
-        else if (phaseIndex == 1)
-        {
-            // Phase 2: Faster and more powerful
-            movement.moveSpeed *= 1.5f;
-            attack.attackDamage *= 2f;
-            transform.localScale *= 1.2f; // Increase size by 20%
-            spawner.SpawnGasolineTank();
-        }
-        else if (phaseIndex == 2)
-        {
-            // Phase 3: Even faster and even more powerful
-            movement.moveSpeed *= 1.75f;
-            attack.attackDamage *= 2.5f;
-            transform.localScale *= 1.3f; // Increase size by 30%
-            spawner.SpawnEnemiesAtAllPoints();
-        }
-    }
-
-    private GameObject FindClosestGasolineTank()
-    {
-        GameObject[] tanks = GameObject.FindGameObjectsWithTag("GasolineTank");
-        GameObject closestTank = null;
-        float minDistance = Mathf.Infinity;
-
-        foreach (GameObject tank in tanks)
-        {
-            float distance = Vector2.Distance(transform.position, tank.transform.position);
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                closestTank = tank;
-            }
-        }
-
-        return closestTank;
-    }
-
-    private void MoveToGasolineTank()
-    {
-        GameObject closestTank = FindClosestGasolineTank();
-
-        if (closestTank != null)
-        {
-            // Set the gasoline tank as the target
-            movement.target = closestTank.transform;
-
-            // Temporarily increase the movement speed for gasoline tank movement
-            movement.SetTemporaryMoveSpeed(movement.gasTankMoveSpeed);
-
-            // Check if Gus is close enough to consume the tank
-            if (Vector2.Distance(transform.position, closestTank.transform.position) < 1f)
-            {
-                ConsumeGasolineTank(closestTank);
-                movement.ResetMoveSpeed(); // Reset the movement speed after consuming the tank
-            }
+            specialAttack.Execute();
         }
         else
         {
-            // No gasoline tank available, switch back to chasing the player
-            if (player != null)
-            {
-                Debug.Log("No gasoline tank found. Switching to chasing the player.");
-                movement.target = player; // Default to chasing the player
-                movement.ResetMoveSpeed(); // Reset the movement speed
-            }
-            else
-            {
-                Debug.LogWarning("Player reference is not assigned. Gus has no valid target.");
-            }
+            Debug.LogWarning("No special attack assigned to the boss.");
         }
-    }
-
-    private void ConsumeGasolineTank(GameObject tank)
-    {
-        if (tank != null)
-        {
-            Destroy(tank);
-            Debug.Log("Gasoline tank consumed. Triggering special attack.");
-            StartSpecialAttack(); // Trigger the special attack after consuming the tank
-        }
-
-        // Reset target to the player after consuming the tank
-        movement.target = health.transform;
-    }
-
-    private void StartSpecialAttack()
-    {
-        if (isSpecialAttackActive)
-            return;
-
-        Debug.Log("Starting special attack!");
-
-        // Disable normal attacks and collider during the special attack
-        attack.enabled = false;
-        GetComponent<Collider2D>().enabled = false;
-
-        StartCoroutine(SpecialAttackRoutine());
-    }
-
-    private IEnumerator SpecialAttackRoutine()
-    {
-        isSpecialAttackActive = true;
-
-        for (int i = 0; i < specialAttackIterations; i++)
-        {
-            Debug.Log($"Special attack iteration {i + 1}/{specialAttackIterations}");
-
-            // Play the special attack sound at the start of each charge
-            if (movement.footstepAudioSource != null && specialAttackClip != null)
-            {
-                movement.footstepAudioSource.PlayOneShot(specialAttackClip);
-            }
-
-            // Calculate the charge direction toward the player
-            Vector2 chargeDirection = (player.position - transform.position).normalized;
-
-            // Ensure the animator reflects the charge direction
-            animator.SetFloat("IdleX", Mathf.Round(chargeDirection.x));
-            animator.SetFloat("IdleY", Mathf.Round(chargeDirection.y));
-            animator.SetFloat("Speed", chargeSpeed);
-
-            float elapsedTime = 0f;
-            float chargeDuration = chargeDistance / chargeSpeed; // Time to cover the charge distance
-
-            while (elapsedTime < chargeDuration)
-            {
-                // Perform a raycast to detect obstacles
-                RaycastHit2D hit = Physics2D.Raycast(transform.position, chargeDirection, chargeSpeed * Time.deltaTime, LayerMask.GetMask("Walls"));
-                if (hit.collider != null)
-                {
-                    Debug.Log($"Charge stopped due to collision with {hit.collider.name}");
-                    break; // Stop the charge if a wall is detected
-                }
-
-                // Move Gus toward the player
-                transform.position += (Vector3)(chargeDirection * chargeSpeed * Time.deltaTime);
-                elapsedTime += Time.deltaTime;
-
-                // Spawn fire trails at intervals
-                if (elapsedTime % 0.02f < Time.deltaTime) // Adjust interval as needed
-                {
-                    SpawnFireTrail(transform.position);
-                }
-
-                yield return null;
-            }
-
-            // Pause briefly between iterations
-            yield return new WaitForSeconds(1f);
-        }
-
-        isSpecialAttackActive = false;
-
-        // Re-enable normal attacks and collider after the special attack
-        attack.enabled = true;
-        GetComponent<Collider2D>().enabled = true;
-
-        Debug.Log("Special attack completed.");
-    }
-
-    private void SpawnFireTrail(Vector3 position)
-    {
-        if (fireTrailPrefab == null)
-        {
-            Debug.LogWarning("Fire trail prefab is not assigned.");
-            return;
-        }
-
-        GameObject fireInstance = Instantiate(fireTrailPrefab, position, Quaternion.identity);
-
-        // Randomize scale
-        float randomScale = Random.Range(3f, 5f);
-        fireInstance.transform.localScale = new Vector3(randomScale, randomScale, 1f);
-
-        // Randomize rotation
-        float randomRotation = Random.Range(-50f, 50f);
-        fireInstance.transform.rotation = Quaternion.Euler(0f, 0f, randomRotation);
-
-        Destroy(fireInstance, 8f); // Destroy fire trail after 8 seconds
     }
 }

@@ -3,78 +3,107 @@ using UnityEngine;
 public class BossMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float moveSpeed = 1f;
-    public float gasTankMoveSpeed = 6f;
+    public float moveSpeed = 1f; // Base movement speed
+    public Transform target;    // Current movement target
 
-    public Transform target;
     private Animator animator;
-
-    private float originalMoveSpeed; // To store the default move speed
+    private float originalMoveSpeed;
+    private float temporarySpeedModifier = 1f; // Temporary speed multiplier
 
     [Header("Footstep Settings")]
-    [SerializeField] public AudioSource footstepAudioSource; // AudioSource for footstep sounds
-    [SerializeField] private AudioClip[] footstepClips; // Array of footstep sound effects
-    [SerializeField] private float footstepInterval = 0.5f; // Time between footsteps
+    public AudioSource footstepAudioSource;
+    [SerializeField] private AudioClip[] footstepClips;
+    [SerializeField] private float footstepInterval = 0.5f;
 
-    private float footstepTimer = 0f; // Timer to track footstep intervals
+    private float footstepTimer = 0f;
 
     public void Initialize(Transform player, Animator bossAnimator)
     {
         target = player;
         animator = bossAnimator;
-        originalMoveSpeed = moveSpeed; // Store the default move speed
+        originalMoveSpeed = moveSpeed;
     }
 
     public void HandleMovement()
     {
-        if (target == null) return;
+        if (target == null)
+            return;
 
-        Vector2 direction = (target.position - transform.position).normalized;
-        transform.position = Vector2.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
+        // Calculate the direction to the target
+        Vector3 direction = (target.position - transform.position).normalized;
 
-        // Update animator
-        if (animator != null)
-        {
-            animator.SetFloat("IdleX", Mathf.Round(direction.x));
-            animator.SetFloat("IdleY", Mathf.Round(direction.y));
-            animator.SetFloat("Speed", moveSpeed);
-        }
+        // Gradually move toward the target using the temporary speed modifier
+        float adjustedSpeed = originalMoveSpeed * temporarySpeedModifier;
+        transform.position = Vector3.MoveTowards(transform.position, target.position, adjustedSpeed * Time.deltaTime);
 
-        // Dynamically adjust the footstep interval based on movement speed
-        float dynamicFootstepInterval = Mathf.Clamp(1f / moveSpeed, 0.2f, 1f); // Adjust range as needed
+        // Update facing direction and animation
+        UpdateFacingDirection(direction);
+        UpdateAnimation(direction);
 
-        // Play footstep sounds at regular intervals
-        if (moveSpeed > 0) // Only play footsteps if Gus is moving
-        {
-            footstepTimer -= Time.deltaTime;
-            if (footstepTimer <= 0f)
-            {
-                PlayFootstepSound();
-                footstepTimer = dynamicFootstepInterval; // Reset the timer with the dynamic interval
-            }
-        }
+        // Handle footsteps
+        PlayFootstepSound();
     }
 
-    // Temporarily override the movement speed (e.g., for gasoline tank movement)
-    public void SetTemporaryMoveSpeed(float newSpeed)
+    public void SetTemporaryMoveSpeed(float multiplier)
     {
-        moveSpeed = newSpeed;
+        // Cap the multiplier to prevent extreme values
+        temporarySpeedModifier = Mathf.Clamp(multiplier, 0.5f, 3f);
+        Debug.Log($"[BossMovement] Setting temporary speed modifier. Multiplier: {temporarySpeedModifier}, Adjusted Speed: {originalMoveSpeed * temporarySpeedModifier}");
     }
 
-    // Reset the movement speed to its original value
     public void ResetMoveSpeed()
     {
-        moveSpeed = originalMoveSpeed;
+        Debug.Log("[BossMovement] Resetting temporary speed modifier to 1.");
+        temporarySpeedModifier = 1f;
+    }
+
+    public void SetTarget(Transform newTarget)
+    {
+        Debug.Log($"[BossMovement] Setting target to: {(newTarget != null ? newTarget.position : null)}");
+        target = newTarget;
+    }
+
+    private void UpdateFacingDirection(Vector3 direction)
+    {
+        if (animator == null)
+            return;
+
+        // Update facing direction (IdleX and IdleY)
+        animator.SetFloat("IdleX", Mathf.Round(direction.x));
+        animator.SetFloat("IdleY", Mathf.Round(direction.y));
+    }
+
+    private void UpdateAnimation(Vector3 direction)
+    {
+        if (animator == null)
+            return;
+
+        // Update animator parameters for movement
+        animator.SetFloat("MoveX", direction.x);
+        animator.SetFloat("MoveY", direction.y);
+        animator.SetFloat("Speed", direction.magnitude);
     }
 
     private void PlayFootstepSound()
     {
-        if (footstepAudioSource != null && footstepClips.Length > 0)
+        if (footstepAudioSource == null || footstepClips.Length == 0)
+            return;
+
+        footstepTimer += Time.deltaTime;
+        if (footstepTimer >= footstepInterval)
         {
-            // Select a random footstep sound
+            footstepTimer = 0f;
             AudioClip clip = footstepClips[Random.Range(0, footstepClips.Length)];
             footstepAudioSource.PlayOneShot(clip);
         }
+    }
+
+    /// <summary>
+    /// Forces Gus to face a specific direction (e.g., toward the player).
+    /// </summary>
+    public void FaceDirection(Vector3 direction)
+    {
+        UpdateFacingDirection(direction);
     }
 }
 

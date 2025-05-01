@@ -12,15 +12,22 @@ public class BossAttack : MonoBehaviour
     private float lastAttackTime;
     private Animator animator;
     private Transform player;
+    private BossMovement movement; // Reference to BossMovement
+    private bool isPerformingSpecialAttack = false; // Flag to track if a special attack is active
 
     public void Initialize(Animator bossAnimator, Transform playerTransform)
     {
         animator = bossAnimator;
         player = playerTransform;
+        movement = GetComponent<BossMovement>();
     }
 
     public void HandleAttack()
     {
+        // If a special attack is active, skip regular attacks
+        if (isPerformingSpecialAttack)
+            return;
+
         if (Time.time > lastAttackTime + attackCooldown && IsPlayerInRange())
         {
             StartAttack();
@@ -40,6 +47,10 @@ public class BossAttack : MonoBehaviour
     {
         if (animator != null)
         {
+            // Ensure Gus faces the player before attacking
+            Vector3 directionToPlayer = (player.position - transform.position).normalized;
+            movement.FaceDirection(directionToPlayer);
+
             animator.SetTrigger("Attack"); // Trigger the attack animation
         }
         lastAttackTime = Time.time;
@@ -53,7 +64,6 @@ public class BossAttack : MonoBehaviour
         {
             if (hit.CompareTag("Player"))
             {
-                // Apply damage to the player
                 Debug.Log("Player hit!");
                 HealthbarBehavior playerHealth = hit.GetComponentInChildren<HealthbarBehavior>();
                 if (playerHealth != null)
@@ -61,7 +71,6 @@ public class BossAttack : MonoBehaviour
                     playerHealth.HitDamage(attackDamage, hit.gameObject);
                 }
 
-                // Apply knockback to the player
                 ApplyKnockback(hit);
             }
         }
@@ -69,8 +78,7 @@ public class BossAttack : MonoBehaviour
 
     private void ApplyKnockback(Collider2D playerCollider)
     {
-        Rigidbody2D playerRb = playerCollider.GetComponent<Rigidbody2D>();
-        if (playerRb != null)
+        if (playerCollider.TryGetComponent<Rigidbody2D>(out var playerRb))
         {
             Vector2 knockbackDirection = (playerCollider.transform.position - transform.position).normalized;
             if (knockbackDirection == Vector2.zero)
@@ -78,23 +86,17 @@ public class BossAttack : MonoBehaviour
                 knockbackDirection = Vector2.up; // Default knockback direction if positions overlap
             }
 
-            Debug.Log($"Applying knockback to player. Direction: {knockbackDirection}, Force: {knockbackForce}");
             StartCoroutine(InterpolateKnockback(playerRb, knockbackDirection));
-        }
-        else
-        {
-            Debug.LogWarning("Player does not have a Rigidbody2D. Knockback not applied.");
         }
     }
 
     private IEnumerator InterpolateKnockback(Rigidbody2D playerRb, Vector2 direction)
     {
-        float knockbackDuration = 0.2f; // Duration of the knockback effect
+        float knockbackDuration = 0.2f;
         float elapsedTime = 0f;
         Vector2 startPosition = playerRb.position;
         Vector2 targetPosition = startPosition + direction * knockbackForce;
 
-        // Stop the player's velocity during knockback
         playerRb.linearVelocity = Vector2.zero;
 
         while (elapsedTime < knockbackDuration)
@@ -105,7 +107,11 @@ public class BossAttack : MonoBehaviour
             yield return null;
         }
 
-        // Ensure the player ends up at the target position
         playerRb.MovePosition(targetPosition);
+    }
+
+    public void SetSpecialAttackActive(bool isActive)
+    {
+        isPerformingSpecialAttack = isActive;
     }
 }

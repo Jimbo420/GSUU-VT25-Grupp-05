@@ -1,90 +1,153 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BossSpawner : MonoBehaviour
 {
-    [Header("Enemy Spawning Settings")]
-    [Tooltip("Prefab for the enemies.")]
-    public GameObject enemyPrefab;
-    [Tooltip("Spawn points for enemy backup.")]
-    public Transform[] enemySpawnPoints;
+    [Header("General Spawning Settings")]
+    [Tooltip("Default prefab to spawn.")]
+    public GameObject defaultPrefab; // Default prefab to spawn
 
-    [Header("Gasoline Tank Spawning Settings")]
-    [Tooltip("Prefab for the gasoline tank.")]
-    public GameObject gasolineTankPrefab;
-    [Tooltip("Spawn points for gasoline tanks.")]
-    public Transform[] gasolineTankSpawnPoints;
-    [Tooltip("Interval between gasoline tank spawns (in seconds).")]
-    public float gasolineSpawnInterval = 20f;
+    [Tooltip("Default spawn interval (in seconds).")]
+    public float defaultSpawnInterval = 20f; // Default interval for spawning
 
-    private bool isSpawningGasolineTanks = false;
+    private bool isSpawning = false; // General flag for spawning
 
-    public void StartSpawning()
+    [Header("Spawn Points")]
+    [Tooltip("Default spawn points for general use.")]
+    public List<Transform> defaultSpawnPoints = new();
+
+    [Tooltip("Special spawn points for specific phases.")]
+    public List<Transform> specialSpawnPoints = new();
+
+    /// <summary>
+    /// Spawns a specified prefab at the default spawn points.
+    /// </summary>
+    /// <param name="prefab">The prefab to spawn.</param>
+    /// <param name="useAllPoints">Whether to use all spawn points or random ones.</param>
+    /// <param name="quantity">The number of objects to spawn (if using random points).</param>
+    public void SpawnAtDefaultPoints(GameObject prefab, bool useAllPoints = false, int quantity = 1)
     {
-        // Start spawning gasoline tanks
-        if (!isSpawningGasolineTanks)
-        {
-            isSpawningGasolineTanks = true;
-            StartCoroutine(SpawnGasolineTanksRoutine());
-        }
+        SpawnObjects(prefab, defaultSpawnPoints, useAllPoints, quantity);
     }
 
-    public void SpawnEnemiesAtAllPoints()
+    /// <summary>
+    /// Spawns a specified prefab at the special spawn points.
+    /// </summary>
+    /// <param name="prefab">The prefab to spawn.</param>
+    /// <param name="useAllPoints">Whether to use all spawn points or random ones.</param>
+    /// <param name="quantity">The number of objects to spawn (if using random points).</param>
+    public void SpawnAtSpecialPoints(GameObject prefab, bool useAllPoints = false, int quantity = 1)
     {
-        if (enemySpawnPoints == null || enemySpawnPoints.Length == 0)
+        SpawnObjects(prefab, specialSpawnPoints, useAllPoints, quantity);
+    }
+
+    /// <summary>
+    /// Spawns a specified prefab at the given spawn points.
+    /// </summary>
+    /// <param name="prefab">The prefab to spawn.</param>
+    /// <param name="spawnPoints">The spawn points to use.</param>
+    /// <param name="useAllPoints">Whether to use all spawn points or random ones.</param>
+    /// <param name="quantity">The number of objects to spawn (if using random points).</param>
+    private void SpawnObjects(GameObject prefab, List<Transform> spawnPoints, bool useAllPoints, int quantity)
+    {
+        if (prefab == null)
         {
-            Debug.LogWarning("No enemy spawn points assigned.");
+            Debug.LogWarning("SpawnObjects called with a null prefab.");
             return;
         }
 
-        foreach (Transform spawnPoint in enemySpawnPoints)
+        if (spawnPoints == null || spawnPoints.Count == 0)
         {
-            if (spawnPoint != null)
+            Debug.LogWarning("No spawn points available for spawning.");
+            return;
+        }
+
+        if (useAllPoints)
+        {
+            // Spawn at all specified spawn points
+            foreach (Transform spawnPoint in spawnPoints)
             {
-                Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
-                Debug.Log($"Spawned enemy at {spawnPoint.position}.");
+                if (spawnPoint != null)
+                {
+                    Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
+                    Debug.Log($"Spawned {prefab.name} at {spawnPoint.position}.");
+                }
+            }
+        }
+        else
+        {
+            // Spawn at random points
+            for (int i = 0; i < quantity; i++)
+            {
+                Transform randomSpawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
+                if (randomSpawnPoint != null)
+                {
+                    Instantiate(prefab, randomSpawnPoint.position, randomSpawnPoint.rotation);
+                    Debug.Log($"Spawned {prefab.name} at {randomSpawnPoint.position}.");
+                }
             }
         }
     }
 
-    private IEnumerator SpawnGasolineTanksRoutine()
+    /// <summary>
+    /// Starts a spawning routine for the default spawn points.
+    /// </summary>
+    /// <param name="prefab">The prefab to spawn.</param>
+    /// <param name="spawnInterval">The interval between spawns.</param>
+    public void StartSpawningAtDefaultPoints(GameObject prefab, float spawnInterval)
     {
-        while (isSpawningGasolineTanks)
-        {
-            SpawnGasolineTank();
-            yield return new WaitForSeconds(gasolineSpawnInterval);
-        }
+        StartSpawning(prefab, spawnInterval, defaultSpawnPoints);
     }
 
-    public void SpawnGasolineTank()
+    /// <summary>
+    /// Starts a spawning routine for the special spawn points.
+    /// </summary>
+    /// <param name="prefab">The prefab to spawn.</param>
+    /// <param name="spawnInterval">The interval between spawns.</param>
+    public void StartSpawningAtSpecialPoints(GameObject prefab, float spawnInterval)
     {
-        if (gasolineTankPrefab == null || gasolineTankSpawnPoints.Length == 0)
+        StartSpawning(prefab, spawnInterval, specialSpawnPoints);
+    }
+
+    /// <summary>
+    /// Starts a spawning routine for the given spawn points.
+    /// </summary>
+    public void StartSpawning(GameObject prefab, float spawnInterval, List<Transform> spawnPoints)
+    {
+        if (isSpawning)
         {
-            Debug.LogWarning("Gasoline tank prefab or spawn points are not set.");
+            Debug.LogWarning("Spawning is already active.");
             return;
         }
 
-        // Choose a random spawn point
-        Transform spawnPoint = gasolineTankSpawnPoints[Random.Range(0, gasolineTankSpawnPoints.Length)];
-
-        // Check if a gasoline tank already exists at the spawn point
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(spawnPoint.position, 1f);
-        foreach (Collider2D collider in colliders)
+        if (prefab == null)
         {
-            if (collider.CompareTag("GasolineTank"))
-            {
-                Debug.Log("A gasoline tank already exists at this spawn point. Skipping spawn.");
-                return;
-            }
+            Debug.LogWarning("StartSpawning called with a null prefab.");
+            return;
         }
 
-        // Spawn the gasoline tank
-        Instantiate(gasolineTankPrefab, spawnPoint.position, Quaternion.identity);
-        Debug.Log($"Gasoline tank spawned at {spawnPoint.position}");
+        isSpawning = true;
+        StartCoroutine(SpawnRoutine(prefab, spawnInterval, spawnPoints));
     }
 
-    public void StopSpawningGasolineTanks()
+    /// <summary>
+    /// Stops the current spawning routine.
+    /// </summary>
+    public void StopSpawning()
     {
-        isSpawningGasolineTanks = false;
+        isSpawning = false;
+    }
+
+    /// <summary>
+    /// Coroutine for spawning objects at regular intervals.
+    /// </summary>
+    private IEnumerator SpawnRoutine(GameObject prefab, float spawnInterval, List<Transform> spawnPoints)
+    {
+        while (isSpawning)
+        {
+            SpawnObjects(prefab, spawnPoints, false, 1);
+            yield return new WaitForSeconds(spawnInterval);
+        }
     }
 }

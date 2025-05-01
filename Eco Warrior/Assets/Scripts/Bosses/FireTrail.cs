@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class FireTrail : MonoBehaviour
 {
+    [Header("Damage Settings")]
     [SerializeField] private float damage = 2f; // Damage dealt to the player
     [SerializeField] private float damageCooldown = 0.5f; // Cooldown time between damage
 
     // Static dictionary to track the last damage time for each player
-    private static Dictionary<GameObject, float> playerDamageTimers = new Dictionary<GameObject, float>();
+    private static readonly Dictionary<GameObject, float> playerDamageTimers = new();
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -25,9 +26,9 @@ public class FireTrail : MonoBehaviour
         }
     }
 
-    private void ApplyDamage(Collider2D player)
+    private void ApplyDamage(Collider2D playerCollider)
     {
-        GameObject playerObject = player.gameObject;
+        GameObject playerObject = playerCollider.gameObject;
 
         // Get the last damage time for this player
         if (!playerDamageTimers.TryGetValue(playerObject, out float lastDamageTime))
@@ -38,16 +39,21 @@ public class FireTrail : MonoBehaviour
         // Check if enough time has passed since the last damage
         if (Time.time >= lastDamageTime + damageCooldown)
         {
-            HealthbarBehavior playerHealth = player.GetComponentInChildren<HealthbarBehavior>();
+            // Locate the HealthbarBehavior component on the player or its children
+            HealthbarBehavior playerHealth = playerObject.GetComponentInChildren<HealthbarBehavior>();
             if (playerHealth != null)
             {
-                // Apply damage to the player
-                playerHealth.HitDamage(damage, playerObject);
+                // Apply damage to the player through the health bar
+                playerHealth.HitDamage(damage, gameObject);
 
                 // Update the last damage time for this player
                 playerDamageTimers[playerObject] = Time.time;
 
                 Debug.Log($"Fire Trail damaged the player for {damage} HP at time {Time.time}.");
+            }
+            else
+            {
+                Debug.LogWarning("Player does not have a HealthbarBehavior component.");
             }
         }
         else
@@ -56,5 +62,4 @@ public class FireTrail : MonoBehaviour
         }
     }
 }
-
 
