@@ -83,9 +83,9 @@ public class EnemyMovement : MonoBehaviour
 
     public void HearSound(Vector2 sourcePosition)
     {
-        SetTarget(sourcePosition);
-        agent.SetDestination(currentTarget);
-        targetPlayer.EngageTarget();
+        // Start moving towards the sound
+        agent.SetDestination(sourcePosition);
+        Walk();
     }
 
     private void EnemyWalkAnimation()

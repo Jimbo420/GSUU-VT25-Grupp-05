@@ -80,6 +80,6 @@ public class Movement : MonoBehaviour, IPlaySound
         footstepsSource.Play();
         footstepsSource.loop = true;
 
-        GetComponent<SoundEmitter>().MakeSound();
+        GetComponent<SoundEmitter>().MakeSound(transform.position);
     }
 }
