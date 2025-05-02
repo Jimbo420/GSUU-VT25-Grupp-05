@@ -17,7 +17,6 @@ public class WeaponUI : MonoBehaviour, IPlaySound
     {
         if (_weaponManager.CurrentWeapon.HasUnlimitedAmmo)
         {
-            Debug.Log("Weapon:" + _weaponManager.CurrentWeapon);
             _ammoText.text = "\u221e/\u221e";
         }
         else

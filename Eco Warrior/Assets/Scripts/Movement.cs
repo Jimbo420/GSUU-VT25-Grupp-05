@@ -58,6 +58,7 @@ public class Movement : MonoBehaviour, IPlaySound
             _animator.SetBool("isWalking", false);
             _animator.SetFloat("LastInputX", _movement.x);
             _animator.SetFloat("LastInputY", _movement.y);
+            Stop();
         }
         _movement = context.ReadValue<Vector2>();
         _animator.SetFloat("InputX", _movement.x);
@@ -67,12 +68,18 @@ public class Movement : MonoBehaviour, IPlaySound
 
       
     }
-
+    public void Stop()
+    {
+        //footstepsSource.volume = 2f;                          
+       footstepsSource.Stop();
+    }
     public void Play()
     {
-       //footstepsSource.volume = 2f;
+        footstepsSource.volume = 2f;
         footstepsSource.clip = footstepsClip;
         footstepsSource.Play();
         footstepsSource.loop = true;
+
+        GetComponent<SoundEmitter>().MakeSound();
     }
 }

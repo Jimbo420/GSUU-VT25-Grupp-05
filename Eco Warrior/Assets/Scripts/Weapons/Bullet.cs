@@ -23,7 +23,6 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject);
         if (healthbar == null)
         {
-            Debug.Log("Health is null");
             return;
         }
 

@@ -47,6 +47,7 @@ public class EnemyMovement : MonoBehaviour
     }
     void Update()
     {
+        targetPlayer.lastFacingDirection = agent.velocity.normalized;
         if (targetPlayer.PlayerIsInRangeOfEnemy())
         {
             isPlayerInRange = true;
@@ -65,7 +66,6 @@ public class EnemyMovement : MonoBehaviour
 
     public void Walk()
     {
-        if(agent is null) Debug.Log("Target Player is null");
         if (targetPlayer.PlayerIsInRangeOfEnemy() == false)
         {
             agent.autoBraking = true;
@@ -79,6 +79,13 @@ public class EnemyMovement : MonoBehaviour
             agent.speed = 3.5f;
         }
         EnemyWalkAnimation();
+    }
+
+    public void HearSound(Vector2 sourcePosition)
+    {
+        SetTarget(sourcePosition);
+        agent.SetDestination(currentTarget);
+        targetPlayer.EngageTarget();
     }
 
     private void EnemyWalkAnimation()
@@ -119,22 +126,6 @@ public class EnemyMovement : MonoBehaviour
         Walk();
     }
 
-    //public void HitDamage(float hitDamage)
-    //{
-    //    health -= hitDamage;
-    //    healthbarBehavior.Health(health, maxHealth);
-    //    if (health <= 0)
-    //        Dead();
-    //}
-
-    public void Heal()
-    {
-        for(float healValue = health; healValue < maxHealth; healValue++)
-        {
-            health = healValue;
-            //healthbarBehavior.Health(healValue, maxHealth);
-        }
-    }
     public void Dead()
     {
         Destroy(gameObject);
