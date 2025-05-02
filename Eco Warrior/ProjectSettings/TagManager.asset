@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Key
+  - GasolineTank
   - CollisionObsticle
   - Floor
   layers:
@@ -17,6 +18,10 @@ TagManager:
   - UI
   - Enemy
   - Player
+  - Fire
+  - Triggers
+  - Bullet
+  - Walls
   - Wall
   - Floor
   - 

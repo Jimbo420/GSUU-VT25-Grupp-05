@@ -1,7 +1,11 @@
 using UnityEngine;
+
 public class Bullet : MonoBehaviour
 {
-    private float maxDistance = 20f; //Maximum of distance that the bullet can travel
+    [Header("Bullet Settings")]
+    [SerializeField] private float maxDistance = 20f; // Maximum distance the bullet can travel
+    [SerializeField] private LayerMask damageableLayers; // Layers the bullet can damage
+
     private Vector3 _startPosition;
     private float _damage;
     private GameObject _shooter;
@@ -15,19 +19,41 @@ public class Bullet : MonoBehaviour
     {
         _shooter = shooter;
     }
+
     void OnTriggerEnter2D(Collider2D other)
     {
+        // Ignore the shooter
         if (other.gameObject == _shooter) return;
-        
-        HealthbarBehavior healthbar = other.GetComponentInChildren<HealthbarBehavior>();
-        Destroy(gameObject);
-        if (healthbar == null)
+
+        // Ignore objects not on the damageable layers
+        if ((damageableLayers.value & (1 << other.gameObject.layer)) == 0)
         {
             return;
         }
 
-        healthbar.HitDamage(_damage, other.gameObject);
+        // Check if the target implements IDamageable
+        IDamageable damageable = other.GetComponent<IDamageable>();
+        if (damageable != null)
+        {
+            damageable.TakeDamage(_damage);
+            Destroy(gameObject);
+            return;
+        }
+
+        // Fall back to HealthbarBehavior for compatibility
+        HealthbarBehavior healthbar = other.GetComponentInChildren<HealthbarBehavior>();
+        if (healthbar != null)
+        {
+            healthbar.HitDamage(_damage, other.gameObject);
+            Destroy(gameObject);
+            return;
+        }
+
+        // If no damage system is found, log a warning
+        Debug.LogWarning($"Bullet hit {other.gameObject.name}, but it cannot take damage.");
+        Destroy(gameObject);
     }
+
     void Start()
     {
         _startPosition = transform.position;
@@ -35,6 +61,7 @@ public class Bullet : MonoBehaviour
 
     void Update()
     {
+        // Destroy the bullet if it exceeds its maximum travel distance
         float distanceTravelled = Vector3.Distance(_startPosition, transform.position);
         if (distanceTravelled >= maxDistance)
         {
