@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2700949182141016604}
   - component: {fileID: -1465656207880595605}
   - component: {fileID: -4914694302192374265}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: All_Fire_Bullet_Pixel_16x16_00_133
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,6 +130,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxDistance: 20
+  damageableLayers:
+    serializedVersion: 2
+    m_Bits: 192
 --- !u!70 &-4914694302192374265
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
