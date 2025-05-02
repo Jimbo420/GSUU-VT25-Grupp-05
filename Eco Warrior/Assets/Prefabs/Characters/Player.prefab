@@ -221,7 +221,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2599878835727101992}
-  - {fileID: 7952936290677289508}
+  - {fileID: 2378532858244895686}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8266898161994222279
@@ -267,7 +267,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1521904745
   m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: -1201479647, guid: c43fa5d336cba5b4b94da72558f0f13b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -804,7 +804,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!114 &7281098897570272487
 MonoBehaviour:
@@ -846,7 +846,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!1001 &156157842783900229
+--- !u!1001 &5581779458885383079
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -919,8 +919,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
---- !u!4 &7952936290677289508 stripped
+--- !u!4 &2378532858244895686 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7814952413028638817, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
-  m_PrefabInstance: {fileID: 156157842783900229}
+  m_PrefabInstance: {fileID: 5581779458885383079}
   m_PrefabAsset: {fileID: 0}

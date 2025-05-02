@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 //using UnityEngine.AI;
 
 public class TargetPlayer : MonoBehaviour
@@ -11,6 +12,7 @@ public class TargetPlayer : MonoBehaviour
     public Transform player;
     //private NavMeshAgent agent;
 
+    private WeaponShooter _weaponShooter;
     private WeaponManager _weaponManager;
 
     private bool hasLineOfSight = false;
@@ -23,6 +25,7 @@ public class TargetPlayer : MonoBehaviour
         //agent = GetComponent<NavMeshAgent>();
         enemyMovement = GetComponent<EnemyMovement>();
         _weaponManager = GetComponentInChildren<WeaponManager>();
+        _weaponShooter = GetComponentInChildren<WeaponShooter>();
     }
 
     void Update()
@@ -47,10 +50,11 @@ public class TargetPlayer : MonoBehaviour
         {
             enemyMovement.SetTarget(player.position);
             enemyMovement.Walk();
+            if (!(Time.time >= _nextFireTime)) return;
+            _weaponShooter.Shoot();
+            _nextFireTime = Time.time + (1f / _weaponManager.CurrentWeapon.FireRate);
         }
-        if (!(Time.time >= _nextFireTime)) return;
-        //_weaponManager.Shoot();
-        _nextFireTime = Time.time + (1f / _weaponManager.CurrentWeapon.FireRate);
+
     }
 
     private void FixedUpdate()

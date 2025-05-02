@@ -8,14 +8,13 @@ using UnityEngine.AI;
 
 public class EnemyMovement : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 2f;
     [SerializeField] public float health = 0;
     [SerializeField] public float maxHealth = 25;
     [SerializeField] private bool isPlayerInRange = false;
-    [SerializeField] private float waitTimeMin = 1f;
-    [SerializeField] private float waitTimeMax = 3f;
     [SerializeField] public Transform[] WayPoints;
 
+    private float waitTimeMin = 1f;
+    private float waitTimeMax = 3f;
     private int newWayPoint;
     private float idleTimer = 0f;
     private bool isIdle = false;
@@ -34,7 +33,6 @@ public class EnemyMovement : MonoBehaviour
         _animator = GetComponent<Animator>();
         targetPlayer = GetComponent<TargetPlayer>();
         _toolRotator = GetComponent<ToolRotator>();
-        collisionObsticle = GameObject.FindGameObjectWithTag("CollisionObsticle").transform;
         enemy = GameObject.FindGameObjectWithTag("Enemy").transform;
         agent = GetComponent<NavMeshAgent>();
         agent.updateUpAxis = false;
@@ -70,11 +68,15 @@ public class EnemyMovement : MonoBehaviour
         if(agent is null) Debug.Log("Target Player is null");
         if (targetPlayer.PlayerIsInRangeOfEnemy() == false)
         {
+            agent.autoBraking = true;
             agent.SetDestination(WayPoints[newWayPoint].position);
+            agent.speed = 1.5f;
         }
         else
         {
+            agent.autoBraking = false;
             agent.SetDestination(currentTarget);
+            agent.speed = 3.5f;
         }
         EnemyWalkAnimation();
     }
@@ -85,7 +87,7 @@ public class EnemyMovement : MonoBehaviour
         _animator.SetFloat("InputX", direction.x);
         _animator.SetFloat("InputY", direction.y);
         _animator.SetBool("isWalking", direction.magnitude > 0.1f);
-        //_toolRotator.RotateTool(false, direction);
+        _toolRotator.RotateTool(false, direction);
 
         if (!isPlayerInRange && agent.remainingDistance < 0.5f && !agent.pathPending)
         {
