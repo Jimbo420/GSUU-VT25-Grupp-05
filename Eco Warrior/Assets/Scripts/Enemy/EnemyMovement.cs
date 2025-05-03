@@ -5,6 +5,7 @@ using System.Threading;
 using UnityEngine;
 //using UnityEngine.InputSystem;
 using UnityEngine.AI;
+using UnityEngine.Rendering.UI;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -24,9 +25,10 @@ public class EnemyMovement : MonoBehaviour
     private ToolRotator _toolRotator;
     private Vector2 currentTarget;
     private TargetPlayer targetPlayer;
-    public Transform collisionObsticle;
     public Transform enemy;
 
+
+    public static bool isMakingSound;
 
     void Start()
     {
@@ -66,25 +68,36 @@ public class EnemyMovement : MonoBehaviour
 
     public void Walk()
     {
-        if (targetPlayer.PlayerIsInRangeOfEnemy() == false)
-        {
-            agent.autoBraking = true;
-            agent.SetDestination(WayPoints[newWayPoint].position);
-            agent.speed = 1.5f;
-        }
-        else
+        if (targetPlayer.PlayerIsInRangeOfEnemy() || isMakingSound)
         {
             agent.autoBraking = false;
             agent.SetDestination(currentTarget);
             agent.speed = 3.5f;
+            if (agent.remainingDistance <= 0.5f)
+            {
+                isMakingSound = false;
+                NewPosition();
+                Walk();
+            }
+            
+        }
+        else
+        {
+            agent.autoBraking = true;
+            agent.SetDestination(WayPoints[newWayPoint].position);
+            agent.speed = 1.5f;
         }
         EnemyWalkAnimation();
     }
 
     public void HearSound(Vector2 sourcePosition)
     {
-        SetTarget(sourcePosition);
-        agent.SetDestination(currentTarget);
+        if (!targetPlayer.hasLineOfSight)
+        {
+            return;
+        }
+
+        isMakingSound = true;
         targetPlayer.EngageTarget();
     }
 

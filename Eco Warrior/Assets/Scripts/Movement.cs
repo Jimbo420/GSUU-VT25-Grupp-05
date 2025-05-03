@@ -15,9 +15,7 @@ public class Movement : MonoBehaviour, IPlaySound
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] private AudioSource footstepsSource;
     [SerializeField] private AudioClip footstepsClip;
-    [SerializeField] private float stepInterval = 0.4f;
 
-    private float stepTimer = 0f;
     private Rigidbody2D _rb;
     private Vector2 _movement;
     private Animator _animator;
@@ -32,17 +30,6 @@ public class Movement : MonoBehaviour, IPlaySound
     void Update()
     {
         _rb.linearVelocity = _movement * _moveSpeed;
-
-        bool isWalking = _movement != Vector2.zero; 
-
-        if (isWalking)
-        {
-            
-        }
-        else
-        {
-            stepTimer = stepInterval; // Gör så att nästa gång du börjar gå spelas ljudet direkt
-        }
 
     }
 
@@ -72,6 +59,9 @@ public class Movement : MonoBehaviour, IPlaySound
     {
         //footstepsSource.volume = 2f;                          
        footstepsSource.Stop();
+
+
+
     }
     public void Play()
     {
@@ -80,6 +70,6 @@ public class Movement : MonoBehaviour, IPlaySound
         footstepsSource.Play();
         footstepsSource.loop = true;
 
-        GetComponent<SoundEmitter>().MakeSound();
+        GetComponent<SoundEmitter>().MakeSound(5f);
     }
 }

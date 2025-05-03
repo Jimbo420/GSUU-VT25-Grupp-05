@@ -57,5 +57,9 @@ public class WeaponShooter : MonoBehaviour, IPlaySound
         footstepsSource.volume = 0.05f;
 
         footstepsSource.PlayOneShot(footstepsClip);
+        if (transform.parent.gameObject.tag.Contains("Player"))
+        {
+            GetComponentInParent<SoundEmitter>().MakeSound(7f);
+        }
     }
 }

@@ -11309,6 +11309,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4644825193205640561, guid: 56ec656f82d18ea4db85e62aa8dcbac0, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6419815725561785296, guid: 56ec656f82d18ea4db85e62aa8dcbac0, type: 3}
       propertyPath: weaponAudioSource
       value: 
@@ -12974,6 +12978,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soundRange: 10
+  player: {fileID: 0}
 --- !u!1001 &1962643745
 PrefabInstance:
   m_ObjectHideFlags: 0

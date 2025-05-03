@@ -7,8 +7,8 @@ public class TargetPlayer : MonoBehaviour
     private float stopDistance = 3f;
     private float rangeBetween = 10f;
     private float distance;
-    private float viewDistance = 10f;
-    private float viewAngle = 90f;
+    private float viewDistance = 5f;
+    private float viewAngle = 120f;
     public Vector2 lastFacingDirection = Vector2.right;
     private EnemyMovement enemyMovement;
     public Transform player;
@@ -17,7 +17,7 @@ public class TargetPlayer : MonoBehaviour
     private WeaponShooter _weaponShooter;
     private WeaponManager _weaponManager;
 
-    private bool hasLineOfSight = false;
+    public bool hasLineOfSight = false;
     private float _nextFireTime;
     private float lostSightTimer = 0f;
     void OnDrawGizmosSelected()
@@ -62,7 +62,7 @@ public class TargetPlayer : MonoBehaviour
         if (!hasLineOfSight) return false;
 
         Vector2 toPlayer = (player.position - transform.position).normalized;
-        Vector2 forward = lastFacingDirection == Vector2.zero ? Vector2.right : (Vector2)lastFacingDirection;
+        Vector2 forward = lastFacingDirection == Vector2.zero ? Vector2.right : lastFacingDirection;
 
         float dot = Vector2.Dot(forward, toPlayer);
         float angleThreshold = Mathf.Cos(viewAngle * 0.5f * Mathf.Deg2Rad);
