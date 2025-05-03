@@ -200,7 +200,8 @@ GameObject:
   - component: {fileID: 9141103611147217711}
   - component: {fileID: 4854463453648949882}
   - component: {fileID: 2043682637280092995}
-  m_Layer: 0
+  - component: {fileID: 7524825158562421626}
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -322,10 +323,9 @@ MonoBehaviour:
   _firePointTransform: {fileID: 0}
   _toolRotator: {fileID: 2043682637280092995}
   _healthbar: {fileID: 0}
-  moveSpeed: 2
+  moveSpeed: 1
   footstepsSource: {fileID: 9141103611147217711}
   footstepsClip: {fileID: 8300000, guid: fc411e6a50c13cf46a980bb3c70acdd1, type: 3}
-  stepInterval: 0.4
 --- !u!114 &4437951985315232002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -633,6 +633,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3d833d2ebd1f441381042a6bf558154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7524825158562421626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4352453264094158474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad5f739657ee58540b8506f7be3d0129, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
 --- !u!1 &4604546887590132640
 GameObject:
   m_ObjectHideFlags: 0
@@ -804,7 +817,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 6
   m_TargetDisplay: 0
 --- !u!114 &7281098897570272487
 MonoBehaviour:
@@ -869,7 +882,7 @@ PrefabInstance:
     - target: {fileID: -4408848269928213173, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
       propertyPath: footstepsSource
       value: 
-      objectReference: {fileID: 9141103611147217711}
+      objectReference: {fileID: 0}
     - target: {fileID: 6037138791799478460, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
       propertyPath: m_Name
       value: GunHolder

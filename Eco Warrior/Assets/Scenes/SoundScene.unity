@@ -10697,10 +10697,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 869970493285833274, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
-      propertyPath: moveSpeed
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1127844958736885484, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
       propertyPath: footstepsSource
       value: 
@@ -10764,10 +10760,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4352453264094158474, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1942794908}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
 --- !u!1 &1298690971
 GameObject:
@@ -11255,7 +11248,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 510500690029926793, guid: 56ec656f82d18ea4db85e62aa8dcbac0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.86
+      value: 14.81
       objectReference: {fileID: 0}
     - target: {fileID: 510500690029926793, guid: 56ec656f82d18ea4db85e62aa8dcbac0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -12088,11 +12081,6 @@ Transform:
   - {fileID: 1635632519}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1714587513 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4352453264094158474, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
-  m_PrefabInstance: {fileID: 1274364938}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1715595687
 GameObject:
   m_ObjectHideFlags: 0
@@ -12965,20 +12953,6 @@ AudioSource:
   m_CorrespondingSourceObject: {fileID: 9141103611147217711, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
   m_PrefabInstance: {fileID: 1274364938}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1942794908
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1714587513}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad5f739657ee58540b8506f7be3d0129, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  soundRange: 10
-  player: {fileID: 0}
 --- !u!1001 &1962643745
 PrefabInstance:
   m_ObjectHideFlags: 0

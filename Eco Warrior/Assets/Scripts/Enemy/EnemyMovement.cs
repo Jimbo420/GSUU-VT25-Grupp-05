@@ -75,19 +75,6 @@ public class EnemyMovement : MonoBehaviour
                 currentTarget = targetPlayer.player.position;
             agent.SetDestination(currentTarget);
             agent.speed = 3.5f;
-            //if (agent.remainingDistance <= 0.5f)
-            //{
-            //    if (!targetPlayer.PlayerIsInRangeOfEnemy())
-            //    {
-            //        isMakingSound = false;
-            //        NewPosition();
-            //        Walk();
-            //    }
-            //    else
-            //    {
-            //        agent.SetDestination(currentTarget);
-            //    }
-            //}
             
         }
         else
