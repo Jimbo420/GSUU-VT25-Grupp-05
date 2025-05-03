@@ -1,7 +1,7 @@
 using Assets.Scripts;
 using UnityEngine;
 
-public class WeaponShooter : MonoBehaviour, IPlaySound
+public class WeaponShooter : MonoBehaviour
 {
 
     private WeaponManager _weaponManager;
@@ -9,9 +9,8 @@ public class WeaponShooter : MonoBehaviour, IPlaySound
     private Transform _firePoint;
     private WeaponVisuals _weaponVisuals;
     private ToolRotator _toolRotator;
-    [SerializeField] private AudioSource footstepsSource;
-    [SerializeField] private AudioClip footstepsClip;
-   
+    [SerializeField] private AudioSource _clipSource;
+    //[SerializeField] private AudioClip _shootClip;
 
     void Awake()
     {
@@ -23,10 +22,22 @@ public class WeaponShooter : MonoBehaviour, IPlaySound
     public float GetFireRate() => _weaponManager.CurrentWeapon.FireRate;
     public void Shoot(bool isAiming = false)
     {
-        if (!_weaponManager.CurrentWeapon.HasUnlimitedAmmo && _weaponManager.CurrentWeapon.CurrentAmmunition == 0) return;
+        bool isPlayer = transform.parent.CompareTag("Player");
+        if (!isPlayer)
+        {
+            Transform player = GameObject.FindGameObjectWithTag("Player")?.transform;
+            if (player != null)
+            {
+                _toolRotator.RotateToolTowards(player.position);
+            }
+        }
+        else
+        {
+            if (!_weaponManager.CurrentWeapon.HasUnlimitedAmmo && _weaponManager.CurrentWeapon.CurrentAmmunition == 0) return;
+            if (isAiming) _toolRotator.RotateTool(isAiming);
+        }
 
         //If the player is shooting with mouse, first rotate the weapon
-        if (isAiming) _toolRotator.RotateTool(isAiming);
 
         //Calculate the direction of bullet (to create the effect of inaccuracy or spread)
         float angleOffset = Random.Range(-_weaponManager.CurrentWeapon.Accuracy, _weaponManager.CurrentWeapon.Accuracy);
@@ -43,7 +54,8 @@ public class WeaponShooter : MonoBehaviour, IPlaySound
         rb.AddForce(bullet.transform.up * _weaponManager.CurrentWeapon.BulletSpeed, ForceMode2D.Impulse);
         _weaponManager.CurrentWeapon.CurrentAmmunition--;
         this.GetComponent<WeaponUI>().UpdateAmmunition();
-        Play();
+        GetComponentInParent<SoundEmitter>().Play(_clipSource, false);
+
     }
 
     public void ReloadAllWeapons(WeaponData[] weapons)
@@ -52,14 +64,12 @@ public class WeaponShooter : MonoBehaviour, IPlaySound
             weapon.CurrentAmmunition = weapon.MaxAmmunition;
     }
 
-    public void Play()
-    {
-        footstepsSource.volume = 0.05f;
-
-        footstepsSource.PlayOneShot(footstepsClip);
-        if (transform.parent.gameObject.tag.Contains("Player"))
-        {
-            GetComponentInParent<SoundEmitter>().MakeSound(7f);
-        }
-    }
+    //public void Play()
+    //{
+    //    footstepsSource.PlayOneShot(footstepsClip);
+    //    if (transform.parent.gameObject.tag.Contains("Player"))
+    //    {
+    //        GetComponentInParent<SoundEmitter>().MakeSound(7f);
+    //    }
+    //}
 }
