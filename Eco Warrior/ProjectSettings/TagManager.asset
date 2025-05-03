@@ -9,6 +9,7 @@ TagManager:
   - GasolineTank
   - CollisionObsticle
   - Floor
+  - EnemySpawnWaypoint
   layers:
   - Default
   - TransparentFX
@@ -24,10 +25,6 @@ TagManager:
   - Walls
   - Wall
   - Floor
-  - 
-  - 
-  - 
-  - 
   - 
   - 
   - 
