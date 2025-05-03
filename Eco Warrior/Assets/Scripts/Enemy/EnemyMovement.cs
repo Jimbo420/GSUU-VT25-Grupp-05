@@ -28,7 +28,7 @@ public class EnemyMovement : MonoBehaviour
     public Transform enemy;
 
 
-    public static bool isMakingSound;
+    public bool isMakingSound;
 
     void Start()
     {
@@ -71,14 +71,23 @@ public class EnemyMovement : MonoBehaviour
         if (targetPlayer.PlayerIsInRangeOfEnemy() || isMakingSound)
         {
             agent.autoBraking = false;
+            if(isMakingSound)
+                currentTarget = targetPlayer.player.position;
             agent.SetDestination(currentTarget);
             agent.speed = 3.5f;
-            if (agent.remainingDistance <= 0.5f)
-            {
-                isMakingSound = false;
-                NewPosition();
-                Walk();
-            }
+            //if (agent.remainingDistance <= 0.5f)
+            //{
+            //    if (!targetPlayer.PlayerIsInRangeOfEnemy())
+            //    {
+            //        isMakingSound = false;
+            //        NewPosition();
+            //        Walk();
+            //    }
+            //    else
+            //    {
+            //        agent.SetDestination(currentTarget);
+            //    }
+            //}
             
         }
         else

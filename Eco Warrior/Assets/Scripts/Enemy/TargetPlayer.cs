@@ -59,16 +59,15 @@ public class TargetPlayer : MonoBehaviour
 
     public bool PlayerIsInRangeOfEnemy()
     {
-        if (!hasLineOfSight) return false;
-
         Vector2 toPlayer = (player.position - transform.position).normalized;
         Vector2 forward = lastFacingDirection == Vector2.zero ? Vector2.right : lastFacingDirection;
 
         float dot = Vector2.Dot(forward, toPlayer);
         float angleThreshold = Mathf.Cos(viewAngle * 0.5f * Mathf.Deg2Rad);
         float distance = Vector2.Distance(transform.position, player.position);
-
-        return dot >= angleThreshold && distance <= viewDistance;
+        bool isInRange = dot >= angleThreshold && distance <= viewDistance;
+        if (distance > viewDistance) enemyMovement.isMakingSound = false;
+        return isInRange && hasLineOfSight;
     }
 
     public void EngageTarget()
