@@ -24,12 +24,19 @@ public class Bullet : MonoBehaviour
     {
         // Ignore the shooter
         if (other.gameObject == _shooter) return;
-        
-        //TODO Broken Code for when enemy shoots player
+
+        // Check if the bullet hit a wall
+        if (other.gameObject.layer == LayerMask.NameToLayer("Walls") ||
+            other.gameObject.layer == LayerMask.NameToLayer("wall"))
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         // Ignore objects not on the damageable layers
         if ((damageableLayers.value & (1 << other.gameObject.layer)) == 0)
         {
-            Debug.Log("Not on damageble Layer");
+            Debug.Log("Not on damageable Layer");
             return;
         }
 
@@ -44,7 +51,7 @@ public class Bullet : MonoBehaviour
 
         // Fall back to HealthbarBehavior for compatibility
         HealthbarBehavior healthbar = other.GetComponentInChildren<HealthbarBehavior>();
-        if((healthbar is null)) Debug.Log("Healthbar is null");
+        if (healthbar == null) Debug.Log("Healthbar is null");
         if (healthbar != null)
         {
             healthbar.HitDamage(_damage, other.gameObject);
