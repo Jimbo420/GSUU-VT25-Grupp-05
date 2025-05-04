@@ -12973,7 +12973,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad5f739657ee58540b8506f7be3d0129, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundRange: 10
+  player: {fileID: 0}
 --- !u!1001 &1962643745
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13064,7 +13064,7 @@ GameObject:
   - component: {fileID: 1988456071}
   - component: {fileID: 1988456073}
   - component: {fileID: 1988456074}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Walls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
