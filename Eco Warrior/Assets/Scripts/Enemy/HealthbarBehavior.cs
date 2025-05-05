@@ -28,7 +28,7 @@ public class HealthbarBehavior : MonoBehaviour
         fillImage = slider.fillRect.GetComponentInChildren<Image>();
     }
 
-    public void SetHealth(int enemyLevel = 3)
+    public void SetHealth(int enemyLevel = 2)
     {
         _maxHealth = maxHealthList.Where(a => a.Key.Equals(enemyLevel)).Select(b => b.Value).FirstOrDefault();
         _health = _maxHealth;

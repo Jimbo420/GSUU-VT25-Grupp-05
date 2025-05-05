@@ -9,15 +9,19 @@ using UnityEngine.AI;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] GameObject enemyPrefab;
-    public int enemyLevel = 2;
-    WeaponManager weaponManager;
-    private Dictionary<int, int> enemySpawnerList = new Dictionary<int, int>
+    public int _enemyLevel = 2;
+    private Dictionary<int, int> EnemySpawnerList = new Dictionary<int, int>
     {
         {1, 2},
-        {2, 5},
-        {3, 15},
+        {2, 3},
+        {3, 5},
     };
+
+    [SerializeField] GameObject _enemyPrefab;
+
+    private WeaponManager _weaponManager;
+    private WeaponUI _weaponUI;
+    //private WeaponVisuals _weaponVisuals;
 
     void Start()
     {
@@ -30,13 +34,20 @@ public class EnemySpawner : MonoBehaviour
 
     IEnumerator Spawn()
     {
-        int enemiesByLevel = enemySpawnerList.Where(a => a.Key == enemyLevel).Select(b => b.Value).FirstOrDefault();
+        int enemiesByLevel = EnemySpawnerList.Where(a => a.Key == _enemyLevel).Select(b => b.Value).FirstOrDefault();
         var spawnPoint = GameObject.FindWithTag("EnemySpawnWaypoint");
         for (int i = 0; i < enemiesByLevel; i++)
         {
-            WeaponManager hasse = enemyPrefab.GetComponentInChildren<WeaponManager>();
-            hasse.GetWeapon(1);
-            Instantiate(enemyPrefab, spawnPoint.transform.position, Quaternion.identity);
+            if (_enemyLevel >= i)
+            {
+                WeaponManager _weaponManager = _enemyPrefab.GetComponentInChildren<WeaponManager>();
+                _weaponManager.GetWeapon(1);
+                _weaponManager.EquipWeapon(1);
+
+                WeaponVisuals weaponVisuals = _enemyPrefab.GetComponentInChildren<WeaponVisuals>();
+                weaponVisuals.UpdateWeaponSprite();
+            }
+            Instantiate(_enemyPrefab, spawnPoint.transform.position, Quaternion.identity);
             yield return new WaitForSeconds(5f);
         }
     }
