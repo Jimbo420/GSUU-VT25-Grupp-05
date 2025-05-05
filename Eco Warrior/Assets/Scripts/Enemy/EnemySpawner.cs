@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] GameObject enemyPrefab;
     public int enemyLevel = 2;
+    WeaponManager weaponManager;
     private Dictionary<int, int> enemySpawnerList = new Dictionary<int, int>
     {
         {1, 2},
@@ -32,9 +34,9 @@ public class EnemySpawner : MonoBehaviour
         var spawnPoint = GameObject.FindWithTag("EnemySpawnWaypoint");
         for (int i = 0; i < enemiesByLevel; i++)
         {
+            //_weaponManager.EquipWeapon(index);
+            //weaponManager.CurrentWeapon.WeaponSprite = weaponManager.CurrentWeapon.
             Instantiate(enemyPrefab, spawnPoint.transform.position, Quaternion.identity);
-            HealthbarBehavior healthbarBehavior = new HealthbarBehavior();
-            //healthbarBehavior.SetHealth(enemyLevel);
             yield return new WaitForSeconds(5f);
         }
     }

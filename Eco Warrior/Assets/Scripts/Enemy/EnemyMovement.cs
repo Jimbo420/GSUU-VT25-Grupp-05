@@ -26,7 +26,6 @@ public class EnemyMovement : MonoBehaviour
     private Vector2 currentTarget;
     private TargetPlayer targetPlayer;
     public Transform enemy;
-    private EnemySpawner spawner;
 
 
     public bool isMakingSound;
@@ -36,6 +35,7 @@ public class EnemyMovement : MonoBehaviour
         _animator = GetComponent<Animator>();
         targetPlayer = GetComponent<TargetPlayer>();
         _toolRotator = GetComponent<ToolRotator>();
+        //_weaponManager = GetComponent<WeaponManager>();
         enemy = GameObject.FindGameObjectWithTag("Enemy").transform;
         agent = GetComponent<NavMeshAgent>();
         agent.updateUpAxis = false;
