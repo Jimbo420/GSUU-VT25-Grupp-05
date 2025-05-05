@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (EventSystem.current.IsPointerOverGameObject() || ItemDragHandler.IsDragging) return;
+        //if (EventSystem.current.IsPointerOverGameObject() || ItemDragHandler.IsDragging) return;
         if (!Input.GetButton("Fire1") || !(Time.time >= _nextFireTime)) return;
 
         _weaponShooter.Shoot(true);
