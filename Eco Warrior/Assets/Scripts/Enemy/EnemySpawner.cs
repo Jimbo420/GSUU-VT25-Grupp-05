@@ -34,8 +34,8 @@ public class EnemySpawner : MonoBehaviour
         var spawnPoint = GameObject.FindWithTag("EnemySpawnWaypoint");
         for (int i = 0; i < enemiesByLevel; i++)
         {
-            //_weaponManager.EquipWeapon(index);
-            //weaponManager.CurrentWeapon.WeaponSprite = weaponManager.CurrentWeapon.
+            WeaponManager hasse = enemyPrefab.GetComponentInChildren<WeaponManager>();
+            hasse.GetWeapon(1);
             Instantiate(enemyPrefab, spawnPoint.transform.position, Quaternion.identity);
             yield return new WaitForSeconds(5f);
         }

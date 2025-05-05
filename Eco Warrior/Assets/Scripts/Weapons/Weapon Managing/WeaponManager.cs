@@ -23,6 +23,11 @@ public class WeaponManager : MonoBehaviour
         GetComponent<WeaponShooter>().ReloadAllWeapons(_availableWeapons);
     }
 
+    public WeaponData GetWeapon(int index)
+    {
+        return _availableWeapons[index];
+    }
+
     //TODO Move to Player Controller
     void Update()
     {
