@@ -5,17 +5,17 @@ using System.Threading;
 using UnityEngine;
 //using UnityEngine.InputSystem;
 using UnityEngine.AI;
+using UnityEngine.Rendering.UI;
 
 public class EnemyMovement : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 2f;
     [SerializeField] public float health = 0;
     [SerializeField] public float maxHealth = 25;
     [SerializeField] private bool isPlayerInRange = false;
-    [SerializeField] private float waitTimeMin = 1f;
-    [SerializeField] private float waitTimeMax = 3f;
     [SerializeField] public Transform[] WayPoints;
 
+    private float waitTimeMin = 1f;
+    private float waitTimeMax = 3f;
     private int newWayPoint;
     private float idleTimer = 0f;
     private bool isIdle = false;
@@ -25,16 +25,16 @@ public class EnemyMovement : MonoBehaviour
     private ToolRotator _toolRotator;
     private Vector2 currentTarget;
     private TargetPlayer targetPlayer;
-    public Transform collisionObsticle;
     public Transform enemy;
 
+
+    public bool isMakingSound;
 
     void Start()
     {
         _animator = GetComponent<Animator>();
         targetPlayer = GetComponent<TargetPlayer>();
-        _toolRotator = GetComponentInChildren<ToolRotator>();
-        collisionObsticle = GameObject.FindGameObjectWithTag("CollisionObsticle").transform;
+        _toolRotator = GetComponent<ToolRotator>();
         enemy = GameObject.FindGameObjectWithTag("Enemy").transform;
         agent = GetComponent<NavMeshAgent>();
         agent.updateUpAxis = false;
@@ -49,6 +49,7 @@ public class EnemyMovement : MonoBehaviour
     }
     void Update()
     {
+        targetPlayer.lastFacingDirection = agent.velocity.normalized;
         if (targetPlayer.PlayerIsInRangeOfEnemy())
         {
             isPlayerInRange = true;
@@ -67,11 +68,33 @@ public class EnemyMovement : MonoBehaviour
 
     public void Walk()
     {
-        if (targetPlayer.PlayerIsInRangeOfEnemy() == false)
-            agent.SetDestination(WayPoints[newWayPoint].position);
-        else
+        if (targetPlayer.PlayerIsInRangeOfEnemy() || isMakingSound)
+        {
+            agent.autoBraking = false;
+            if(isMakingSound)
+                currentTarget = targetPlayer.player.position;
             agent.SetDestination(currentTarget);
+            agent.speed = 3.5f;
+            
+        }
+        else
+        {
+            agent.autoBraking = true;
+            agent.SetDestination(WayPoints[newWayPoint].position);
+            agent.speed = 1.5f;
+        }
         EnemyWalkAnimation();
+    }
+
+    public void HearSound(Vector2 sourcePosition)
+    {
+        if (!targetPlayer.hasLineOfSight)
+        {
+            return;
+        }
+
+        isMakingSound = true;
+        targetPlayer.EngageTarget();
     }
 
     private void EnemyWalkAnimation()
@@ -112,22 +135,6 @@ public class EnemyMovement : MonoBehaviour
         Walk();
     }
 
-    //public void HitDamage(float hitDamage)
-    //{
-    //    health -= hitDamage;
-    //    healthbarBehavior.Health(health, maxHealth);
-    //    if (health <= 0)
-    //        Dead();
-    //}
-
-    public void Heal()
-    {
-        for(float healValue = health; healValue < maxHealth; healValue++)
-        {
-            health = healValue;
-            //healthbarBehavior.Health(healValue, maxHealth);
-        }
-    }
     public void Dead()
     {
         Destroy(gameObject);
