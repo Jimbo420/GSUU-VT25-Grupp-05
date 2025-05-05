@@ -640,7 +640,11 @@ MonoBehaviour:
   health: 0
   maxHealth: 25
   isPlayerInRange: 0
-  WayPoints: []
+  WayPoints:
+  - {fileID: 4508378624174280116, guid: 3407f7df024c19d43aceff71e2ecc5e5, type: 3}
+  - {fileID: 4222196037373548427, guid: 133f7fdf8f6413f4084b09fc8622750c, type: 3}
+  - {fileID: 3226704401872918182, guid: 919ec906db3371c4181d3159a74eeef0, type: 3}
+  - {fileID: 2144518660873342018, guid: 18c5e443a5bc4f648b7f8ef97776c255, type: 3}
   agent: {fileID: 0}
   enemy: {fileID: 0}
   isMakingSound: 0
