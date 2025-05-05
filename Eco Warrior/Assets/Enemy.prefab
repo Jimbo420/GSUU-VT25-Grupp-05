@@ -565,18 +565,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46f2aba6dc50e4a418cd341e91ae983a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  healthbarBehavior: {fileID: 0}
-  _toolRotator: {fileID: 0}
-  polygonCollider: {fileID: 0}
   moveSpeed: 2
   health: 0
   maxHealth: 25
-  patrolCordinates: {x: 5, y: 7}
   isPlayerInRange: 0
   waitTimeMin: 1
   waitTimeMax: 3
-  targetPlayer: {fileID: 0}
+  WayPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!95 &7833677668897923607
 Animator:
   serializedVersion: 7
@@ -657,10 +658,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3263d8996fdc63b4690561465da18c7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireDamage: 1
-  fireCooldown: 0.25
-  fireTime: 0.25
-  moveSpeed: 2
   player: {fileID: 0}
 --- !u!114 &949309513094866230
 MonoBehaviour:
@@ -782,7 +779,7 @@ MonoBehaviour:
   fillImage: {fileID: 0}
   low: {r: 0.78113204, g: 0, b: 0, a: 1}
   high: {r: 0.2819624, g: 1, b: 0, a: 1}
-  offset: {x: 0, y: 0, z: 0}
+  _maxHealth: 25
 --- !u!1001 &1640692869865123569
 PrefabInstance:
   m_ObjectHideFlags: 0
