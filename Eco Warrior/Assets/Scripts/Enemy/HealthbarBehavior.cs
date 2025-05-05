@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,14 +13,27 @@ public class HealthbarBehavior : MonoBehaviour
     public Color low;
     public Color high;
 
-    private float _health = 25;
-    [SerializeField] private float _maxHealth = 25;
+    private float _health = 0;
+    private float _maxHealth = 0;
+    private Dictionary<int, float> maxHealthList = new Dictionary<int, float>
+    {
+        {1, 25},
+        {2, 40},
+        {3, 60},
+    };
     void Start()
     {
-        _health = _maxHealth;
+        SetHealth();
         slider = GetComponentInChildren<Slider>();
-        Health(_health, _maxHealth);
         fillImage = slider.fillRect.GetComponentInChildren<Image>();
+    }
+
+    public void SetHealth(int enemyLevel = 3)
+    {
+        _maxHealth = maxHealthList.Where(a => a.Key.Equals(enemyLevel)).Select(b => b.Value).FirstOrDefault();
+        _health = _maxHealth;
+        Debug.Log("Health is: " + _health);
+        Health(_health, _maxHealth);
     }
 
     void Update()

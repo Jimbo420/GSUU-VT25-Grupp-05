@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+
 //using System.Linq;
 using System.Threading;
 //using Unity.VisualScripting;
@@ -9,8 +11,6 @@ using UnityEngine.Rendering.UI;
 
 public class EnemyMovement : MonoBehaviour
 {
-    [SerializeField] public float health = 0;
-    [SerializeField] public float maxHealth = 25;
     [SerializeField] private bool isPlayerInRange = false;
     [SerializeField] public Transform[] WayPoints;
 
@@ -26,6 +26,7 @@ public class EnemyMovement : MonoBehaviour
     private Vector2 currentTarget;
     private TargetPlayer targetPlayer;
     public Transform enemy;
+    private EnemySpawner spawner;
 
 
     public bool isMakingSound;
@@ -42,11 +43,11 @@ public class EnemyMovement : MonoBehaviour
         EnemyStartup();
     }
 
-    private void EnemyStartup()
+    public void EnemyStartup()
     {
-        health = maxHealth;
         NewPosition();
     }
+
     void Update()
     {
         targetPlayer.lastFacingDirection = agent.velocity.normalized;
