@@ -25,7 +25,7 @@ MonoBehaviour:
   onPhaseEnd:
     m_PersistentCalls:
       m_Calls: []
-  spawnPrefab: {fileID: 6978059078507124352, guid: 135f7b88ac195614abae37ec75df8f35, type: 3}
+  spawnPrefab: {fileID: 6741484369400043932, guid: 4513ece0291abcd418fa0306cbeb7f42, type: 3}
   spawnQuantity: 2
   useAllSpawnPoints: 1
   spawnPointType: 1
