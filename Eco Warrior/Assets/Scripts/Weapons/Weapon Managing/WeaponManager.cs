@@ -15,12 +15,14 @@ public class WeaponManager : MonoBehaviour
     public WeaponData CurrentWeapon { get; private set; }
    
     private int _currentWeaponIndex = 0;
+    
+    public WeaponData[] AvailableWeapons => _availableWeapons;
 
     void Start()
     {
         _inventoryController = FindFirstObjectByType<InventoryController>();
         CurrentWeapon = _availableWeapons[0];
-        GetComponent<WeaponShooter>().ReloadAllWeapons(_availableWeapons);
+        GetComponent<WeaponShooter>().ReloadAllWeapons();
     }
 
     //TODO Move to Player Controller
@@ -29,7 +31,7 @@ public class WeaponManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             GetComponent<WeaponUI>().Play();
-            GetComponent<WeaponShooter>().ReloadAllWeapons(_availableWeapons);
+            GetComponent<WeaponShooter>().ReloadAllWeapons();
             GetComponent<WeaponUI>().UpdateAmmunition();
 
         }

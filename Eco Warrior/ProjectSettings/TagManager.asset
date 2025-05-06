@@ -9,6 +9,9 @@ TagManager:
   - GasolineTank
   - CollisionObsticle
   - Floor
+  - Ammo
+  - Health
+  - Weapon
   layers:
   - Default
   - TransparentFX
@@ -24,10 +27,6 @@ TagManager:
   - Walls
   - Wall
   - Floor
-  - 
-  - 
-  - 
-  - 
   - 
   - 
   - 
