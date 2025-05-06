@@ -17,13 +17,13 @@ public class BossHealthBar : MonoBehaviour
     {
         if (bossHealth == null)
         {
-            Debug.LogError("BossHealth reference is not assigned in BossHealthBar.");
+            //Debug.LogError("BossHealth reference is not assigned in BossHealthBar.");
             return;
         }
 
         if (foregroundImage == null)
         {
-            Debug.LogError("ForegroundImage reference is not assigned in BossHealthBar.");
+            //Debug.LogError("ForegroundImage reference is not assigned in BossHealthBar.");
             return;
         }
 
@@ -57,7 +57,7 @@ public class BossHealthBar : MonoBehaviour
 
     private void OnHealthChanged(float currentHealth, float maxHealth)
     {
-        Debug.Log($"HealthChanged event triggered. Current Health: {currentHealth}, Max Health: {maxHealth}");
+        //Debug.Log($"HealthChanged event triggered. Current Health: {currentHealth}, Max Health: {maxHealth}");
         UpdateHealthBar();
     }
 
@@ -69,7 +69,7 @@ public class BossHealthBar : MonoBehaviour
             foregroundImage.fillAmount = bossHealth.currentHealth / bossHealth.maxHealth;
 
             // Debug log to confirm the fill amount
-            Debug.Log($"Updated health bar fill amount: {foregroundImage.fillAmount}");
+            //Debug.Log($"Updated health bar fill amount: {foregroundImage.fillAmount}");
 
             // Update the boss name or health percentage (optional)
             if (bossNameText != null)

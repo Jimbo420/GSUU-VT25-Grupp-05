@@ -43,7 +43,7 @@ public class ChargeAttack : BossSpecialAttack
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         {
-            Debug.LogWarning("[ChargeAttack] No AudioSource found. Adding one dynamically.");
+            //Debug.LogWarning("[ChargeAttack] No AudioSource found. Adding one dynamically.");
             audioSource = gameObject.AddComponent<AudioSource>();
         }
     }
@@ -70,11 +70,11 @@ public class ChargeAttack : BossSpecialAttack
     {
         if (isCharging || remainingCharges <= 0)
         {
-            Debug.LogWarning("Charge attack cannot be performed right now.");
+            //Debug.LogWarning("Charge attack cannot be performed right now.");
             return;
         }
 
-        Debug.Log("Performing charge attack!");
+        //Debug.Log("Performing charge attack!");
 
         // Play the charge sound
         PlayChargeSound();
@@ -103,7 +103,7 @@ public class ChargeAttack : BossSpecialAttack
         {
             if (IsWallInDirection(direction))
             {
-                Debug.Log("Charge stopped due to wall collision.");
+                //Debug.Log("Charge stopped due to wall collision.");
                 break;
             }
 
@@ -126,7 +126,7 @@ public class ChargeAttack : BossSpecialAttack
         isCharging = false;
         bossAttack.SetSpecialAttackActive(false);
         remainingCharges--;
-        Debug.Log("Charge attack completed.");
+        //Debug.Log("Charge attack completed.");
     }
 
     private void PlayChargeSound()
@@ -134,11 +134,11 @@ public class ChargeAttack : BossSpecialAttack
         if (chargeSound != null && audioSource != null)
         {
             audioSource.PlayOneShot(chargeSound);
-            Debug.Log("[ChargeAttack] Playing charge sound.");
+            //Debug.Log("[ChargeAttack] Playing charge sound.");
         }
         else
         {
-            Debug.LogWarning("[ChargeAttack] Charge sound or AudioSource is missing.");
+            //Debug.LogWarning("[ChargeAttack] Charge sound or AudioSource is missing.");
         }
     }
 

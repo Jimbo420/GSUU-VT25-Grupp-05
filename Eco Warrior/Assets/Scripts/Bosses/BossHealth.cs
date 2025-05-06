@@ -22,22 +22,22 @@ public class BossHealth : MonoBehaviour, IDamageable
 
     public void TakeDamage(float damage)
     {
-        Debug.Log($"TakeDamage called with damage: {damage}");
+        //Debug.Log($"TakeDamage called with damage: {damage}");
 
         currentHealth -= damage;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // Ensure health doesn't go below 0
 
-        Debug.Log($"Current health after damage: {currentHealth}");
+        //Debug.Log($"Current health after damage: {currentHealth}");
 
         // Add a debug log to confirm the event is being invoked
         if (HealthChanged != null)
         {
-            Debug.Log("Invoking HealthChanged event.");
+            //Debug.Log("Invoking HealthChanged event.");
             HealthChanged.Invoke(currentHealth, maxHealth);
         }
         else
         {
-            Debug.LogWarning("HealthChanged event has no listeners.");
+            //Debug.LogWarning("HealthChanged event has no listeners.");
         }
 
         if (currentHealth <= 0)
@@ -48,7 +48,7 @@ public class BossHealth : MonoBehaviour, IDamageable
 
     private void Die()
     {
-        Debug.Log("Boss has died.");
+        //Debug.Log("Boss has died.");
         Destroy(gameObject);
     }
 }

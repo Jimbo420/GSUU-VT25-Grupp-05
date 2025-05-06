@@ -48,18 +48,18 @@ public class BossMovement : MonoBehaviour
     {
         // Cap the multiplier to prevent extreme values
         temporarySpeedModifier = Mathf.Clamp(multiplier, 0.5f, 3f);
-        Debug.Log($"[BossMovement] Setting temporary speed modifier. Multiplier: {temporarySpeedModifier}, Adjusted Speed: {originalMoveSpeed * temporarySpeedModifier}");
+        //Debug.Log($"[BossMovement] Setting temporary speed modifier. Multiplier: {temporarySpeedModifier}, Adjusted Speed: {originalMoveSpeed * temporarySpeedModifier}");
     }
 
     public void ResetMoveSpeed()
     {
-        Debug.Log("[BossMovement] Resetting temporary speed modifier to 1.");
+        //Debug.Log("[BossMovement] Resetting temporary speed modifier to 1.");
         temporarySpeedModifier = 1f;
     }
 
     public void SetTarget(Transform newTarget)
     {
-        Debug.Log($"[BossMovement] Setting target to: {(newTarget != null ? newTarget.position : null)}");
+        //Debug.Log($"[BossMovement] Setting target to: {(newTarget != null ? newTarget.position : null)}");
         target = newTarget;
     }
 
