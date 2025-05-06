@@ -10,6 +10,9 @@ TagManager:
   - CollisionObsticle
   - Floor
   - EnemySpawnWaypoint
+  - Ammo
+  - Health
+  - Weapon
   layers:
   - Default
   - TransparentFX

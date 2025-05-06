@@ -1,6 +1,7 @@
+using Assets.Scripts;
 using UnityEngine;
 
-public class SoundEmitter : MonoBehaviour
+public class SoundEmitter : MonoBehaviour, IPlaySound
 {
     public Transform player;
 
@@ -19,6 +20,23 @@ public class SoundEmitter : MonoBehaviour
             {
                 enemy.HearSound(player.position);
 
+            }
+        }
+    }
+
+    public void Play(AudioSource source, bool loop)
+    {
+        if (loop)
+        {
+            source.Play();
+            MakeSound(5f);
+        }
+        else
+        {
+            source.PlayOneShot(source.clip);
+            if (transform.gameObject.tag.Contains("Player"))
+            { 
+                MakeSound(7f);
             }
         }
     }
