@@ -6,15 +6,15 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class Movement : MonoBehaviour, IPlaySound
+public class Movement : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed = 3f;
     [SerializeField] private Transform _firePointTransform;
     [SerializeField] private ToolRotator _toolRotator;
     [SerializeField] private Slider _healthbar;
     [SerializeField] private float moveSpeed = 2f;
-    [SerializeField] private AudioSource footstepsSource;
-    [SerializeField] private AudioClip footstepsClip;
+    [SerializeField] private AudioSource _footstepsSource;
+   // [SerializeField] private AudioClip _footstepsClip;
 
     private Rigidbody2D _rb;
     private Vector2 _movement;
@@ -35,7 +35,7 @@ public class Movement : MonoBehaviour, IPlaySound
 
     public void MoveCharacter(InputAction.CallbackContext context)
     {
-        Play();
+        GetComponentInParent<SoundEmitter>().Play(_footstepsSource, true);
         
         _animator.SetBool("isWalking", true);
         
@@ -57,19 +57,6 @@ public class Movement : MonoBehaviour, IPlaySound
     }
     public void Stop()
     {
-        //footstepsSource.volume = 2f;                          
-       footstepsSource.Stop();
-
-
-
-    }
-    public void Play()
-    {
-        footstepsSource.volume = 2f;
-        footstepsSource.clip = footstepsClip;
-        footstepsSource.Play();
-        footstepsSource.loop = true;
-
-        GetComponent<SoundEmitter>().MakeSound(5f);
+       _footstepsSource.Stop();
     }
 }

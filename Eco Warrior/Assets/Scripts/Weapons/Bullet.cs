@@ -36,7 +36,7 @@ public class Bullet : MonoBehaviour
         // Ignore objects not on the damageable layers
         if ((damageableLayers.value & (1 << other.gameObject.layer)) == 0)
         {
-            Debug.Log("Not on damageable Layer");
+            //Debug.Log("Not on damageble Layer");
             return;
         }
 

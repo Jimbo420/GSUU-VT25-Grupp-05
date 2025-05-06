@@ -15,12 +15,14 @@ public class WeaponManager : MonoBehaviour
     public WeaponData CurrentWeapon { get; private set; }
    
     private int _currentWeaponIndex = 0;
+    
+    public WeaponData[] AvailableWeapons => _availableWeapons;
 
     void Start()
     {
         _inventoryController = FindFirstObjectByType<InventoryController>();
         CurrentWeapon = _availableWeapons[0];
-        GetComponent<WeaponShooter>().ReloadAllWeapons(_availableWeapons);
+        GetComponent<WeaponShooter>().ReloadAllWeapons();
     }
 
     public WeaponData GetWeapon(int index)
@@ -34,7 +36,7 @@ public class WeaponManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             GetComponent<WeaponUI>().Play();
-            GetComponent<WeaponShooter>().ReloadAllWeapons(_availableWeapons);
+            GetComponent<WeaponShooter>().ReloadAllWeapons();
             GetComponent<WeaponUI>().UpdateAmmunition();
 
         }
@@ -50,16 +52,20 @@ public class WeaponManager : MonoBehaviour
 
         WeaponTag tag = item.GetComponent<WeaponTag>();
         if (tag == null) return;
+        SwitchWeapon(tag.WeaponData);
+        // CurrentWeapon = tag.WeaponData;
+        // GetComponent<WeaponVisuals>().UpdateWeaponSprite();
+        // GetComponent<WeaponVisuals>().UpdateWeaponAndGunHolderPosition(1,0);
+        // GetComponent<WeaponUI>().UpdateAmmunition();
+    }
 
-        CurrentWeapon = tag.WeaponData;
+    public void SwitchWeapon(WeaponData weapon)
+    {
+        CurrentWeapon = weapon;
         GetComponent<WeaponVisuals>().UpdateWeaponSprite();
         GetComponent<WeaponVisuals>().UpdateWeaponAndGunHolderPosition(1,0);
         GetComponent<WeaponUI>().UpdateAmmunition();
     }
-   
-   
-
-    
 
     
 }
