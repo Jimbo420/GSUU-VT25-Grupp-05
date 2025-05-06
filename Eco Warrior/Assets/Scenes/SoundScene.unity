@@ -12804,8 +12804,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c300393cd06b864dbae61f275ea1369, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 9066255831987755567}
-  enemyLevel: 1
+  _enemyLevel: 2
+  _enemyPrefab: {fileID: 9066255831987755567}
 --- !u!4 &1909914551 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2895968495781537354, guid: 71704a5bcb4e09848939c4211ca144e4, type: 3}
