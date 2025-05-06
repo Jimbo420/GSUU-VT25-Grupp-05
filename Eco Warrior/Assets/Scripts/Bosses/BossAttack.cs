@@ -9,17 +9,32 @@ public class BossAttack : MonoBehaviour
     public float attackDamage = 3f;
     public float knockbackForce = 10f;
 
+    [Header("Sound Settings")]
+    [Tooltip("Sound effect for the attack swing.")]
+    public AudioClip swingSound;
+    [Tooltip("Sound effect for hitting the player.")]
+    public AudioClip hitSound;
+
     private float lastAttackTime;
     private Animator animator;
     private Transform player;
     private BossMovement movement; // Reference to BossMovement
     private bool isPerformingSpecialAttack = false; // Flag to track if a special attack is active
+    private AudioSource audioSource; // Dynamically added AudioSource
 
     public void Initialize(Animator bossAnimator, Transform playerTransform)
     {
         animator = bossAnimator;
         player = playerTransform;
         movement = GetComponent<BossMovement>();
+
+        // Dynamically add an AudioSource if it doesn't exist
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false; // Ensure it doesn't play on awake
+        }
     }
 
     public void HandleAttack()
@@ -52,6 +67,9 @@ public class BossAttack : MonoBehaviour
             movement.FaceDirection(directionToPlayer);
 
             animator.SetTrigger("Attack"); // Trigger the attack animation
+
+            // Play the swing sound effect
+            PlaySound(swingSound);
         }
         lastAttackTime = Time.time;
     }
@@ -69,6 +87,9 @@ public class BossAttack : MonoBehaviour
                 if (playerHealth != null)
                 {
                     playerHealth.HitDamage(attackDamage, hit.gameObject);
+
+                    // Play the hit sound effect
+                    PlaySound(hitSound);
                 }
 
                 ApplyKnockback(hit);
@@ -86,16 +107,30 @@ public class BossAttack : MonoBehaviour
                 knockbackDirection = Vector2.up; // Default knockback direction if positions overlap
             }
 
-            StartCoroutine(InterpolateKnockback(playerRb, knockbackDirection));
+            // Adjust knockback distance to avoid walls
+            float adjustedKnockbackForce = GetAdjustedKnockbackDistance(playerRb.position, knockbackDirection);
+
+            StartCoroutine(InterpolateKnockback(playerRb, knockbackDirection, adjustedKnockbackForce));
         }
     }
 
-    private IEnumerator InterpolateKnockback(Rigidbody2D playerRb, Vector2 direction)
+    private float GetAdjustedKnockbackDistance(Vector2 startPosition, Vector2 direction)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(startPosition, direction, knockbackForce, LayerMask.GetMask("Walls"));
+        if (hit.collider != null)
+        {
+            // Reduce knockback distance to stop before the obstacle
+            return hit.distance;
+        }
+        return knockbackForce; // No obstacle, use full knockback force
+    }
+
+    private IEnumerator InterpolateKnockback(Rigidbody2D playerRb, Vector2 direction, float distance)
     {
         float knockbackDuration = 0.2f;
         float elapsedTime = 0f;
         Vector2 startPosition = playerRb.position;
-        Vector2 targetPosition = startPosition + direction * knockbackForce;
+        Vector2 targetPosition = startPosition + direction * distance;
 
         playerRb.linearVelocity = Vector2.zero;
 
@@ -114,4 +149,14 @@ public class BossAttack : MonoBehaviour
     {
         isPerformingSpecialAttack = isActive;
     }
+
+    private void PlaySound(AudioClip clip)
+    {
+        if (audioSource != null && clip != null)
+        {
+            audioSource.PlayOneShot(clip);
+        }
+    }
 }
+
+

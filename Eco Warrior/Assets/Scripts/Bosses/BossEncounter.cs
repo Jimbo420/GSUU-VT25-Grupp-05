@@ -125,6 +125,9 @@ public class BossEncounter : MonoBehaviour
         // Display the phase message in a chat bubble
         ShowChatBubble(phase.phaseMessage);
 
+        // Hide the chat bubble after 6 seconds
+        StartCoroutine(HideChatBubbleAfterDelay(6f));
+
         // Apply modifiers
         foreach (var modifier in phase.modifiers)
         {
@@ -160,6 +163,13 @@ public class BossEncounter : MonoBehaviour
             }
         }
     }
+
+    private IEnumerator HideChatBubbleAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        HideChatBubble();
+    }
+
 
     private void ApplyModifier(Modifier modifier)
     {
