@@ -42,17 +42,20 @@ public class EnemySpawner : MonoBehaviour
         }
         for (int i = 0; i < enemiesByLevel; i++)
         {
+            GameObject enemyInstance = Instantiate(_enemyPrefab, spawnPoint.transform.position, Quaternion.identity);
+
             if (_enemyLevel >= i)
             {
-                WeaponManager _weaponManager = _enemyPrefab.GetComponentInChildren<WeaponManager>();
-                var test = _weaponManager.GetWeapon(1);
-                //Debug.Log("Vapen: " + test);
-                _weaponManager.SwitchWeapon(test);
-                Instantiate(_enemyPrefab, spawnPoint.transform.position, Quaternion.identity);
-                
+                WeaponManager weaponManager = enemyInstance.GetComponentInChildren<WeaponManager>();
+                var weaponVisuals = enemyInstance.GetComponentInChildren<WeaponVisuals>();
+                if (weaponManager != null)
+                {
+                    var weapon = weaponManager.GetWeapon(1);
+                    weaponManager.SwitchWeapon(weapon);
+                    weaponVisuals.UpdateWeaponSprite();
 
-                //WeaponVisuals weaponVisuals = _enemyPrefab.GetComponentInChildren<WeaponVisuals>();
-                //weaponVisuals.UpdateWeaponSprite();
+                    Debug.Log("Spawnad fiende fick: " + weapon.name);
+                }
             }
             yield return new WaitForSeconds(5f);
         }
