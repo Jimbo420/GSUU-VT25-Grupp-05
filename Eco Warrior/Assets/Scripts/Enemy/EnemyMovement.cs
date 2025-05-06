@@ -14,6 +14,8 @@ public class EnemyMovement : MonoBehaviour
     [SerializeField] private float moveSpeed = 2f;
     [SerializeField] public float health = 0;
     [SerializeField] public float maxHealth = 25;
+    [SerializeField] private AudioSource footstepAudioSource;
+    [SerializeField] private AudioClip footstepClip;
 
     [SerializeField] private Vector2 patrolCordinates = new Vector2(5f, 7f);
     [SerializeField] private bool isPlayerInRange = false;
@@ -71,6 +73,7 @@ public class EnemyMovement : MonoBehaviour
         _animator.SetFloat("InputX", direction.x);
         _animator.SetFloat("InputY", direction.y);
         _animator.SetBool("isWalking", true);
+        PlayFootstepSound();
         _toolRotator.RotateTool( false, direction);
         
 
@@ -123,5 +126,14 @@ public class EnemyMovement : MonoBehaviour
     public void Dead()
     {
         Destroy(gameObject);
+    }
+
+    private void PlayFootstepSound()
+    {
+        if (footstepAudioSource != null && footstepClip != null && !footstepAudioSource.isPlaying)
+        {
+            footstepAudioSource.clip = footstepClip;
+            footstepAudioSource.Play();
+        }
     }
 }
