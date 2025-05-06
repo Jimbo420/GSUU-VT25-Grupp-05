@@ -466,14 +466,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPlayerInRange: 0
   WayPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 4508378624174280116, guid: 3407f7df024c19d43aceff71e2ecc5e5, type: 3}
+  - {fileID: 4222196037373548427, guid: 133f7fdf8f6413f4084b09fc8622750c, type: 3}
+  - {fileID: 3226704401872918182, guid: 919ec906db3371c4181d3159a74eeef0, type: 3}
+  - {fileID: 2144518660873342018, guid: 18c5e443a5bc4f648b7f8ef97776c255, type: 3}
+  - {fileID: 5443874525767788440, guid: 500a183aed170864a9c1115fdfa1344d, type: 3}
+  - {fileID: 8971991005278883177, guid: 22c7e841f321a744193d2be71dd0ab58, type: 3}
+  - {fileID: 2950438451924104656, guid: f8545b7994f9d3d43b8947c302b2fadc, type: 3}
+  - {fileID: 8920409968553945396, guid: 7ab496ebcc7bdd74ca8d6fe92c3eaaf6, type: 3}
   agent: {fileID: 0}
   enemy: {fileID: 0}
   isMakingSound: 0
@@ -886,7 +886,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -8910237529088113037, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

@@ -45,7 +45,7 @@ public class EnemySpawner : MonoBehaviour
             if (_enemyLevel >= i)
             {
                 WeaponManager _weaponManager = _enemyPrefab.GetComponentInChildren<WeaponManager>();
-                var test = _weaponManager.GetWeapon(0);
+                var test = _weaponManager.GetWeapon(1);
                 //Debug.Log("Vapen: " + test);
                 _weaponManager.SwitchWeapon(test);
                 Instantiate(_enemyPrefab, spawnPoint.transform.position, Quaternion.identity);
