@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class ChargeAttack : BossSpecialAttack
 {
+    private enum ChargeState { Idle, Charging, Paused }
+    private ChargeState currentState = ChargeState.Idle;
+
     [Header("Charge Attack Settings")]
     public float chargeDistance = 10f;
     public float chargeSpeed = 20f;
@@ -28,10 +31,16 @@ public class ChargeAttack : BossSpecialAttack
     private Transform player;
     private Animator animator;
     private BossAttack bossAttack;
-    private bool isCharging = false;
+
+    private Vector2 chargeDirection;
+    private float distanceCharged = 0f;
+    private float fireTrailTimer = 0f;
+    private float pauseTimer = 0f;
     private int remainingCharges = 0;
 
-    public bool IsCharging => isCharging; // Expose the isCharging field
+    private ObjectPool fireTrailPool; // Reference to the fire trail object pool
+
+    public bool IsCharging => currentState == ChargeState.Charging; // Expose the charging state
 
     private void Awake()
     {
@@ -43,8 +52,31 @@ public class ChargeAttack : BossSpecialAttack
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         {
-            //Debug.LogWarning("[ChargeAttack] No AudioSource found. Adding one dynamically.");
             audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        // Find or create the fire trail object pool
+        GameObject poolObject = new("FireTrailPool");
+        fireTrailPool = poolObject.AddComponent<ObjectPool>();
+        fireTrailPool.SetPrefab(fireTrailPrefab); // Set the prefab dynamically
+        fireTrailPool.SetInitialSize(10); // Set the initial pool size dynamically
+    }
+
+    private void Update()
+    {
+        switch (currentState)
+        {
+            case ChargeState.Idle:
+                // Wait for the charge to be triggered
+                break;
+
+            case ChargeState.Charging:
+                HandleCharging();
+                break;
+
+            case ChargeState.Paused:
+                HandlePause();
+                break;
         }
     }
 
@@ -55,7 +87,7 @@ public class ChargeAttack : BossSpecialAttack
 
     public bool HasChargesAvailable()
     {
-        return remainingCharges > 0 && !isCharging;
+        return remainingCharges > 0 && currentState == ChargeState.Idle;
     }
 
     public void PerformChargeIfAvailable()
@@ -68,18 +100,14 @@ public class ChargeAttack : BossSpecialAttack
 
     protected override void PerformAttack()
     {
-        if (isCharging || remainingCharges <= 0)
+        if (currentState != ChargeState.Idle || remainingCharges <= 0)
         {
-            //Debug.LogWarning("Charge attack cannot be performed right now.");
             return;
         }
 
-        //Debug.Log("Performing charge attack!");
-
-        // Play the charge sound
         PlayChargeSound();
 
-        Vector2 chargeDirection = (player.position - transform.position).normalized;
+        chargeDirection = (player.position - transform.position).normalized;
 
         if (animator != null)
         {
@@ -88,45 +116,67 @@ public class ChargeAttack : BossSpecialAttack
             animator.SetFloat(movementAnimationParameter, chargeSpeed);
         }
 
-        StartCoroutine(ChargeCoroutine(chargeDirection));
+        StartCharge();
     }
 
-    private System.Collections.IEnumerator ChargeCoroutine(Vector2 direction)
+    private void StartCharge()
     {
-        isCharging = true;
-        bossAttack.SetSpecialAttackActive(true);
+        currentState = ChargeState.Charging;
+        distanceCharged = 0f;
+        fireTrailTimer = 0f;
+        Debug.Log($"[ChargeAttack] Starting charge. Direction: {chargeDirection}");
+    }
 
-        float distanceCharged = 0f;
-        float fireTrailTimer = 0f;
-
-        while (distanceCharged < chargeDistance)
+    private void HandleCharging()
+    {
+        // Check for wall collision
+        if (IsWallInDirection(chargeDirection))
         {
-            if (IsWallInDirection(direction))
-            {
-                //Debug.Log("Charge stopped due to wall collision.");
-                break;
-            }
-
-            Vector3 movement = chargeSpeed * Time.deltaTime * direction;
-            transform.position += movement;
-            distanceCharged += movement.magnitude;
-
-            fireTrailTimer += Time.deltaTime;
-            if (fireTrailPrefab != null && fireTrailTimer >= fireTrailSpawnInterval)
-            {
-                SpawnFireTrail();
-                fireTrailTimer = 0f;
-            }
-
-            yield return null;
+            Debug.Log("[ChargeAttack] Charge stopped due to wall collision.");
+            EndCharge();
+            return;
         }
 
-        yield return new WaitForSeconds(pauseBetweenCharges);
+        // Move the boss
+        float moveDistance = chargeSpeed * Time.deltaTime;
+        Vector3 movement = moveDistance * (Vector3)chargeDirection;
+        transform.position += movement;
+        distanceCharged += moveDistance;
 
-        isCharging = false;
-        bossAttack.SetSpecialAttackActive(false);
+        Debug.Log($"[ChargeAttack] Moving. Distance charged: {distanceCharged}, Current position: {transform.position}");
+
+        // Spawn fire trail at intervals
+        fireTrailTimer += Time.deltaTime;
+        if (fireTrailPrefab != null && fireTrailTimer >= fireTrailSpawnInterval)
+        {
+            SpawnFireTrail();
+            fireTrailTimer = 0f;
+        }
+
+        // Check if charge distance is reached
+        if (distanceCharged >= chargeDistance)
+        {
+            Debug.Log("[ChargeAttack] Charge distance reached.");
+            EndCharge();
+        }
+    }
+
+    private void HandlePause()
+    {
+        pauseTimer += Time.deltaTime;
+        if (pauseTimer >= pauseBetweenCharges)
+        {
+            pauseTimer = 0f;
+            currentState = ChargeState.Idle;
+            Debug.Log("[ChargeAttack] Pause complete. Returning to Idle state.");
+        }
+    }
+
+    private void EndCharge()
+    {
+        currentState = ChargeState.Paused;
         remainingCharges--;
-        //Debug.Log("Charge attack completed.");
+        Debug.Log($"[ChargeAttack] Charge ended. Remaining charges: {remainingCharges}");
     }
 
     private void PlayChargeSound()
@@ -134,18 +184,12 @@ public class ChargeAttack : BossSpecialAttack
         if (chargeSound != null && audioSource != null)
         {
             audioSource.PlayOneShot(chargeSound);
-            //Debug.Log("[ChargeAttack] Playing charge sound.");
-        }
-        else
-        {
-            //Debug.LogWarning("[ChargeAttack] Charge sound or AudioSource is missing.");
         }
     }
 
     private void SpawnFireTrail()
     {
-        GameObject fireTrail = Instantiate(fireTrailPrefab, transform.position, Quaternion.identity);
-        Destroy(fireTrail, fireTrailLifetime);
+        GameObject fireTrail = fireTrailPool.GetFromPool(transform.position, Quaternion.identity);
 
         float randomScale = Random.Range(fireTrailMinScale, fireTrailMaxScale);
         fireTrail.transform.localScale = new Vector3(randomScale, randomScale, randomScale);
@@ -155,6 +199,15 @@ public class ChargeAttack : BossSpecialAttack
             float randomRotation = Random.Range(-30f, 30f);
             fireTrail.transform.Rotate(0f, 0f, randomRotation);
         }
+
+        // Return the fire trail to the pool after its lifetime
+        StartCoroutine(ReturnFireTrailToPool(fireTrail, fireTrailLifetime));
+    }
+
+    private System.Collections.IEnumerator ReturnFireTrailToPool(GameObject fireTrail, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        fireTrailPool.ReturnToPool(fireTrail);
     }
 
     private bool IsWallInDirection(Vector2 direction)

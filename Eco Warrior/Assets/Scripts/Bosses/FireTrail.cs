@@ -102,11 +102,11 @@ public class FireTrail : MonoBehaviour
             {
                 healthbar.HitDamage(damage, target);
                 PlayDamageSound();
-                Debug.Log($"Fire Trail damaged {target.name} for {damage} HP.");
+                //Debug.Log($"Fire Trail damaged {target.name} for {damage} HP.");
             }
             else
             {
-                Debug.LogWarning($"Fire Trail hit {target.name}, but it does not have a HealthbarBehavior.");
+                //Debug.LogWarning($"Fire Trail hit {target.name}, but it does not have a HealthbarBehavior.");
             }
         }
     }
@@ -119,7 +119,7 @@ public class FireTrail : MonoBehaviour
         }
         else if (damageSound == null)
         {
-            Debug.LogWarning("DamageSound is not assigned.");
+            //Debug.LogWarning("DamageSound is not assigned.");
         }
     }
 }

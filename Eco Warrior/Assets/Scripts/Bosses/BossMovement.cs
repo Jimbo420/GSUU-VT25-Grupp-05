@@ -99,7 +99,7 @@ public class BossMovement : MonoBehaviour
     }
 
     /// <summary>
-    /// Forces Gus to face a specific direction (e.g., toward the player).
+    /// Forces the boss to face a specific direction (e.g., toward the player).
     /// </summary>
     public void FaceDirection(Vector3 direction)
     {
