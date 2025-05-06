@@ -24,21 +24,31 @@ public class ToolRotator : MonoBehaviour
         }
         else
         {
-            if (movement == Vector2.zero) return;
-            direction = movement;
+            direction = movement == Vector2.zero ? Vector2.right : movement;
         }
 
+        ApplyRotation(direction);
+    }
+
+
+    public void RotateToolTowards(Vector2 worldPosition)
+    {
+        Vector2 direction = (worldPosition - (Vector2)_toolTransform.position);
+        ApplyRotation(direction);
+    }
+
+
+    private void ApplyRotation(Vector2 direction)
+    {
+        if (direction == Vector2.zero) return;
 
         direction.Normalize();
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        // Rotate weapon based on angle
-        _toolTransform.localEulerAngles = new Vector3(0f, 0f, angle);
 
+        _toolTransform.localEulerAngles = new Vector3(0f, 0f, angle);
         _toolSpriteRenderer.flipY = direction.x < 0;
 
         _toolSpriteRenderer.sprite = GetComponentInChildren<WeaponManager>().CurrentWeapon.WeaponSprite;
-
-        
         GetComponentInChildren<WeaponVisuals>().UpdateWeaponOrientation(direction.x, direction.y);
     }
 }
