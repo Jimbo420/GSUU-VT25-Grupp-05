@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      outro-scene3-pixel_0: 4893872132704860549
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
