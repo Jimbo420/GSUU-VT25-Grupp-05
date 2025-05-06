@@ -36,18 +36,24 @@ public class EnemySpawner : MonoBehaviour
     {
         int enemiesByLevel = EnemySpawnerList.Where(a => a.Key == _enemyLevel).Select(b => b.Value).FirstOrDefault();
         var spawnPoint = GameObject.FindWithTag("EnemySpawnWaypoint");
+        if ( spawnPoint == null)
+        {
+            Debug.Log("NUll spawnpoint");
+        }
         for (int i = 0; i < enemiesByLevel; i++)
         {
             if (_enemyLevel >= i)
             {
                 WeaponManager _weaponManager = _enemyPrefab.GetComponentInChildren<WeaponManager>();
-                _weaponManager.GetWeapon(1);
-                _weaponManager.EquipWeapon(1);
+                var test = _weaponManager.GetWeapon(0);
+                //Debug.Log("Vapen: " + test);
+                _weaponManager.SwitchWeapon(test);
+                Instantiate(_enemyPrefab, spawnPoint.transform.position, Quaternion.identity);
+                
 
-                WeaponVisuals weaponVisuals = _enemyPrefab.GetComponentInChildren<WeaponVisuals>();
-                weaponVisuals.UpdateWeaponSprite();
+                //WeaponVisuals weaponVisuals = _enemyPrefab.GetComponentInChildren<WeaponVisuals>();
+                //weaponVisuals.UpdateWeaponSprite();
             }
-            Instantiate(_enemyPrefab, spawnPoint.transform.position, Quaternion.identity);
             yield return new WaitForSeconds(5f);
         }
     }

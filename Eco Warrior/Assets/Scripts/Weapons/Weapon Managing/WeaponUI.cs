@@ -11,10 +11,17 @@ public class WeaponUI : MonoBehaviour
     private WeaponManager _weaponManager;
     void Awake()
     {
+        Initialize();
+    }
+
+    private void Initialize()
+    {
+        _ammoText = GameObject.Find("Text (TMP)").GetComponent<TMP_Text>();
         _weaponManager = GetComponent<WeaponManager>();
     }
     public void UpdateAmmunition()
     {
+        Initialize();
         if (_weaponManager.CurrentWeapon.HasUnlimitedAmmo)
         {
             _ammoText.text = "\u221e/\u221e";

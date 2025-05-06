@@ -56,7 +56,7 @@ public class WeaponManager : MonoBehaviour
         // CurrentWeapon = tag.WeaponData;
         // GetComponent<WeaponVisuals>().UpdateWeaponSprite();
         // GetComponent<WeaponVisuals>().UpdateWeaponAndGunHolderPosition(1,0);
-        // GetComponent<WeaponUI>().UpdateAmmunition();
+        GetComponent<WeaponUI>().UpdateAmmunition();
     }
 
     public void SwitchWeapon(WeaponData weapon)
@@ -64,7 +64,7 @@ public class WeaponManager : MonoBehaviour
         CurrentWeapon = weapon;
         GetComponent<WeaponVisuals>().UpdateWeaponSprite();
         GetComponent<WeaponVisuals>().UpdateWeaponAndGunHolderPosition(1,0);
-        GetComponent<WeaponUI>().UpdateAmmunition();
+        //GetComponent<WeaponUI>().UpdateAmmunition();
     }
 
     

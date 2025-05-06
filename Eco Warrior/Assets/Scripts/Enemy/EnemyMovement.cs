@@ -72,7 +72,7 @@ public class EnemyMovement : MonoBehaviour
         if (targetPlayer.PlayerIsInRangeOfEnemy() || isMakingSound)
         {
             agent.autoBraking = false;
-            if(isMakingSound)
+            if(isMakingSound && targetPlayer.player != null)
                 currentTarget = targetPlayer.player.position;
             agent.SetDestination(currentTarget);
             agent.speed = 3.5f;

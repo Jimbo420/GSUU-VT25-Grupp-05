@@ -11,18 +11,22 @@ public class WeaponVisuals : MonoBehaviour
 
     void Awake()
     {
+        Test();
+    }
+
+    private void Test()
+    {
         _weaponManager = GetComponent<WeaponManager>();
         _toolSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
         _toolRotator = GetComponentInParent<ToolRotator>();
-
     }
-
     public ToolRotator GetToolRotator() => _toolRotator;
     /// <summary>
     /// When switching weapon, the sprite needs to be updated
     /// </summary>
     public void UpdateWeaponSprite()
     {
+        Test();
         _toolSpriteRenderer.sprite = _weaponManager.CurrentWeapon.WeaponSprite;
     }
 

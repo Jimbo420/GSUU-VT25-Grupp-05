@@ -464,8 +464,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46f2aba6dc50e4a418cd341e91ae983a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 0
-  maxHealth: 25
   isPlayerInRange: 0
   WayPoints:
   - {fileID: 0}
@@ -804,7 +802,6 @@ MonoBehaviour:
   fillImage: {fileID: 0}
   low: {r: 0.78113204, g: 0, b: 0, a: 1}
   high: {r: 0.2819624, g: 1, b: 0, a: 1}
-  _maxHealth: 25
 --- !u!1001 &6398352840768424385
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -821,21 +818,41 @@ PrefabInstance:
       propertyPath: footstepsClip
       value: 
       objectReference: {fileID: 8300000, guid: 07e1735015d2e554b979b994c1083326, type: 3}
-    - target: {fileID: 4744151850079952380, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
-      propertyPath: _availableWeapons.Array.size
+    - target: {fileID: 1305116028389749354, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
+      propertyPath: m_Size.x
+      value: 0.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 1305116028389749354, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
+      propertyPath: m_Size.y
+      value: 0.675
+      objectReference: {fileID: 0}
+    - target: {fileID: 1305116028389749354, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -6245521357957070891, guid: c28245bb415483c4785987c1424ff87f, type: 3}
+    - target: {fileID: 1305116028389749354, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
+      propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4744151850079952380, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
+      propertyPath: _availableWeapons.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4744151850079952380, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
+      propertyPath: '_availableWeapons.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: a454931c5fb4232419d1490316f7fbb7, type: 2}
     - target: {fileID: 6037138791799478460, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
       propertyPath: m_Name
       value: GunHolder
       objectReference: {fileID: 0}
     - target: {fileID: 7814952413028638817, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.2
       objectReference: {fileID: 0}
     - target: {fileID: 7814952413028638817, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7814952413028638817, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
       propertyPath: m_LocalPosition.z
