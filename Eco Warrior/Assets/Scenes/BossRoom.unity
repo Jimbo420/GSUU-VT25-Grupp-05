@@ -2763,6 +2763,22 @@ Transform:
   - {fileID: 739395829}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1624102877 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5594314462798537593, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
+  m_PrefabInstance: {fileID: 2127000244}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1687479665 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2708377371694794006, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
+  m_PrefabInstance: {fileID: 2127000244}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1817479747
 GameObject:
   m_ObjectHideFlags: 0
@@ -2990,10 +3006,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 869970493285833274, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
+      propertyPath: _healthbar
+      value: 
+      objectReference: {fileID: 1687479665}
+    - target: {fileID: 869970493285833274, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
+      propertyPath: _firePointTransform
+      value: 
+      objectReference: {fileID: 1624102877}
     - target: {fileID: 4352453264094158474, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4437951985315232002, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 450605378}
     - target: {fileID: 7317319118178472923, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

@@ -11,15 +11,23 @@ public class FireTrail : MonoBehaviour
 
     [Header("Audio Settings")]
     [SerializeField] private AudioClip damageSound; // Sound effect for damage
-    [SerializeField] private AudioSource audioSource; // AudioSource to play the sound
+    private AudioSource audioSource; // Dynamically added AudioSource
 
-    // Static variable to track the last time damage was applied globally
-    private static float lastGlobalDamageTime = -Mathf.Infinity;
+    // Static dictionary to track the last time damage was applied globally for each target
+    private static readonly Dictionary<GameObject, float> globalDamageTimers = new();
 
     private void Start()
     {
         // Destroy the fire trail after its lifetime expires
         Destroy(gameObject, lifetime);
+
+        // Dynamically add an AudioSource if it doesn't exist
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false; // Ensure it doesn't play on awake
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -42,14 +50,19 @@ public class FireTrail : MonoBehaviour
             return; // Skip if the target is not the player
         }
 
-        // Check if enough time has passed since the last global damage
-        if (Time.time < lastGlobalDamageTime + damageInterval)
+        // Check if enough time has passed since the last damage for this target globally
+        if (!globalDamageTimers.TryGetValue(target, out float lastDamageTime))
         {
-            return; // Skip damage if the global cooldown hasn't elapsed
+            lastDamageTime = -Mathf.Infinity; // Default to a very old time if not found
         }
 
-        // Update the last global damage time
-        lastGlobalDamageTime = Time.time;
+        if (Time.time < lastDamageTime + damageInterval)
+        {
+            return; // Skip damage if the cooldown hasn't elapsed for this target
+        }
+
+        // Update the last damage time for this target globally
+        globalDamageTimers[target] = Time.time;
 
         // Attempt to apply damage through HealthbarBehavior
         HealthbarBehavior healthbar = target.GetComponentInChildren<HealthbarBehavior>();
@@ -67,20 +80,14 @@ public class FireTrail : MonoBehaviour
 
     private void PlayDamageSound()
     {
-        if (audioSource == null)
-        {
-            // Dynamically add an AudioSource if none exists
-            audioSource = gameObject.AddComponent<AudioSource>();
-            audioSource.playOnAwake = false; // Ensure it doesn't play on awake
-        }
-
-        if (damageSound != null)
+        if (audioSource != null && damageSound != null)
         {
             audioSource.PlayOneShot(damageSound);
         }
-        else
+        else if (damageSound == null)
         {
             Debug.LogWarning("DamageSound is not assigned.");
         }
     }
 }
+
