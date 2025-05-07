@@ -28,7 +28,7 @@ public class DestroyPump : MonoBehaviour, IDestroy
     }
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (_isDestroyed) return;
+        if (_isDestroyed || !other.CompareTag("Player")) return;
         textObject.SetActive(true);
         _isInRange = true;
     }
