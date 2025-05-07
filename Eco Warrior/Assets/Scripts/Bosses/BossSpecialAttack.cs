@@ -15,7 +15,7 @@ public abstract class BossSpecialAttack : MonoBehaviour
     {
         if (isOnCooldown)
         {
-            Debug.LogWarning("Special attack is on cooldown.");
+            //Debug.LogWarning("Special attack is on cooldown.");
             return;
         }
 

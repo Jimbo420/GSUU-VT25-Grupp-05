@@ -24,6 +24,6 @@ public class GasCanBehavior : MonoBehaviour
             Instantiate(explosionEffect, transform.position, Quaternion.identity);
         }
 
-        Debug.Log("Gas can exploded!");
+        //Debug.Log("Gas can exploded!");
     }
 }
