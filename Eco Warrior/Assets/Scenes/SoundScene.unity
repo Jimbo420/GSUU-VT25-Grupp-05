@@ -10620,6 +10620,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1127844958736885484, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
+      propertyPath: _clipSource
+      value: 
+      objectReference: {fileID: 1715595687}
+    - target: {fileID: 1127844958736885484, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
       propertyPath: footstepsSource
       value: 
       objectReference: {fileID: 1715595688}
@@ -11381,6 +11385,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2895968495781537354, guid: 71704a5bcb4e09848939c4211ca144e4, type: 3}
   m_PrefabInstance: {fileID: 41735475}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1563992932 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5443874525767788440, guid: 500a183aed170864a9c1115fdfa1344d, type: 3}
+  m_PrefabInstance: {fileID: 2494179293791991727}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1583963899 stripped
 Transform:
@@ -12846,11 +12855,6 @@ MonoBehaviour:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2895968495781537354, guid: 71704a5bcb4e09848939c4211ca144e4, type: 3}
   m_PrefabInstance: {fileID: 1761096582}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &1942794899 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 9141103611147217711, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
-  m_PrefabInstance: {fileID: 1274364938}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1962643745
 PrefabInstance:
@@ -16174,6 +16178,7 @@ Transform:
   - {fileID: 2144518662390648625}
   - {fileID: 2144518661338593681}
   - {fileID: 1537473063}
+  - {fileID: 1563992932}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2072500531
@@ -16627,6 +16632,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1881127891262528650, guid: 4513ece0291abcd418fa0306cbeb7f42, type: 3}
+      propertyPath: _clipSource
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2517438029553693768, guid: 4513ece0291abcd418fa0306cbeb7f42, type: 3}
       propertyPath: 'WayPoints.Array.data[0]'
       value: 
@@ -16944,11 +16953,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 133f7fdf8f6413f4084b09fc8622750c, type: 3}
---- !u!1 &9066255831987755567 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6741484369400043932, guid: 4513ece0291abcd418fa0306cbeb7f42, type: 3}
-  m_PrefabInstance: {fileID: 5416413055396311494}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -16967,7 +16971,5 @@ SceneRoots:
   - {fileID: 1265949406}
   - {fileID: 649227103}
   - {fileID: 1902875044}
-  - {fileID: 697074649}
   - {fileID: 1596508426}
   - {fileID: 1715595689}
-  - {fileID: 1902875044}
