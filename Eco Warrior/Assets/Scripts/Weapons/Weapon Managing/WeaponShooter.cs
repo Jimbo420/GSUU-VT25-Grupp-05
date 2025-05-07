@@ -66,16 +66,5 @@ public class WeaponShooter : MonoBehaviour
         foreach (var weapon in weapons)
             if (weapon.WeaponType is not WeaponData.TypeOfWeapon.MachineGun)
                 weapon.CurrentAmmunition = weapon.MaxAmmunition;
-            
-        
     }
-
-    //public void Play()
-    //{
-    //    footstepsSource.PlayOneShot(footstepsClip);
-    //    if (transform.parent.gameObject.tag.Contains("Player"))
-    //    {
-    //        GetComponentInParent<SoundEmitter>().MakeSound(7f);
-    //    }
-    //}
 }

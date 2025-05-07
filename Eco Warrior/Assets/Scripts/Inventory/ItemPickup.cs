@@ -3,6 +3,7 @@ using UnityEngine;
 public class ItemPickup : MonoBehaviour
 {
     private AudioSource _reloadSource;
+    //[SerializeField] GameObject weaponPrefab;
     void OnTriggerEnter2D(Collider2D other)
     {
         if (gameObject.CompareTag("Ammo"))
@@ -25,7 +26,18 @@ public class ItemPickup : MonoBehaviour
         }
         else if (gameObject.CompareTag("Weapon"))
         {
-            Debug.Log("Picked up Weapon");
+            InventoryController inventory = FindFirstObjectByType<InventoryController>();
+            if (inventory == null) return;
+
+            GameObject addedItem = inventory.TryAddItem(gameObject);
+            if (addedItem == null) return;
+
+            WeaponTag weapon = addedItem.GetComponent<WeaponTag>();
+            if (weapon != null && weapon.WeaponData.WeaponType == WeaponData.TypeOfWeapon.MachineGun)
+                weapon.WeaponData.CurrentAmmunition = 500;
+                
+
+            Destroy(gameObject);
         }
     }
     void Awake()
