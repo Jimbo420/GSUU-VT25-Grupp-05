@@ -78,7 +78,7 @@ public class BossEncounter : MonoBehaviour
     private IEnumerator FirstEncounterRoutine()
     {
         // Lock movement during the first encounter dialogue
-        Debug.Log("First encounter started.");
+        //Debug.Log("First encounter started.");
         movement.enabled = false;
 
         // Display the first encounter dialogue using a chat bubble
@@ -119,11 +119,14 @@ public class BossEncounter : MonoBehaviour
     private void TriggerPhase(int phaseIndex)
     {
         BossPhase phase = phases[phaseIndex];
-        Debug.Log($"Phase {phaseIndex + 1} triggered: {phase.phaseMessage}");
+        //Debug.Log($"Phase {phaseIndex + 1} triggered: {phase.phaseMessage}");
         phaseTriggered[phaseIndex] = true;
 
         // Display the phase message in a chat bubble
         ShowChatBubble(phase.phaseMessage);
+
+        // Hide the chat bubble after 6 seconds
+        StartCoroutine(HideChatBubbleAfterDelay(6f));
 
         // Apply modifiers
         foreach (var modifier in phase.modifiers)
@@ -154,12 +157,19 @@ public class BossEncounter : MonoBehaviour
                     }
                     else
                     {
-                        Debug.LogWarning("No custom spawn points defined for this phase.");
+                        //Debug.LogWarning("No custom spawn points defined for this phase.");
                     }
                     break;
             }
         }
     }
+
+    private IEnumerator HideChatBubbleAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        HideChatBubble();
+    }
+
 
     private void ApplyModifier(Modifier modifier)
     {
@@ -172,20 +182,26 @@ public class BossEncounter : MonoBehaviour
                 transform.localScale *= modifier.value;
                 break;
             default:
-                Debug.LogWarning($"Unknown modifier key: {modifier.key}");
+                //Debug.LogWarning($"Unknown modifier key: {modifier.key}");
                 break;
         }
     }
-
     private void ShowChatBubble(string message)
     {
+        // Destroy the old chat bubble if it exists
+        if (activeChatBubble != null)
+        {
+            Destroy(activeChatBubble);
+            activeChatBubble = null;
+        }
+
         if (chatBubblePrefab == null || chatBubbleParent == null)
         {
             Debug.LogWarning("Chat bubble prefab or parent is not assigned.");
             return;
         }
 
-        // Instantiate the chat bubble
+        // Instantiate the new chat bubble
         activeChatBubble = Instantiate(chatBubblePrefab, chatBubbleParent);
         var textComponent = activeChatBubble.GetComponentInChildren<TMPro.TextMeshProUGUI>();
         if (textComponent != null)
@@ -211,7 +227,7 @@ public class BossEncounter : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("No special attack assigned to the boss.");
+            //Debug.LogWarning("No special attack assigned to the boss.");
         }
     }
 }

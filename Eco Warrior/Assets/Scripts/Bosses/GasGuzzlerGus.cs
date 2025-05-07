@@ -47,7 +47,7 @@ public class GasGuzzlerGus : MonoBehaviour
             return; // Stop all logic if the boss is dead
 
         // Debug the gasCanMoveSpeedMultiplier value
-        Debug.Log($"[GasGuzzlerGus] Current gasCanMoveSpeedMultiplier: {gasCanMoveSpeedMultiplier}");
+        //Debug.Log($"[GasGuzzlerGus] Current gasCanMoveSpeedMultiplier: {gasCanMoveSpeedMultiplier}");
 
         // Check if the encounter should start
         if (!encounter.IsEncounterActive && Vector2.Distance(transform.position, player.position) < encounter.encounterStartDistance)
@@ -75,7 +75,7 @@ public class GasGuzzlerGus : MonoBehaviour
         // Skip gas can behavior if Gus is in the middle of a special attack
         if (chargeAttack != null && chargeAttack.IsCharging)
         {
-            Debug.Log("[GasGuzzlerGus] Skipping gas can behavior because Gus is performing a special attack.");
+            //Debug.Log("[GasGuzzlerGus] Skipping gas can behavior because Gus is performing a special attack.");
             return;
         }
 
@@ -93,7 +93,7 @@ public class GasGuzzlerGus : MonoBehaviour
             // Apply the gas can speed multiplier directly
             movement.SetTemporaryMoveSpeed(movement.moveSpeed * gasCanMoveSpeedMultiplier);
 
-            Debug.Log($"[GasGuzzlerGus] Moving toward gas can. Target position: {currentGasCanTarget.position}, Speed: {movement.moveSpeed}");
+            //Debug.Log($"[GasGuzzlerGus] Moving toward gas can. Target position: {currentGasCanTarget.position}, Speed: {movement.moveSpeed}");
 
             // Check if Gus is close enough to pick up the gas can
             if (Vector2.Distance(transform.position, currentGasCanTarget.position) <= gasCanPickupDistance)
@@ -137,7 +137,7 @@ public class GasGuzzlerGus : MonoBehaviour
     /// </summary>
     private void PickUpGasCan()
     {
-        Debug.Log("[GasGuzzlerGus] Gus picked up a gas can!");
+        //Debug.Log("[GasGuzzlerGus] Gus picked up a gas can!");
 
         // Trigger the charge attack logic
         if (chargeAttack != null)
@@ -167,7 +167,7 @@ public class GasGuzzlerGus : MonoBehaviour
             // Trigger the charge attack if the player is within a specific range
             if (distanceToPlayer > attack.attackRange && distanceToPlayer <= chargeAttack.chargeDistance)
             {
-                Debug.Log("[GasGuzzlerGus] Triggering charge attack toward player.");
+                //Debug.Log("[GasGuzzlerGus] Triggering charge attack toward player.");
                 chargeAttack.PerformChargeIfAvailable();
             }
         }

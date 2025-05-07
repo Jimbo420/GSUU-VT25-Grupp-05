@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,61 +6,122 @@ public class FireTrail : MonoBehaviour
 {
     [Header("Damage Settings")]
     [SerializeField] private float damage = 2f; // Damage dealt to the player
-    [SerializeField] private float damageCooldown = 0.5f; // Cooldown time between damage
+    [SerializeField] private float damageInterval = 0.5f; // Time interval between damage applications
+    [SerializeField] private float lifetime = 5f; // Lifetime of the fire trail before it disappears
 
-    // Static dictionary to track the last damage time for each player
-    private static readonly Dictionary<GameObject, float> playerDamageTimers = new();
+    [Header("Audio Settings")]
+    [SerializeField] private AudioClip damageSound; // Sound effect for damage
+    private AudioSource audioSource; // Dynamically added AudioSource
+
+    // Static dictionary to track the last time damage was applied globally for each target
+    private static readonly Dictionary<GameObject, float> globalDamageTimers = new();
+    private readonly Dictionary<GameObject, Coroutine> activeCoroutines = new();
+
+    private void Awake()
+    {
+        // Clear the static dictionary when the game starts
+        globalDamageTimers.Clear();
+    }
+
+    private void Start()
+    {
+        // Destroy the fire trail after its lifetime expires
+        Destroy(gameObject, lifetime);
+
+        // Dynamically add an AudioSource if it doesn't exist
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+            audioSource.playOnAwake = false; // Ensure it doesn't play on awake
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player"))
+        if (IsValidTarget(other.gameObject))
         {
-            ApplyDamage(other);
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            ApplyDamage(other);
-        }
-    }
-
-    private void ApplyDamage(Collider2D playerCollider)
-    {
-        GameObject playerObject = playerCollider.gameObject;
-
-        // Get the last damage time for this player
-        if (!playerDamageTimers.TryGetValue(playerObject, out float lastDamageTime))
-        {
-            lastDamageTime = -Mathf.Infinity; // Default to a very old time if not found
-        }
-
-        // Check if enough time has passed since the last damage
-        if (Time.time >= lastDamageTime + damageCooldown)
-        {
-            // Locate the HealthbarBehavior component on the player or its children
-            HealthbarBehavior playerHealth = playerObject.GetComponentInChildren<HealthbarBehavior>();
-            if (playerHealth != null)
+            InitializeDamageTimer(other.gameObject);
+            if (!activeCoroutines.ContainsKey(other.gameObject))
             {
-                // Apply damage to the player through the health bar
-                playerHealth.HitDamage(damage, gameObject);
+                Coroutine coroutine = StartCoroutine(ApplyPeriodicDamage(other.gameObject));
+                activeCoroutines[other.gameObject] = coroutine;
+            }
+        }
+    }
 
-                // Update the last damage time for this player
-                playerDamageTimers[playerObject] = Time.time;
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (IsValidTarget(other.gameObject) && activeCoroutines.ContainsKey(other.gameObject))
+        {
+            StopCoroutine(activeCoroutines[other.gameObject]);
+            activeCoroutines.Remove(other.gameObject);
+        }
+    }
 
-                Debug.Log($"Fire Trail damaged the player for {damage} HP at time {Time.time}.");
+    private bool IsValidTarget(GameObject target)
+    {
+        // Ensure the target is valid (e.g., not the boss itself)
+        return target.CompareTag("Player");
+    }
+
+    private void InitializeDamageTimer(GameObject target)
+    {
+        if (!globalDamageTimers.ContainsKey(target))
+        {
+            globalDamageTimers[target] = -Mathf.Infinity; // Set to a very old time
+        }
+    }
+
+    private IEnumerator ApplyPeriodicDamage(GameObject target)
+    {
+        // Apply damage immediately
+        ApplyDamage(target);
+
+        while (true)
+        {
+            // Wait for the next damage interval
+            yield return new WaitForSeconds(damageInterval);
+
+            // Apply damage periodically
+            ApplyDamage(target);
+        }
+    }
+
+    private void ApplyDamage(GameObject target)
+    {
+        // Check if enough time has passed since the last damage for this target
+        if (Time.time >= globalDamageTimers[target] + damageInterval)
+        {
+            // Update the last damage time for this target
+            globalDamageTimers[target] = Time.time;
+
+            // Attempt to apply damage through HealthbarBehavior
+            HealthbarBehavior healthbar = target.GetComponentInChildren<HealthbarBehavior>();
+            if (healthbar != null)
+            {
+                healthbar.HitDamage(damage, target);
+                PlayDamageSound();
+                //Debug.Log($"Fire Trail damaged {target.name} for {damage} HP.");
             }
             else
             {
-                Debug.LogWarning("Player does not have a HealthbarBehavior component.");
+                //Debug.LogWarning($"Fire Trail hit {target.name}, but it does not have a HealthbarBehavior.");
             }
         }
-        else
+    }
+
+    private void PlayDamageSound()
+    {
+        if (audioSource != null && damageSound != null)
         {
-            Debug.Log($"Damage skipped for player. Current time: {Time.time}, next allowed damage time: {lastDamageTime + damageCooldown}.");
+            audioSource.PlayOneShot(damageSound);
+        }
+        else if (damageSound == null)
+        {
+            //Debug.LogWarning("DamageSound is not assigned.");
         }
     }
 }
+
 

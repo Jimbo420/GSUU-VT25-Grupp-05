@@ -53,13 +53,13 @@ public class BossSpawner : MonoBehaviour
     {
         if (prefab == null)
         {
-            Debug.LogWarning("SpawnObjects called with a null prefab.");
+            //Debug.LogWarning("SpawnObjects called with a null prefab.");
             return;
         }
 
         if (spawnPoints == null || spawnPoints.Count == 0)
         {
-            Debug.LogWarning("No spawn points available for spawning.");
+            //Debug.LogWarning("No spawn points available for spawning.");
             return;
         }
 
@@ -71,7 +71,7 @@ public class BossSpawner : MonoBehaviour
                 if (spawnPoint != null)
                 {
                     Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
-                    Debug.Log($"Spawned {prefab.name} at {spawnPoint.position}.");
+                    //Debug.Log($"Spawned {prefab.name} at {spawnPoint.position}.");
                 }
             }
         }
@@ -84,7 +84,7 @@ public class BossSpawner : MonoBehaviour
                 if (randomSpawnPoint != null)
                 {
                     Instantiate(prefab, randomSpawnPoint.position, randomSpawnPoint.rotation);
-                    Debug.Log($"Spawned {prefab.name} at {randomSpawnPoint.position}.");
+                    //Debug.Log($"Spawned {prefab.name} at {randomSpawnPoint.position}.");
                 }
             }
         }
@@ -117,13 +117,13 @@ public class BossSpawner : MonoBehaviour
     {
         if (isSpawning)
         {
-            Debug.LogWarning("Spawning is already active.");
+            //Debug.LogWarning("Spawning is already active.");
             return;
         }
 
         if (prefab == null)
         {
-            Debug.LogWarning("StartSpawning called with a null prefab.");
+            //Debug.LogWarning("StartSpawning called with a null prefab.");
             return;
         }
 

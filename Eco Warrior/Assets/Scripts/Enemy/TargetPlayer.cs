@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 public class TargetPlayer : MonoBehaviour
 {
-    private float stopDistance = 3f;
+    private float stopDistance = 2f;
     private float rangeBetween = 10f;
     private float distance;
     private float viewDistance = 5f;
@@ -78,6 +78,8 @@ public class TargetPlayer : MonoBehaviour
             enemyMovement.SetTarget(player.position);
             enemyMovement.Walk();
         }
+        else
+            enemyMovement.agent.velocity = Vector3.zero;
         if (!(Time.time >= _nextFireTime)) return;
         _weaponShooter.Shoot();
         _nextFireTime = Time.time + (1f / _weaponManager.CurrentWeapon.FireRate);

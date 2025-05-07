@@ -35,11 +35,15 @@ public class HealthbarBehavior : MonoBehaviour
         slider.maxValue = maxhealth;
         slider.value = health;
     }
-
+    public void Heal()
+    {
+        _health = _maxHealth;
+        Health(_health, _maxHealth);
+    }
     public void HitDamage(float damage, GameObject entity)
     {
         _health -= damage;
-        Debug.Log("Damage: " + damage);
+        //Debug.Log("Damage: " + damage);
         Health(_health, _maxHealth);
         if (_health <= 0)
             Destroy(entity);
