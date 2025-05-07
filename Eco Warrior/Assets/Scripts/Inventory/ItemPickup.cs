@@ -7,7 +7,6 @@ public class ItemPickup : MonoBehaviour
     {
         if (gameObject.CompareTag("Ammo"))
         {
-            Debug.Log("Ammo Picked up");    
             if (!other.gameObject.CompareTag("Player")) return;
             WeaponUI weaponUI = other.GetComponentInChildren<WeaponUI>();
             WeaponShooter weaponShooter= other.GetComponentInChildren<WeaponShooter>();
@@ -18,8 +17,11 @@ public class ItemPickup : MonoBehaviour
         }
         else if (gameObject.CompareTag("Health"))
         {
-            Debug.Log("Health Picked up");
             if (!other.gameObject.CompareTag("Player")) return;
+            HealthbarBehavior healthbar = other.GetComponentInChildren<HealthbarBehavior>();
+            if (healthbar == null) return;
+            healthbar.Heal();
+            Destroy(gameObject);
         }
         else if (gameObject.CompareTag("Weapon"))
         {

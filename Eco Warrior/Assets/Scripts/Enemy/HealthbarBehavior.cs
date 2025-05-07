@@ -35,7 +35,11 @@ public class HealthbarBehavior : MonoBehaviour
         slider.maxValue = maxhealth;
         slider.value = health;
     }
-
+    public void Heal()
+    {
+        _health = _maxHealth;
+        Health(_health, _maxHealth);
+    }
     public void HitDamage(float damage, GameObject entity)
     {
         _health -= damage;
