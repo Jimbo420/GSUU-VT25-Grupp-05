@@ -15,6 +15,13 @@ public class FireTrail : MonoBehaviour
 
     // Static dictionary to track the last time damage was applied globally for each target
     private static readonly Dictionary<GameObject, float> globalDamageTimers = new();
+    private readonly Dictionary<GameObject, Coroutine> activeCoroutines = new();
+
+    private void Awake()
+    {
+        // Clear the static dictionary when the game starts
+        globalDamageTimers.Clear();
+    }
 
     private void Start()
     {
@@ -32,50 +39,76 @@ public class FireTrail : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        ApplyDamage(other);
+        if (IsValidTarget(other.gameObject))
+        {
+            InitializeDamageTimer(other.gameObject);
+            if (!activeCoroutines.ContainsKey(other.gameObject))
+            {
+                Coroutine coroutine = StartCoroutine(ApplyPeriodicDamage(other.gameObject));
+                activeCoroutines[other.gameObject] = coroutine;
+            }
+        }
     }
 
-    private void OnTriggerStay2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other)
     {
-        ApplyDamage(other);
+        if (IsValidTarget(other.gameObject) && activeCoroutines.ContainsKey(other.gameObject))
+        {
+            StopCoroutine(activeCoroutines[other.gameObject]);
+            activeCoroutines.Remove(other.gameObject);
+        }
     }
 
-    private void ApplyDamage(Collider2D other)
+    private bool IsValidTarget(GameObject target)
     {
-        GameObject target = other.gameObject;
-
         // Ensure the target is valid (e.g., not the boss itself)
-        if (!target.CompareTag("Player"))
+        return target.CompareTag("Player");
+    }
+
+    private void InitializeDamageTimer(GameObject target)
+    {
+        if (!globalDamageTimers.ContainsKey(target))
         {
-            return; // Skip if the target is not the player
+            globalDamageTimers[target] = -Mathf.Infinity; // Set to a very old time
         }
+    }
 
-        // Check if enough time has passed since the last damage for this target globally
-        if (!globalDamageTimers.TryGetValue(target, out float lastDamageTime))
+    private IEnumerator ApplyPeriodicDamage(GameObject target)
+    {
+        // Apply damage immediately
+        ApplyDamage(target);
+
+        while (true)
         {
-            lastDamageTime = -Mathf.Infinity; // Default to a very old time if not found
-        }
+            // Wait for the next damage interval
+            yield return new WaitForSeconds(damageInterval);
 
-        if (Time.time < lastDamageTime + damageInterval)
+            // Apply damage periodically
+            ApplyDamage(target);
+        }
+    }
+
+    private void ApplyDamage(GameObject target)
+    {
+        // Check if enough time has passed since the last damage for this target
+        if (Time.time >= globalDamageTimers[target] + damageInterval)
         {
-            return; // Skip damage if the cooldown hasn't elapsed for this target
+            // Update the last damage time for this target
+            globalDamageTimers[target] = Time.time;
+
+            // Attempt to apply damage through HealthbarBehavior
+            HealthbarBehavior healthbar = target.GetComponentInChildren<HealthbarBehavior>();
+            if (healthbar != null)
+            {
+                healthbar.HitDamage(damage, target);
+                PlayDamageSound();
+                //Debug.Log($"Fire Trail damaged {target.name} for {damage} HP.");
+            }
+            else
+            {
+                //Debug.LogWarning($"Fire Trail hit {target.name}, but it does not have a HealthbarBehavior.");
+            }
         }
-
-        // Update the last damage time for this target globally
-        globalDamageTimers[target] = Time.time;
-
-        // Attempt to apply damage through HealthbarBehavior
-        HealthbarBehavior healthbar = target.GetComponentInChildren<HealthbarBehavior>();
-        if (healthbar != null)
-        {
-            healthbar.HitDamage(damage, target);
-            PlayDamageSound();
-            Debug.Log($"Fire Trail damaged {target.name} for {damage} HP.");
-            return;
-        }
-
-        // If no HealthbarBehavior is found, log a warning
-        Debug.LogWarning($"Fire Trail hit {target.name}, but it does not have a HealthbarBehavior.");
     }
 
     private void PlayDamageSound()
@@ -86,8 +119,9 @@ public class FireTrail : MonoBehaviour
         }
         else if (damageSound == null)
         {
-            Debug.LogWarning("DamageSound is not assigned.");
+            //Debug.LogWarning("DamageSound is not assigned.");
         }
     }
 }
+
 
