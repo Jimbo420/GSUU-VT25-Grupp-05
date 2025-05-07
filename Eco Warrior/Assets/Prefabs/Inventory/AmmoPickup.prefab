@@ -11,9 +11,11 @@ GameObject:
   - component: {fileID: 7060671338681498975}
   - component: {fileID: 6135216894939574225}
   - component: {fileID: 2267969565973408376}
+  - component: {fileID: 7559538461448088596}
+  - component: {fileID: 5991639517398396349}
   m_Layer: 0
   m_Name: AmmoPickup
-  m_TagString: Untagged
+  m_TagString: Ammo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -134,3 +136,28 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 3.5806515, y: 2.5277007}
   m_EdgeRadius: 0
+--- !u!114 &7559538461448088596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4089435067058943003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6846d71598c92246beb7e4a2912d82f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5991639517398396349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4089435067058943003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad5f739657ee58540b8506f7be3d0129, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}

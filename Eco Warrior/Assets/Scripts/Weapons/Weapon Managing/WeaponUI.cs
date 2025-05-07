@@ -26,9 +26,4 @@ public class WeaponUI : MonoBehaviour
             _ammoText.text = $"{_weaponManager.CurrentWeapon.CurrentAmmunition}/{_weaponManager.CurrentWeapon.MaxAmmunition}";
         }
     }
-
-    public void Play()
-    {
-        GetComponentInParent<SoundEmitter>().Play(_weaponAudioSource,  false);
-    }
 }

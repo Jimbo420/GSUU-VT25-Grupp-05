@@ -6,18 +6,14 @@ public class WeaponVisuals : MonoBehaviour
     [SerializeField] private Transform _gunHolder;
     private SpriteRenderer _toolSpriteRenderer;
     private WeaponManager _weaponManager;
-    private ToolRotator _toolRotator;
     public Transform GetFirePoint() => _firePoint;
 
     void Awake()
     {
         _weaponManager = GetComponent<WeaponManager>();
         _toolSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        _toolRotator = GetComponentInParent<ToolRotator>();
 
     }
-
-    public ToolRotator GetToolRotator() => _toolRotator;
     /// <summary>
     /// When switching weapon, the sprite needs to be updated
     /// </summary>

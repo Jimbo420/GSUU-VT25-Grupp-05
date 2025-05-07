@@ -25,6 +25,7 @@ public class Movement : MonoBehaviour
         _animator = GetComponent<Animator>();
         _toolRotator = GetComponent<ToolRotator>();
         _footstepsSource = GameObject.Find("Step Audio").GetComponent<AudioSource>();
+        _toolRotator.RotateTool(false, _movement);
     }
 
     // Update is called once per frame

@@ -17,13 +17,13 @@ public class WeaponShooter : MonoBehaviour
         _weaponManager = GetComponent<WeaponManager>();
         _weaponVisuals = GetComponent<WeaponVisuals>();
         _firePoint = _weaponVisuals.GetFirePoint();
-        _toolRotator = _weaponVisuals.GetToolRotator();
+        _toolRotator = GetComponentInParent<ToolRotator>();
         _clipAudioSource = GameObject.Find("Gunshot Audio").GetComponent<AudioSource>();
     }
     public float GetFireRate() => _weaponManager.CurrentWeapon.FireRate;
     public void Shoot(bool isAiming = false)
     {
-        _toolRotator = _weaponVisuals.GetToolRotator();
+        _toolRotator = GetComponentInParent<ToolRotator>();
 
         bool isPlayer = transform.parent.CompareTag("Player");
         if (!isPlayer)

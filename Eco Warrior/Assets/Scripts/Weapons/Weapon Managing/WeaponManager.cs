@@ -22,18 +22,7 @@ public class WeaponManager : MonoBehaviour
         _inventoryController = FindFirstObjectByType<InventoryController>();
         CurrentWeapon = _availableWeapons[0];
         GetComponent<WeaponShooter>().ReloadAllWeapons();
-    }
-
-    //TODO Move to Player Controller
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            GetComponent<WeaponUI>().Play();
-            GetComponent<WeaponShooter>().ReloadAllWeapons();
-            GetComponent<WeaponUI>().UpdateAmmunition();
-
-        }
+        SwitchWeapon(CurrentWeapon);
     }
 
     public void EquipWeapon(int index)
