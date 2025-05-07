@@ -36,10 +36,6 @@ public class WeaponManager : MonoBehaviour
         WeaponTag tag = item.GetComponent<WeaponTag>();
         if (tag == null) return;
         SwitchWeapon(tag.WeaponData);
-        // CurrentWeapon = tag.WeaponData;
-        // GetComponent<WeaponVisuals>().UpdateWeaponSprite();
-        // GetComponent<WeaponVisuals>().UpdateWeaponAndGunHolderPosition(1,0);
-        // GetComponent<WeaponUI>().UpdateAmmunition();
     }
 
     public void SwitchWeapon(WeaponData weapon)
