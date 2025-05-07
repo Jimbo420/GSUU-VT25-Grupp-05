@@ -11,7 +11,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] GameObject _enemyPrefabPistol;
     [SerializeField] GameObject _enemyPrefabSMG;
     private DestroyedObjects _destroyedObjects;
-    private int level;
+    private int _lastLevel;
     private Dictionary<int, int> _enemySpawnerList = new Dictionary<int, int>
     {
         {1, 3},
@@ -21,27 +21,19 @@ public class EnemySpawner : MonoBehaviour
 
     private void Awake()
     {
-        _destroyedObjects = FindObjectOfType<DestroyedObjects>();
-        if (_destroyedObjects == null)
-        {
-            Debug.LogError("DestroyedObjects not found in scene!");
-            return;
-        }
-
-        level = _destroyedObjects.level;
+        _destroyedObjects = GetComponent<DestroyedObjects>();
+        _lastLevel = _destroyedObjects.level;
         StartCoroutine(Spawn());
-    }
-
-    void Start()
-    {
-        
     }
 
     void Update()
     {
-        
+        if (_lastLevel != _destroyedObjects.level)
+        {
+            _lastLevel = _destroyedObjects.level;
+            StartCoroutine(Spawn());
+        }
     }
-
     IEnumerator Spawn()
     {
         int enemiesToSpawn = 0;

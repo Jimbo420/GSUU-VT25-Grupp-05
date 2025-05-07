@@ -9,12 +9,14 @@ public class DestroyedObjects : MonoBehaviour
     {
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (_gameObjectsDestroyed > 2)
-            level += 1;
-        Debug.Log(level);
+        if (_gameObjectsDestroyed == (level + 1))
+            level++;
+    }
 
+    public int TotalDestoyedObjects()
+    {
+        return _gameObjectsDestroyed;
     }
 }

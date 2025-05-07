@@ -6,6 +6,7 @@ public class DestroyPump : MonoBehaviour, IDestroy
 {
     public GameObject textObject;
     [SerializeField] private Sprite _destroyedSprite;
+    private DestroyedObjects _destroyedObjects;
     private Slider _slider;
     private bool _isInRange;
     private bool _isDestroyed;
@@ -13,6 +14,7 @@ public class DestroyPump : MonoBehaviour, IDestroy
     void Awake()
     {
         _slider = GetComponentInChildren<Slider>();
+        _destroyedObjects = FindObjectOfType<DestroyedObjects>();
     }
 
     void FixedUpdate()
@@ -24,7 +26,6 @@ public class DestroyPump : MonoBehaviour, IDestroy
 
         if (_slider.value == 0)
             Destroy();
-        
     }
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -44,6 +45,11 @@ public class DestroyPump : MonoBehaviour, IDestroy
         textObject.gameObject.SetActive(false);
         GetComponent<Animator>().enabled = false;
         GetComponent<SpriteRenderer>().sprite = _destroyedSprite;
-        _isDestroyed = true;
+        if (!_isDestroyed)
+            _destroyedObjects._gameObjectsDestroyed++;
+        else
+            return;
+            _isDestroyed = true;
+        
     }
 }
