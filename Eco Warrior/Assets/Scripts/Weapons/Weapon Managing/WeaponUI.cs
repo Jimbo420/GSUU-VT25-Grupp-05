@@ -5,13 +5,15 @@ using UnityEngine;
 public class WeaponUI : MonoBehaviour
 {
     [SerializeField] private TMP_Text _ammoText;
-    [SerializeField] private AudioSource _reloadSource;
-    //[SerializeField] private AudioClip _reloadAudio;
+    
+    private AudioSource _weaponAudioSource;
+
 
     private WeaponManager _weaponManager;
     void Awake()
     {
         _weaponManager = GetComponent<WeaponManager>();
+        _weaponAudioSource = GameObject.Find("Reload Audio").GetComponent<AudioSource>();
     }
     public void UpdateAmmunition()
     {
@@ -27,6 +29,6 @@ public class WeaponUI : MonoBehaviour
 
     public void Play()
     {
-        GetComponentInParent<SoundEmitter>().Play(_reloadSource,  false);
+        GetComponentInParent<SoundEmitter>().Play(_weaponAudioSource,  false);
     }
 }

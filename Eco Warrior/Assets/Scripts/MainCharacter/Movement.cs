@@ -9,12 +9,12 @@ using UnityEngine.UI;
 public class Movement : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed = 3f;
-    [SerializeField] private Transform _firePointTransform;
-    [SerializeField] private ToolRotator _toolRotator;
-    [SerializeField] private Slider _healthbar;
+    private ToolRotator _toolRotator;
+    //[SerializeField] private Slider _healthbar;
     [SerializeField] private float moveSpeed = 2f;
-    [SerializeField] private AudioSource _footstepsSource;
-   // [SerializeField] private AudioClip _footstepsClip;
+    private AudioSource _footstepsSource;
+    //[SerializeField] private GameObject _footstepsPrefab;
+    // [SerializeField] private AudioClip _footstepsClip;
 
     private Rigidbody2D _rb;
     private Vector2 _movement;
@@ -24,6 +24,7 @@ public class Movement : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _toolRotator = GetComponent<ToolRotator>();
+        _footstepsSource = GameObject.Find("Step Audio").GetComponent<AudioSource>();
     }
 
     // Update is called once per frame

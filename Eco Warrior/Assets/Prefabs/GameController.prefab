@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab293b6deba7fc144b545d88a435f0e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inventoryPanel: {fileID: 0}
+  _inventoryPanel: {fileID: 8989332349456510209, guid: 59ecff1b994c14444a39de1296a55f2d, type: 3}
   _slotPrefab: {fileID: 8093951577686998564, guid: 764328de6684e364c8a2f5d142a2be36, type: 3}
   _slotCount: 3
   itemPrefabs:

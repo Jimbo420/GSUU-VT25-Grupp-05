@@ -9,8 +9,8 @@ public class WeaponShooter : MonoBehaviour
     private Transform _firePoint;
     private WeaponVisuals _weaponVisuals;
     private ToolRotator _toolRotator;
-    [SerializeField] private AudioSource _clipSource;
-    //[SerializeField] private AudioClip _shootClip;
+    private AudioSource _clipAudioSource;
+    [SerializeField] private GameObject _clipSource;
 
     void Awake()
     {
@@ -18,18 +18,19 @@ public class WeaponShooter : MonoBehaviour
         _weaponVisuals = GetComponent<WeaponVisuals>();
         _firePoint = _weaponVisuals.GetFirePoint();
         _toolRotator = _weaponVisuals.GetToolRotator();
+        _clipAudioSource = GameObject.Find("Gunshot Audio").GetComponent<AudioSource>();
     }
     public float GetFireRate() => _weaponManager.CurrentWeapon.FireRate;
     public void Shoot(bool isAiming = false)
     {
+        _toolRotator = _weaponVisuals.GetToolRotator();
+
         bool isPlayer = transform.parent.CompareTag("Player");
         if (!isPlayer)
         {
             Transform player = GameObject.FindGameObjectWithTag("Player")?.transform;
             if (player != null)
-            {
                 _toolRotator.RotateToolTowards(player.position);
-            }
         }
         else
         {
@@ -54,7 +55,8 @@ public class WeaponShooter : MonoBehaviour
         rb.AddForce(bullet.transform.up * _weaponManager.CurrentWeapon.BulletSpeed, ForceMode2D.Impulse);
         _weaponManager.CurrentWeapon.CurrentAmmunition--;
         this.GetComponent<WeaponUI>().UpdateAmmunition();
-        GetComponentInParent<SoundEmitter>().Play(_clipSource, false);
+        if(_clipAudioSource is null) Debug.Log("Audio is null");
+        GetComponentInParent<SoundEmitter>().Play(_clipAudioSource, false);
 
     }
 
