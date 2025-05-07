@@ -11324,7 +11324,7 @@ PrefabInstance:
     - target: {fileID: 2060716476612866143, guid: 56ec656f82d18ea4db85e62aa8dcbac0, type: 3}
       propertyPath: _reloadSource
       value: 
-      objectReference: {fileID: 1942794899}
+      objectReference: {fileID: 0}
     - target: {fileID: 3137903270240569472, guid: 56ec656f82d18ea4db85e62aa8dcbac0, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -11336,7 +11336,7 @@ PrefabInstance:
     - target: {fileID: 6419815725561785296, guid: 56ec656f82d18ea4db85e62aa8dcbac0, type: 3}
       propertyPath: weaponAudioSource
       value: 
-      objectReference: {fileID: 1942794899}
+      objectReference: {fileID: 0}
     - target: {fileID: 6490187619320849255, guid: 56ec656f82d18ea4db85e62aa8dcbac0, type: 3}
       propertyPath: footstepsSource
       value: 
@@ -12979,11 +12979,6 @@ Transform:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2895968495781537354, guid: 71704a5bcb4e09848939c4211ca144e4, type: 3}
   m_PrefabInstance: {fileID: 1761096582}
-  m_PrefabAsset: {fileID: 0}
---- !u!82 &1942794899 stripped
-AudioSource:
-  m_CorrespondingSourceObject: {fileID: 9141103611147217711, guid: 5e15b1db828c1984bb29975a6ef88479, type: 3}
-  m_PrefabInstance: {fileID: 1274364938}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1942794908
 MonoBehaviour:
