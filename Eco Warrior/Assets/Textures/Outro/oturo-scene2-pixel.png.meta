@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      oturo-scene2-pixel_0: 8748484724567333793
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
