@@ -186,16 +186,22 @@ public class BossEncounter : MonoBehaviour
                 break;
         }
     }
-
     private void ShowChatBubble(string message)
     {
+        // Destroy the old chat bubble if it exists
+        if (activeChatBubble != null)
+        {
+            Destroy(activeChatBubble);
+            activeChatBubble = null;
+        }
+
         if (chatBubblePrefab == null || chatBubbleParent == null)
         {
-            //Debug.LogWarning("Chat bubble prefab or parent is not assigned.");
+            Debug.LogWarning("Chat bubble prefab or parent is not assigned.");
             return;
         }
 
-        // Instantiate the chat bubble
+        // Instantiate the new chat bubble
         activeChatBubble = Instantiate(chatBubblePrefab, chatBubbleParent);
         var textComponent = activeChatBubble.GetComponentInChildren<TMPro.TextMeshProUGUI>();
         if (textComponent != null)

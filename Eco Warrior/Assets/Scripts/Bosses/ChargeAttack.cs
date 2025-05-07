@@ -124,6 +124,10 @@ public class ChargeAttack : BossSpecialAttack
         currentState = ChargeState.Charging;
         distanceCharged = 0f;
         fireTrailTimer = 0f;
+
+        // Disable normal attacks during the charge
+        bossAttack.SetSpecialAttackActive(true);
+
         Debug.Log($"[ChargeAttack] Starting charge. Direction: {chargeDirection}");
     }
 
@@ -143,7 +147,7 @@ public class ChargeAttack : BossSpecialAttack
         transform.position += movement;
         distanceCharged += moveDistance;
 
-        Debug.Log($"[ChargeAttack] Moving. Distance charged: {distanceCharged}, Current position: {transform.position}");
+        //Debug.Log($"[ChargeAttack] Moving. Distance charged: {distanceCharged}, Current position: {transform.position}");
 
         // Spawn fire trail at intervals
         fireTrailTimer += Time.deltaTime;
@@ -156,7 +160,7 @@ public class ChargeAttack : BossSpecialAttack
         // Check if charge distance is reached
         if (distanceCharged >= chargeDistance)
         {
-            Debug.Log("[ChargeAttack] Charge distance reached.");
+            //Debug.Log("[ChargeAttack] Charge distance reached.");
             EndCharge();
         }
     }
@@ -168,7 +172,7 @@ public class ChargeAttack : BossSpecialAttack
         {
             pauseTimer = 0f;
             currentState = ChargeState.Idle;
-            Debug.Log("[ChargeAttack] Pause complete. Returning to Idle state.");
+            //Debug.Log("[ChargeAttack] Pause complete. Returning to Idle state.");
         }
     }
 
@@ -176,7 +180,11 @@ public class ChargeAttack : BossSpecialAttack
     {
         currentState = ChargeState.Paused;
         remainingCharges--;
-        Debug.Log($"[ChargeAttack] Charge ended. Remaining charges: {remainingCharges}");
+
+        // Re-enable normal attacks after the charge
+        bossAttack.SetSpecialAttackActive(false);
+
+        //Debug.Log($"[ChargeAttack] Charge ended. Remaining charges: {remainingCharges}");
     }
 
     private void PlayChargeSound()
@@ -216,3 +224,4 @@ public class ChargeAttack : BossSpecialAttack
         return hit.collider != null;
     }
 }
+
