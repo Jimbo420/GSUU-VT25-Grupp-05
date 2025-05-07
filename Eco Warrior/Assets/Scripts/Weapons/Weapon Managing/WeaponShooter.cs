@@ -23,14 +23,14 @@ public class WeaponShooter : MonoBehaviour
     public float GetFireRate() => _weaponManager.CurrentWeapon.FireRate;
     public void Shoot(bool isAiming = false)
     {
+        _toolRotator = _weaponVisuals.GetToolRotator();
+
         bool isPlayer = transform.parent.CompareTag("Player");
         if (!isPlayer)
         {
             Transform player = GameObject.FindGameObjectWithTag("Player")?.transform;
             if (player != null)
-            {
                 _toolRotator.RotateToolTowards(player.position);
-            }
         }
         else
         {
@@ -55,6 +55,7 @@ public class WeaponShooter : MonoBehaviour
         rb.AddForce(bullet.transform.up * _weaponManager.CurrentWeapon.BulletSpeed, ForceMode2D.Impulse);
         _weaponManager.CurrentWeapon.CurrentAmmunition--;
         this.GetComponent<WeaponUI>().UpdateAmmunition();
+        if(_clipAudioSource is null) Debug.Log("Audio is null");
         GetComponentInParent<SoundEmitter>().Play(_clipAudioSource, false);
 
     }
