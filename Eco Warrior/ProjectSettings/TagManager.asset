@@ -13,6 +13,7 @@ TagManager:
   - Ammo
   - Health
   - Weapon
+  - Computer
   layers:
   - Default
   - TransparentFX
