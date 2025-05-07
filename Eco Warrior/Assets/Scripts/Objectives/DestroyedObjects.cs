@@ -11,7 +11,7 @@ public class DestroyedObjects : MonoBehaviour
 
     private void Update()
     {
-        if (_gameObjectsDestroyed == (level + 1))
+        if (_gameObjectsDestroyed == (level + 1) && level < 3)
             level++;
     }
 
