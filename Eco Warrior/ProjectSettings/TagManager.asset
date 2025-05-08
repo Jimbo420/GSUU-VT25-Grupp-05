@@ -6,6 +6,15 @@ TagManager:
   tags:
   - Enemy
   - Key
+  - GasolineTank
+  - CollisionObsticle
+  - Floor
+  - EnemySpawnWaypoint
+  - Ammo
+  - Health
+  - Weapon
+  - Computer
+  - BossTransition
   layers:
   - Default
   - TransparentFX
@@ -15,12 +24,12 @@ TagManager:
   - UI
   - Enemy
   - Player
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Fire
+  - Triggers
+  - Bullet
+  - Walls
+  - Wall
+  - Floor
   - 
   - 
   - 

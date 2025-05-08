@@ -32,4 +32,18 @@ public class InventoryController : MonoBehaviour
             _slots.Add(slot);
         }
     }
+    public GameObject TryAddItem(GameObject itemPrefab)
+    {
+        foreach (Slot slot in _slots)
+        {
+            if (slot.CurrentItem == null)
+            {
+                GameObject item = Instantiate(itemPrefab, slot.transform);
+                item.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+                slot.CurrentItem = item;
+                return item;
+            }
+        }
+        return null;
+    }
 }

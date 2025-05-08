@@ -1,10 +1,10 @@
+using Assets.Scripts;
 using TMPro;
 using UnityEngine;
 
 public class WeaponUI : MonoBehaviour
 {
     [SerializeField] private TMP_Text _ammoText;
-
     private WeaponManager _weaponManager;
     void Awake()
     {

@@ -150,8 +150,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   openDoorSprite: {fileID: 21300000, guid: ee041806dbb9f084aa54f0a9e046c9ad, type: 3}
+  closedDoorSprite: {fileID: 21300000, guid: 3ee397c3cd8d95f4c965018c80cd3618, type: 3}
   textDisplay: {fileID: 936313814261599135}
   isKeyPickedUp: 0
+  isDoorOpen: 0
 --- !u!61 &2369401686217099167
 BoxCollider2D:
   m_ObjectHideFlags: 0

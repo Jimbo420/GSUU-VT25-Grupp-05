@@ -48,6 +48,5 @@ MonoBehaviour:
   _slotPrefab: {fileID: 8093951577686998564, guid: 764328de6684e364c8a2f5d142a2be36, type: 3}
   _slotCount: 3
   itemPrefabs:
-  - {fileID: 2363878218025278567, guid: 8d2ac8533d2401e47bbf048b10f933f9, type: 3}
-  - {fileID: 2363878218025278567, guid: da8d9038ecd847f499999cd5b63f7762, type: 3}
   - {fileID: 2363878218025278567, guid: 6781e7300a8b99b45b967307502bc478, type: 3}
+  - {fileID: 2363878218025278567, guid: da8d9038ecd847f499999cd5b63f7762, type: 3}

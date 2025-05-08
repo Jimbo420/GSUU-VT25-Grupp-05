@@ -1,3 +1,4 @@
+using Assets.Scripts;
 using UnityEngine;
 
 public class WeaponShooter : MonoBehaviour
@@ -8,21 +9,36 @@ public class WeaponShooter : MonoBehaviour
     private Transform _firePoint;
     private WeaponVisuals _weaponVisuals;
     private ToolRotator _toolRotator;
+    private AudioSource _clipAudioSource;
+    [SerializeField] private GameObject _clipSource;
 
     void Awake()
     {
         _weaponManager = GetComponent<WeaponManager>();
         _weaponVisuals = GetComponent<WeaponVisuals>();
         _firePoint = _weaponVisuals.GetFirePoint();
-        _toolRotator = _weaponVisuals.GetToolRotator();
+        _toolRotator = GetComponentInParent<ToolRotator>();
+        _clipAudioSource = GameObject.Find("Gunshot Audio").GetComponent<AudioSource>();
     }
     public float GetFireRate() => _weaponManager.CurrentWeapon.FireRate;
     public void Shoot(bool isAiming = false)
     {
-        if (!_weaponManager.CurrentWeapon.HasUnlimitedAmmo && _weaponManager.CurrentWeapon.CurrentAmmunition == 0) return;
+        _toolRotator = GetComponentInParent<ToolRotator>();
+
+        bool isPlayer = transform.parent.CompareTag("Player");
+        if (!isPlayer)
+        {
+            Transform player = GameObject.FindGameObjectWithTag("Player")?.transform;
+            if (player != null)
+                _toolRotator.RotateToolTowards(player.position);
+        }
+        else
+        {
+            if (!_weaponManager.CurrentWeapon.HasUnlimitedAmmo && _weaponManager.CurrentWeapon.CurrentAmmunition == 0) return;
+            if (isAiming) _toolRotator.RotateTool(isAiming);
+        }
 
         //If the player is shooting with mouse, first rotate the weapon
-        if (isAiming) _toolRotator.RotateTool(isAiming);
 
         //Calculate the direction of bullet (to create the effect of inaccuracy or spread)
         float angleOffset = Random.Range(-_weaponManager.CurrentWeapon.Accuracy, _weaponManager.CurrentWeapon.Accuracy);
@@ -39,11 +55,16 @@ public class WeaponShooter : MonoBehaviour
         rb.AddForce(bullet.transform.up * _weaponManager.CurrentWeapon.BulletSpeed, ForceMode2D.Impulse);
         _weaponManager.CurrentWeapon.CurrentAmmunition--;
         this.GetComponent<WeaponUI>().UpdateAmmunition();
+        if(_clipAudioSource is null) Debug.Log("Audio is null");
+        GetComponentInParent<SoundEmitter>().Play(_clipAudioSource, false);
+
     }
 
-    public void ReloadAllWeapons(WeaponData[] weapons)
+    public void ReloadAllWeapons()
     {
+        var weapons = _weaponManager.AvailableWeapons;
         foreach (var weapon in weapons)
-            weapon.CurrentAmmunition = weapon.MaxAmmunition;
+            if (weapon.WeaponType is not WeaponData.TypeOfWeapon.MachineGun)
+                weapon.CurrentAmmunition = weapon.MaxAmmunition;
     }
 }
