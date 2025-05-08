@@ -14,6 +14,7 @@ public class FireTrail : MonoBehaviour
     private AudioSource audioSource; // Dynamically added AudioSource
 
     // Static dictionary to track the last time damage was applied globally for each target
+    PlayerHealth _playerHealth;
     private static readonly Dictionary<GameObject, float> globalDamageTimers = new();
     private readonly Dictionary<GameObject, Coroutine> activeCoroutines = new();
 

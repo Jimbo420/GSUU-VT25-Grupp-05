@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
+using static PlayerHealthBar;
 
 public class PlayerHealthBar : MonoBehaviour
 {
@@ -10,17 +11,23 @@ public class PlayerHealthBar : MonoBehaviour
     public Sprite _halfHeart;
     public Sprite _emptyHeart;
     private Sprite _heartImage;
-    //private List<int, int>();
-    void Start()
+    GameObject[] hearts; 
+
+    private void Awake()
     {
         _heartImage = GetComponent<Sprite>();
     }
-
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
+        _heartImage = GetComponent<Sprite>();
+        hasse();
     }
 
+    private void hasse()
+    {
+        hearts = GameObject.FindGameObjectsWithTag("PlayerHearts");
+        hearts[1].SetActive(false);
+    }
     public void SetHeartHealth(Heart heart)
     {
         switch(heart)
