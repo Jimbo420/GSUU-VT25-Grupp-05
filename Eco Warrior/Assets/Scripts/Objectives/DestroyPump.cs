@@ -24,7 +24,7 @@ public class DestroyPump : MonoBehaviour, IDestroy
 
         _slider.value -= 0.1f;
 
-        if (_slider.value == 0)
+        if (_slider.value == 0 && !_isDestroyed)
             Destroy();
     }
     void OnTriggerEnter2D(Collider2D other)
@@ -41,19 +41,14 @@ public class DestroyPump : MonoBehaviour, IDestroy
 
     public void Destroy()
     {
-        ScoreManager.Instance.ObjectiveCompleted();
         _slider.gameObject.SetActive(false);
         textObject.gameObject.SetActive(false);
         if(GetComponent<Animator>() != null) GetComponent<Animator>().enabled = false;
         GetComponent<SpriteRenderer>().sprite = _destroyedSprite;
-        // _isDestroyed = true;
         if(this.CompareTag("Computer")) GetComponent<DoorOpener>().OpenWeaponRoomDoors();
 
-        if (!_isDestroyed)
-            _destroyedObjects._gameObjectsDestroyed++;
-        else
-            return;
-            _isDestroyed = true;
-        
+        _destroyedObjects._gameObjectsDestroyed++;
+        _isDestroyed = true;
+        ScoreManager.Instance.ObjectiveCompleted();
     }
 }
