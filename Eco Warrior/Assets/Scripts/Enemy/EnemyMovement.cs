@@ -134,10 +134,4 @@ public class EnemyMovement : MonoBehaviour
         }
         Walk();
     }
-
-    public void Dead()
-    {
-        ScoreManager.Instance.EnemyKilled();
-        Destroy(gameObject);
-    }
 }
