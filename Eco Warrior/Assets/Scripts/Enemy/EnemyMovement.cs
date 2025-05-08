@@ -137,6 +137,7 @@ public class EnemyMovement : MonoBehaviour
 
     public void Dead()
     {
+        ScoreManager.Instance.EnemyKilled();
         Destroy(gameObject);
     }
 }

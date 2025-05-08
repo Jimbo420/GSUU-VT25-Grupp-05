@@ -41,6 +41,7 @@ public class DestroyPump : MonoBehaviour, IDestroy
 
     public void Destroy()
     {
+        ScoreManager.Instance.ObjectiveCompleted();
         _slider.gameObject.SetActive(false);
         textObject.gameObject.SetActive(false);
         if(GetComponent<Animator>() != null) GetComponent<Animator>().enabled = false;
