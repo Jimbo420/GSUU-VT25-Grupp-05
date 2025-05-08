@@ -12,7 +12,7 @@ public class Movement : MonoBehaviour
     private ToolRotator _toolRotator;
     //[SerializeField] private Slider _healthbar;
     [SerializeField] private float moveSpeed = 2f;
-    private AudioSource _footstepsSource;
+    //private AudioSource _footstepsSource;
     //[SerializeField] private GameObject _footstepsPrefab;
     // [SerializeField] private AudioClip _footstepsClip;
 
@@ -24,7 +24,7 @@ public class Movement : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _toolRotator = GetComponent<ToolRotator>();
-        _footstepsSource = GameObject.Find("Step Audio").GetComponent<AudioSource>();
+        //_footstepsSource = GameObject.Find("Step Audio").GetComponent<AudioSource>();
         _toolRotator.RotateTool(false, _movement);
     }
 
@@ -37,7 +37,7 @@ public class Movement : MonoBehaviour
 
     public void MoveCharacter(InputAction.CallbackContext context)
     {
-        GetComponentInParent<SoundEmitter>().Play(_footstepsSource, true);
+        
         
         _animator.SetBool("isWalking", true);
         
@@ -47,7 +47,7 @@ public class Movement : MonoBehaviour
             _animator.SetBool("isWalking", false);
             _animator.SetFloat("LastInputX", _movement.x);
             _animator.SetFloat("LastInputY", _movement.y);
-            Stop();
+            //Stop();
         }
         _movement = context.ReadValue<Vector2>();
         _animator.SetFloat("InputX", _movement.x);
@@ -57,8 +57,5 @@ public class Movement : MonoBehaviour
 
       
     }
-    public void Stop()
-    {
-       _footstepsSource.Stop();
-    }
+   
 }
