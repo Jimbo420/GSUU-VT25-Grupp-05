@@ -201,6 +201,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1657674987697993843, guid: 41c960e2d824b4a44800a12a025533ff, type: 3}
+      propertyPath: isScriptActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8124580641616372044, guid: 41c960e2d824b4a44800a12a025533ff, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.0825837
@@ -256,6 +260,10 @@ PrefabInstance:
     - target: {fileID: 8524172224737406360, guid: 41c960e2d824b4a44800a12a025533ff, type: 3}
       propertyPath: m_Name
       value: LevelTransitionTrigger
+      objectReference: {fileID: 0}
+    - target: {fileID: 8524172224737406360, guid: 41c960e2d824b4a44800a12a025533ff, type: 3}
+      propertyPath: m_TagString
+      value: BossTransition
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
