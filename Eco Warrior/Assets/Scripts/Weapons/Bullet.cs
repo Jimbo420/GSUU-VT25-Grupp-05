@@ -24,7 +24,8 @@ public class Bullet : MonoBehaviour
     {
         // Ignore the shooter
         if (other.gameObject == _shooter) return;
-
+        KnockOut enemyKnockout = other.GetComponent<KnockOut>();
+        if (enemyKnockout is not null && enemyKnockout.IsKnocked) return;
         // Check if the bullet hit a wall
         if (other.gameObject.layer == LayerMask.NameToLayer("Walls") ||
             other.gameObject.layer == LayerMask.NameToLayer("wall"))

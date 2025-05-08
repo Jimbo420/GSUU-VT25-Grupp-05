@@ -6,11 +6,12 @@ public class KnockOut : MonoBehaviour
     private bool _isInRange;
     private TargetPlayer _targetPlayer;
     public GameObject textObject;
+    [SerializeField] private GameObject _sleep;
     [SerializeField] private Sprite _sprite;
-    private bool _isKnocked;
+    public bool IsKnocked;
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (!_targetPlayer.hasLineOfSight || _isKnocked|| !other.CompareTag("Player")) return;
+        if (!_targetPlayer.hasLineOfSight || IsKnocked || !other.CompareTag("Player")) return;
         textObject.SetActive(true);
         _isInRange = true;
     }
@@ -36,12 +37,12 @@ public class KnockOut : MonoBehaviour
 
     void KnockOutEnemy()
     {
-        _isKnocked = true;
+        IsKnocked = true;
         textObject.SetActive(false);
 
         var components = GetComponents<MonoBehaviour>();
         foreach (var comp in components)
-            if (comp != this)
+            if (comp != this && comp.GetType() != typeof(EnemyMovement))
                 comp.enabled = false;
         
 
@@ -55,6 +56,7 @@ public class KnockOut : MonoBehaviour
 
         GetComponent<SpriteRenderer>().enabled = true;
         GetComponent<SpriteRenderer>().sprite = _sprite;
+        _sleep.gameObject.SetActive(true);
 
 
     }

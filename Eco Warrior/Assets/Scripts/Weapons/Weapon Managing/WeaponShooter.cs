@@ -34,7 +34,8 @@ public class WeaponShooter : MonoBehaviour
         }
         else
         {
-            if (!_weaponManager.CurrentWeapon.HasUnlimitedAmmo && _weaponManager.CurrentWeapon.CurrentAmmunition == 0) return;
+            
+            if (!_weaponManager.CurrentWeapon.HasUnlimitedAmmo && _weaponManager.CurrentWeapon.CurrentAmmunition == 0 ) return;
             if (isAiming) _toolRotator.RotateTool(isAiming);
         }
 
