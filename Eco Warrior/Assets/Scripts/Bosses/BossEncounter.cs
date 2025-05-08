@@ -8,10 +8,6 @@ public class BossEncounter : MonoBehaviour
     [Tooltip("Distance from the player to start the encounter.")]
     public float encounterStartDistance = 11f;
 
-    [Header("Player Settings")]
-    [Tooltip("Reference to the player transform.")]
-    public Transform player;
-
     [Header("Phase Settings")]
     [Tooltip("Phases for the boss encounter.")]
     public BossPhase[] phases; // Array of BossPhase ScriptableObjects
@@ -41,6 +37,8 @@ public class BossEncounter : MonoBehaviour
     private bool isFirstEncounterComplete = false;
     private GameObject activeChatBubble;
 
+    private Transform player; // Removed public reference and made it private
+
     // Public read-only property to expose isEncounterActive
     public bool IsEncounterActive => isEncounterActive;
 
@@ -57,6 +55,27 @@ public class BossEncounter : MonoBehaviour
 
     void Update()
     {
+        // Keep checking for the player if it hasn't been found yet
+        if (player == null)
+        {
+            GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+            if (playerObject != null)
+            {
+                player = playerObject.transform;
+                Debug.Log("Player found by BossEncounter.");
+            }
+        }
+
+        // If the player is found, check the distance to start the encounter
+        if (player != null && !isEncounterActive)
+        {
+            float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+            if (distanceToPlayer <= encounterStartDistance)
+            {
+                StartEncounter();
+            }
+        }
+
         if (!isEncounterActive || health.currentHealth <= 0)
             return;
 
@@ -71,14 +90,31 @@ public class BossEncounter : MonoBehaviour
         if (isEncounterActive)
             return;
 
+        if (player == null)
+        {
+            Debug.LogError("Player not found. Cannot start the encounter.");
+            return;
+        }
+
         isEncounterActive = true;
+
+        // Set the player's Transform as the target for the boss movement
+        if (movement != null)
+        {
+            movement.target = player;
+            Debug.Log("Boss target set to player.");
+        }
+        else
+        {
+            Debug.LogWarning("BossMovement component is missing on the boss.");
+        }
+
         StartCoroutine(FirstEncounterRoutine());
     }
 
     private IEnumerator FirstEncounterRoutine()
     {
         // Lock movement during the first encounter dialogue
-        //Debug.Log("First encounter started.");
         movement.enabled = false;
 
         // Display the first encounter dialogue using a chat bubble
@@ -119,7 +155,6 @@ public class BossEncounter : MonoBehaviour
     private void TriggerPhase(int phaseIndex)
     {
         BossPhase phase = phases[phaseIndex];
-        //Debug.Log($"Phase {phaseIndex + 1} triggered: {phase.phaseMessage}");
         phaseTriggered[phaseIndex] = true;
 
         // Display the phase message in a chat bubble
@@ -155,10 +190,6 @@ public class BossEncounter : MonoBehaviour
                     {
                         spawner.StartSpawning(phase.spawnPrefab, spawner.defaultSpawnInterval, new List<Transform>(phase.customSpawnPoints));
                     }
-                    else
-                    {
-                        //Debug.LogWarning("No custom spawn points defined for this phase.");
-                    }
                     break;
             }
         }
@@ -169,7 +200,6 @@ public class BossEncounter : MonoBehaviour
         yield return new WaitForSeconds(delay);
         HideChatBubble();
     }
-
 
     private void ApplyModifier(Modifier modifier)
     {
@@ -182,10 +212,10 @@ public class BossEncounter : MonoBehaviour
                 transform.localScale *= modifier.value;
                 break;
             default:
-                //Debug.LogWarning($"Unknown modifier key: {modifier.key}");
                 break;
         }
     }
+
     private void ShowChatBubble(string message)
     {
         // Destroy the old chat bubble if it exists
@@ -224,10 +254,6 @@ public class BossEncounter : MonoBehaviour
         if (specialAttack != null)
         {
             specialAttack.Execute();
-        }
-        else
-        {
-            //Debug.LogWarning("No special attack assigned to the boss.");
         }
     }
 }

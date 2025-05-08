@@ -15,6 +15,7 @@ TagManager:
   - Weapon
   - Computer
   - BossTransition
+  - PlayerStart
   layers:
   - Default
   - TransparentFX

@@ -11,21 +11,6 @@ public class InventoryController : MonoBehaviour
     private List<Slot> _slots = new List<Slot>();
     public List<Slot> GetSlots() => _slots;
 
-    private static InventoryController _instance;
-
-    private void Awake()
-    {
-        // Singleton-pattern
-        if (_instance != null && _instance != this)
-        {
-            Destroy(gameObject); // Destroy duplicate instance
-            return;
-        }
-
-        _instance = this;
-        DontDestroyOnLoad(gameObject); // Keeps InventoryController between scenes
-    }
-
     void Start()
     {
         for (int i = 0; i < _slotCount; i++)
