@@ -46,6 +46,9 @@ public class HealthbarBehavior : MonoBehaviour
         //Debug.Log("Damage: " + damage);
         Health(_health, _maxHealth);
         if (_health <= 0)
+        {
+            ScoreManager.Instance.EnemyKilled();
             Destroy(entity);
+        }
     }
 }

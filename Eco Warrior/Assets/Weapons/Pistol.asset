@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WeaponType: 0
   WeaponSprite: {fileID: -6245521357957070891, guid: c28245bb415483c4785987c1424ff87f, type: 3}
+  ShotSound: {fileID: 0}
   FireRate: 2
   Accuracy: 0
-  Damage: 1
-  CurrentAmmunition: -1
+  Damage: 5
+  CurrentAmmunition: -39
   MaxAmmunition: 0
   HasUnlimitedAmmo: 1
   FirePointOffset: {x: 0, y: 0}

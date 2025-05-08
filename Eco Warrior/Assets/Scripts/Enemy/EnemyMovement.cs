@@ -134,9 +134,4 @@ public class EnemyMovement : MonoBehaviour
         }
         Walk();
     }
-
-    public void Dead()
-    {
-        Destroy(gameObject);
-    }
 }
