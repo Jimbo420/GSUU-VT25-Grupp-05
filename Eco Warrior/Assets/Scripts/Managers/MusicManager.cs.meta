@@ -1,2 +1,15 @@
 fileFormatVersion: 2
 guid: 20c86032a1fb48140abe0ba737c577ce
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - audioMixer: {fileID: 24100000, guid: 666983b4d9ee93c4baaeea0a295b0b84, type: 2}
+  - musicSource: {instanceID: 0}
+  - calmMusic: {fileID: 8300000, guid: abec3af3334d1e7428e7d15ebc7432f6, type: 3}
+  - tensionMusic: {fileID: 8300000, guid: 8eacc01a6de96404abc466f383d39733, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

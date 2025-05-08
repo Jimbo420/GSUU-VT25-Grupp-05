@@ -39,6 +39,11 @@ public class MusicManager : MonoBehaviour
         musicSource.Play();
         audioMixer.FindSnapshot("Tension").TransitionTo(1f);
     }
+    private void Start()
+    {
+        PlayCalmMusic(); // Spelar lugn musik vid start
+    }
+
 }
 
 
