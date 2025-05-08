@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BossHealth : MonoBehaviour, IDamageable
 {
@@ -50,6 +51,7 @@ public class BossHealth : MonoBehaviour, IDamageable
     {
         //Debug.Log("Boss has died.");
         Destroy(gameObject);
+        SceneManager.LoadScene("ScoreScene");
     }
 }
 

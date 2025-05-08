@@ -8,6 +8,7 @@ public class LevelTransition : MonoBehaviour
     public string nextSceneName; // Name of the next scene to load
     private TextMeshProUGUI interactionText; // Reference to the TextMeshPro text component
     private bool isPlayerInTrigger = false; // Tracks if the player is in the trigger zone
+    public bool isScriptActive = true; // Flag to enable or disable the script
 
     void Start()
     {
