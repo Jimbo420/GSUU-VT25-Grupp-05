@@ -1,13 +1,16 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class KnockOut : MonoBehaviour
 {
     private bool _isInRange;
     private TargetPlayer _targetPlayer;
     public GameObject textObject;
+    [SerializeField] private Sprite _sprite;
+    private bool _isKnocked;
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (!_targetPlayer.hasLineOfSight|| !other.CompareTag("Player")) return;
+        if (!_targetPlayer.hasLineOfSight || _isKnocked|| !other.CompareTag("Player")) return;
         textObject.SetActive(true);
         _isInRange = true;
     }
@@ -23,11 +26,36 @@ public class KnockOut : MonoBehaviour
     {
         if(!_isInRange) return;
         if (!Input.GetKey(KeyCode.F)) return;
-        Destroy(gameObject);
+        KnockOutEnemy();
     }
 
     void Start()
     {
        _targetPlayer = GetComponent<TargetPlayer>();
+    }
+
+    void KnockOutEnemy()
+    {
+        _isKnocked = true;
+        textObject.SetActive(false);
+
+        var components = GetComponents<MonoBehaviour>();
+        foreach (var comp in components)
+            if (comp != this)
+                comp.enabled = false;
+        
+
+        GetComponent<Animator>().enabled = false; ;
+
+        GetComponent<NavMeshAgent>().enabled = false;
+
+
+        foreach (Transform child in transform)
+            child.gameObject.SetActive(false);
+
+        GetComponent<SpriteRenderer>().enabled = true;
+        GetComponent<SpriteRenderer>().sprite = _sprite;
+
+
     }
 }
