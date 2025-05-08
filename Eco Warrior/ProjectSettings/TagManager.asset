@@ -14,6 +14,7 @@ TagManager:
   - Health
   - Weapon
   - Computer
+  - PlayerHearts
   layers:
   - Default
   - TransparentFX
