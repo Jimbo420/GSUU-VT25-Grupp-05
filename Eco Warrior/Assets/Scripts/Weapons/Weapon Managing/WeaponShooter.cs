@@ -63,7 +63,7 @@ public class WeaponShooter : MonoBehaviour
 
     public void ReloadAllWeapons()
     {
-        var weapons = _weaponManager.AvailableWeapons;
+        var weapons = _weaponManager.GetAvailableWeapons;
         foreach (var weapon in weapons)
             if (weapon.WeaponType is not WeaponData.TypeOfWeapon.MachineGun)
                 weapon.CurrentAmmunition = weapon.MaxAmmunition;
