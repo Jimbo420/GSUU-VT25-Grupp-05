@@ -98,10 +98,11 @@ public class FireTrail : MonoBehaviour
             globalDamageTimers[target] = Time.time;
 
             // Attempt to apply damage through HealthbarBehavior
-            HealthbarBehavior healthbar = target.GetComponentInChildren<HealthbarBehavior>();
-            if (healthbar != null)
+            PlayerHealthBarParent playerHealth = target.GetComponentInChildren<PlayerHealthBarParent>();
+            if (playerHealth != null)
             {
-                healthbar.HitDamage(damage, target);
+                playerHealth.HitDamage(damage, target);
+                
                 PlayDamageSound();
                 //Debug.Log($"Fire Trail damaged {target.name} for {damage} HP.");
             }

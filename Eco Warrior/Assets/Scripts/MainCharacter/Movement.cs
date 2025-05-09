@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class Movement : MonoBehaviour
 {
-    [SerializeField] private float _moveSpeed = 3f;
+    [SerializeField] private float _moveSpeed = 5;
     private ToolRotator _toolRotator;
     //[SerializeField] private Slider _healthbar;
     [SerializeField] private float moveSpeed = 2f;
@@ -25,21 +25,31 @@ public class Movement : MonoBehaviour
         _animator = GetComponent<Animator>();
         _toolRotator = GetComponent<ToolRotator>();
         _footstepsSource = GameObject.Find("Step Audio").GetComponent<AudioSource>();
-        _toolRotator.RotateTool(false, _movement);
+        if (_toolRotator is not null)
+            _toolRotator.RotateTool(false, _movement);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         _rb.linearVelocity = _movement * _moveSpeed;
+        if (Keyboard.current.leftShiftKey.isPressed)
+        {
+            _moveSpeed = 6f;
+            GetComponentInParent<SoundEmitter>().Play(_footstepsSource, true);
+        }
+        else
+        {
+            _moveSpeed = 4f;
+        }
 
     }
 
     public void MoveCharacter(InputAction.CallbackContext context)
     {
         //TODO Fix
-        if(Input.GetKey(KeyCode.LeftShift) && !context.canceled)
-            GetComponentInParent<SoundEmitter>().Play(_footstepsSource, true);
+       
         
         _animator.SetBool("isWalking", true);
         
@@ -55,7 +65,7 @@ public class Movement : MonoBehaviour
         _animator.SetFloat("InputX", _movement.x);
         _animator.SetFloat("InputY", _movement.y);
 
-        if (_movement != Vector2.zero) _toolRotator.RotateTool( false, _movement);
+        if (_movement != Vector2.zero && _toolRotator is not null) _toolRotator.RotateTool( false, _movement);
 
       
     }

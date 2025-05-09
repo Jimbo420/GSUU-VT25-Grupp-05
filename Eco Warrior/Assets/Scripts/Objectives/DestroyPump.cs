@@ -43,9 +43,18 @@ public class DestroyPump : MonoBehaviour, IDestroy
     {
         _slider.gameObject.SetActive(false);
         textObject.gameObject.SetActive(false);
-        if(GetComponent<Animator>() != null) GetComponent<Animator>().enabled = false;
+
+        if (GetComponent<Animator>() != null)
+        {
+            GetComponent<Animator>().enabled = false;
+        }
+
         GetComponent<SpriteRenderer>().sprite = _destroyedSprite;
-        if(this.CompareTag("Computer")) GetComponent<DoorOpener>().OpenWeaponRoomDoors();
+
+        if (this.CompareTag("Computer"))
+        {
+            GetComponent<DoorOpener>().OpenWeaponRoomDoors();
+        }
 
         _destroyedObjects._gameObjectsDestroyed++;
         _isDestroyed = true;

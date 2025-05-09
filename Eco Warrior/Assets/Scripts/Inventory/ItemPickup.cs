@@ -19,7 +19,7 @@ public class ItemPickup : MonoBehaviour
         else if (gameObject.CompareTag("Health"))
         {
             if (!other.gameObject.CompareTag("Player")) return;
-            HealthbarBehavior healthbar = other.GetComponentInChildren<HealthbarBehavior>();
+            PlayerHealthBarParent healthbar = other.GetComponentInChildren<PlayerHealthBarParent>();
             if (healthbar == null) return;
             healthbar.Heal();
             Destroy(gameObject);
@@ -37,6 +37,12 @@ public class ItemPickup : MonoBehaviour
                 weapon.WeaponData.CurrentAmmunition = 500;
                 
 
+            Destroy(gameObject);
+        }
+        else if (gameObject.CompareTag("Shield"))
+        {
+            PlayerHealthBarParent health = other.GetComponentInChildren<PlayerHealthBarParent>();
+            health.ArmorAmount += 10;
             Destroy(gameObject);
         }
     }

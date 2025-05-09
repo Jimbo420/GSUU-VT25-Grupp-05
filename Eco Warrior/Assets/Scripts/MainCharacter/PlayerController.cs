@@ -28,7 +28,8 @@ public class PlayerController : MonoBehaviour
 
     void EquipWeapon(int index)
     {
-        _weaponManager.EquipWeapon(index);
+        if(_weaponManager is not null)
+            _weaponManager.EquipWeapon(index);
     }
 
     void FixedUpdate()

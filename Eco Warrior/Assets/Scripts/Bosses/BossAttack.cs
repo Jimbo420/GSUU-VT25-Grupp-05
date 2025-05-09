@@ -83,7 +83,7 @@ public class BossAttack : MonoBehaviour
             if (hit.CompareTag("Player"))
             {
                 //Debug.Log("Player hit!");
-                HealthbarBehavior playerHealth = hit.GetComponentInChildren<HealthbarBehavior>();
+                PlayerHealthBarParent playerHealth = hit.GetComponentInChildren<PlayerHealthBarParent>();
                 if (playerHealth != null)
                 {
                     playerHealth.HitDamage(attackDamage, hit.gameObject);

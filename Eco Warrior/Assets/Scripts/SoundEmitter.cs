@@ -28,6 +28,7 @@ public class SoundEmitter : MonoBehaviour, IPlaySound
     {
         if (loop)
         {
+            if (source.isPlaying) return;
             source.Play();
             MakeSound(5f);
         }
