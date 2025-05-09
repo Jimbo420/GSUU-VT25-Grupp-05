@@ -39,6 +39,10 @@ public class ItemPickup : MonoBehaviour
 
             Destroy(gameObject);
         }
+        else if (gameObject.CompareTag("Shield"))
+        {
+            
+        }
     }
     void Awake()
     {

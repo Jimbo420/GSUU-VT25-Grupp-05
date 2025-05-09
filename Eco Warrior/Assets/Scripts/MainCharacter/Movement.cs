@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class Movement : MonoBehaviour
 {
-    [SerializeField] private float _moveSpeed = 3f;
+    [SerializeField] private float _moveSpeed = 5;
     private ToolRotator _toolRotator;
     //[SerializeField] private Slider _healthbar;
     [SerializeField] private float moveSpeed = 2f;
@@ -34,14 +34,22 @@ public class Movement : MonoBehaviour
     void Update()
     {
         _rb.linearVelocity = _movement * _moveSpeed;
+        if (Keyboard.current.leftShiftKey.isPressed)
+        {
+            _moveSpeed = 6f;
+            GetComponentInParent<SoundEmitter>().Play(_footstepsSource, true);
+        }
+        else
+        {
+            _moveSpeed = 4f;
+        }
 
     }
 
     public void MoveCharacter(InputAction.CallbackContext context)
     {
         //TODO Fix
-        if(Input.GetKey(KeyCode.LeftShift) && !context.canceled)
-            GetComponentInParent<SoundEmitter>().Play(_footstepsSource, true);
+       
         
         _animator.SetBool("isWalking", true);
         
