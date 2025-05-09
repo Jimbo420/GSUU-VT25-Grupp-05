@@ -18,8 +18,8 @@ MonoBehaviour:
   FireRate: 5
   Accuracy: 1
   Damage: 1
-  CurrentAmmunition: 30
-  MaxAmmunition: 30
+  CurrentAmmunition: 77
+  MaxAmmunition: 100
   HasUnlimitedAmmo: 0
   FirePointOffset: {x: 0, y: 0}
   GunHolderOffset: {x: 0, y: -0.2}
