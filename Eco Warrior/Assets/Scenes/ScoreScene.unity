@@ -955,9 +955,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6449208cd01770842bc28e30e3583a75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemiesKilledText: {fileID: 1423161722}
-  objectivesCompletedText: {fileID: 1827942321}
-  timesDetectedText: {fileID: 1362905446}
+  enemiesKilledNumbersText: {fileID: 1423161722}
+  objectivesCompletedNumbersText: {fileID: 1827942321}
+  timesDetectedNumbersText: {fileID: 1362905446}
   gameScoreText: {fileID: 430307748}
 --- !u!4 &1525266625
 Transform:

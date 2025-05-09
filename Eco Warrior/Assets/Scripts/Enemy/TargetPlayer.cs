@@ -12,6 +12,9 @@ public class TargetPlayer : MonoBehaviour
     public Vector2 lastFacingDirection = Vector2.right;
     private EnemyMovement enemyMovement;
     public Transform player;
+    private bool hasDetected = false;
+    private float hasDetectedCooldown = 10f; // Cooldown duration in seconds
+    private float hasDetectedTimer = 0f; // Timer to track cooldown
     //private NavMeshAgent agent;
 
     private WeaponShooter _weaponShooter;
@@ -53,8 +56,16 @@ public class TargetPlayer : MonoBehaviour
 
     void Update()
     {
-        //if (lostSightTimer > 0)
-        //    lostSightTimer -= Time.deltaTime;
+        // Handle cooldown for resetting hasDetected
+        if (hasDetected)
+        {
+            hasDetectedTimer += Time.deltaTime;
+            if (hasDetectedTimer >= hasDetectedCooldown)
+            {
+                hasDetected = false;
+                hasDetectedTimer = 0f; // Reset the timer
+            }
+        }
     }
 
     public bool PlayerIsInRangeOfEnemy()
@@ -76,7 +87,13 @@ public class TargetPlayer : MonoBehaviour
 
     public void EngageTarget()
     {
-        ScoreManager.Instance.TimesDetected();
+        if (!hasDetected)
+        {
+            ScoreManager.Instance.TimesDetected();
+            hasDetected = true; // Set hasDetected to true
+            hasDetectedTimer = 0f; // Reset the cooldown timer
+        }
+
         if (GetComponent<KnockOut>().IsKnocked) return;
         distance = Vector2.Distance(transform.position, player.position);
         if (distance > stopDistance)

@@ -29,6 +29,7 @@ public class ScoreManager : MonoBehaviour
 
     public void ObjectiveCompleted()
     {
+        Debug.Log("Objective Completed: " + objectivesCompleted);
         objectivesCompleted++;
     }
 
