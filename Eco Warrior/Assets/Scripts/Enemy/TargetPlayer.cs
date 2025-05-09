@@ -72,6 +72,7 @@ public class TargetPlayer : MonoBehaviour
 
     public void EngageTarget()
     {
+        ScoreManager.Instance.TimesDetected();
         if (GetComponent<KnockOut>().IsKnocked) return;
         distance = Vector2.Distance(transform.position, player.position);
         if (distance > stopDistance)

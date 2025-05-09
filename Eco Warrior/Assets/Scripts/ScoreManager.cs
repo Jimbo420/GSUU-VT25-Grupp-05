@@ -6,6 +6,7 @@ public class ScoreManager : MonoBehaviour
 
     public int enemiesKilled = 0;
     public int objectivesCompleted = 0;
+    public int timesDetected = 0;
 
     private void Awake()
     {
@@ -29,5 +30,10 @@ public class ScoreManager : MonoBehaviour
     public void ObjectiveCompleted()
     {
         objectivesCompleted++;
+    }
+
+    public void TimesDetected()
+    {
+        timesDetected++;
     }
 }
