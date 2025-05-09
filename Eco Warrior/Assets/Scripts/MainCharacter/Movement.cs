@@ -37,7 +37,9 @@ public class Movement : MonoBehaviour
 
     public void MoveCharacter(InputAction.CallbackContext context)
     {
-        GetComponentInParent<SoundEmitter>().Play(_footstepsSource, true);
+        //TODO Fix
+        if(Input.GetKey(KeyCode.LeftShift) && !context.canceled)
+            GetComponentInParent<SoundEmitter>().Play(_footstepsSource, true);
         
         _animator.SetBool("isWalking", true);
         

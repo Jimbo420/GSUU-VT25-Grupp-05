@@ -47,8 +47,12 @@ public class ToolRotator : MonoBehaviour
 
         _toolTransform.localEulerAngles = new Vector3(0f, 0f, angle);
         _toolSpriteRenderer.flipY = direction.x < 0;
+        try
+        {
+            _toolSpriteRenderer.sprite = GetComponentInChildren<WeaponManager>().CurrentWeapon.WeaponSprite;
+            GetComponentInChildren<WeaponVisuals>().UpdateWeaponOrientation(direction.x, direction.y);
 
-        _toolSpriteRenderer.sprite = GetComponentInChildren<WeaponManager>().CurrentWeapon.WeaponSprite;
-        GetComponentInChildren<WeaponVisuals>().UpdateWeaponOrientation(direction.x, direction.y);
+        }
+        catch (Exception) {}
     }
 }

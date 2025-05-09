@@ -13,9 +13,18 @@ public class LevelTransition : MonoBehaviour
 
     void Start()
     {
-        // Automatically find the TextMeshProUGUI component in the child objects
-        interactionText = GetComponentInChildren<TextMeshProUGUI>();
-        inactiveText = GetComponentInChildren<TextMeshProUGUI>();
+        // Get all TextMeshProUGUI components in the child objects
+        TextMeshProUGUI[] textComponents = GetComponentsInChildren<TextMeshProUGUI>();
+
+        if (textComponents.Length > 0)
+        {
+            interactionText = textComponents[0]; // Assign the first one
+        }
+
+        if (textComponents.Length > 1)
+        {
+            inactiveText = textComponents[1]; // Assign the second one
+        }
 
         // Ensure the interaction text is hidden at the start
         if (interactionText != null)

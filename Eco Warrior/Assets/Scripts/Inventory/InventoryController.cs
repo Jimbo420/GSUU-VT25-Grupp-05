@@ -10,18 +10,11 @@ public class InventoryController : MonoBehaviour
     [SerializeField] private GameObject[] itemPrefabs;
     private List<Slot> _slots = new List<Slot>();
     public List<Slot> GetSlots() => _slots;
+
     void Start()
     {
         for (int i = 0; i < _slotCount; i++)
         {
-            //Slot slot = Instantiate(_slotPrefab, _inventoryPanel.transform).GetComponent<Slot>();
-            //if (i < itemPrefabs.Length)
-            //{
-            //    GameObject item = Instantiate(itemPrefabs[i], slot.transform);
-            //    item.GetComponent<RectTransform>().anchoredPosition = Vector2.zero; //Have item be in the middle of slot
-            //    slot.CurrentItem = item;
-            //    _weapons.Add(item.GetComponent<WeaponTag>());
-            //}
             Slot slot = Instantiate(_slotPrefab, _inventoryPanel.transform).GetComponent<Slot>();
             if (i < itemPrefabs.Length)
             {
@@ -32,6 +25,7 @@ public class InventoryController : MonoBehaviour
             _slots.Add(slot);
         }
     }
+
     public GameObject TryAddItem(GameObject itemPrefab)
     {
         foreach (Slot slot in _slots)

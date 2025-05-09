@@ -24,7 +24,8 @@ public class Bullet : MonoBehaviour
     {
         // Ignore the shooter
         if (other.gameObject == _shooter) return;
-
+        KnockOut enemyKnockout = other.GetComponent<KnockOut>();
+        if (enemyKnockout is not null && enemyKnockout.IsKnocked) return;
         // Check if the bullet hit a wall
         if (other.gameObject.layer == LayerMask.NameToLayer("Walls") ||
             other.gameObject.layer == LayerMask.NameToLayer("wall"))
@@ -51,6 +52,7 @@ public class Bullet : MonoBehaviour
 
         // Fall back to HealthbarBehavior for compatibility
         HealthbarBehavior healthbar = other.GetComponentInChildren<HealthbarBehavior>();
+        PlayerHealth playerHealth = other.GetComponentInChildren<PlayerHealth>();
         if (healthbar == null) Debug.Log("Healthbar is null");
         if (healthbar != null)
         {
@@ -58,9 +60,15 @@ public class Bullet : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        else
+        {
+            playerHealth.HitDamage(_damage, other.gameObject);
+            Destroy(gameObject);
+            return;
+        }
 
-        // If no damage system is found, log a warning
-        Debug.LogWarning($"Bullet hit {other.gameObject.name}, but it cannot take damage.");
+            // If no damage system is found, log a warning
+            Debug.LogWarning($"Bullet hit {other.gameObject.name}, but it cannot take damage.");
         Destroy(gameObject);
     }
 

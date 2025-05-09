@@ -6,7 +6,6 @@ public class PlayerController : MonoBehaviour
     private WeaponShooter _weaponShooter;
     private WeaponManager _weaponManager;
     private float _nextFireTime;
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -36,7 +35,7 @@ public class PlayerController : MonoBehaviour
     {
         //if (EventSystem.current.IsPointerOverGameObject() || ItemDragHandler.IsDragging) return;
         if (!Input.GetButton("Fire1") || !(Time.time >= _nextFireTime)) return;
-
+        
         _weaponShooter.Shoot(true);
         
         //Uses FireRate to calculate when next bullet should be fired
