@@ -40,8 +40,12 @@ public class Movement : MonoBehaviour
     public void MoveCharacter(InputAction.CallbackContext context)
     {
         //TODO Fix
-        if(Input.GetKey(KeyCode.LeftShift) && !context.canceled)
+        if (Input.GetKey(KeyCode.LeftShift) && !context.canceled)
+        {
+            Debug.Log("Should move faster");
+            _moveSpeed = 10f;
             GetComponentInParent<SoundEmitter>().Play(_footstepsSource, true);
+        }
         
         _animator.SetBool("isWalking", true);
         
