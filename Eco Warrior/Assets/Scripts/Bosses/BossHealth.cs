@@ -51,7 +51,7 @@ public class BossHealth : MonoBehaviour, IDamageable
     {
         //Debug.Log("Boss has died.");
         Destroy(gameObject);
-        SceneManager.LoadScene("ScoreScene");
+        SceneManager.LoadScene("OutroScene");
     }
 }
 
