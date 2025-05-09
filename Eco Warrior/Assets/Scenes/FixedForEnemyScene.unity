@@ -3609,8 +3609,6 @@ MonoBehaviour:
   _fullHeart: {fileID: 969139444, guid: f214c39dce100bb42886760b8991f30c, type: 3}
   _halfHeart: {fileID: -477851360, guid: 422af2081e9074848a9c8e8e8cbdc019, type: 3}
   _emptyHeart: {fileID: 1096566845, guid: 85bdaa3ac7470e24194746003cb47404, type: 3}
-  maxHealth: 10
-  currentHealth: 10
 --- !u!4 &1035483137 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2895968495781537354, guid: 71704a5bcb4e09848939c4211ca144e4, type: 3}
@@ -5193,8 +5191,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddba17658bbd71746afb1a94a400949f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 25
-  _maxHealth: 25
   _healthBarParent: {fileID: 991019646}
 --- !u!1001 &1522416101
 PrefabInstance:
