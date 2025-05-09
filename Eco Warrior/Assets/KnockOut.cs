@@ -50,6 +50,11 @@ public class KnockOut : MonoBehaviour
 
         GetComponent<NavMeshAgent>().enabled = false;
 
+        Collider2D parentCollider = GetComponentInParent<Collider2D>();
+        if (parentCollider != null)
+        {
+            parentCollider.enabled = false;
+        }
 
         foreach (Transform child in transform)
             child.gameObject.SetActive(false);
