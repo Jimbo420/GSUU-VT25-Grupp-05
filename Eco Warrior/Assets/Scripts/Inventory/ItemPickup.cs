@@ -41,7 +41,9 @@ public class ItemPickup : MonoBehaviour
         }
         else if (gameObject.CompareTag("Shield"))
         {
-            
+            PlayerHealthBarParent health = other.GetComponentInChildren<PlayerHealthBarParent>();
+            health.ArmorAmount += 10;
+            Destroy(gameObject);
         }
     }
     void Awake()

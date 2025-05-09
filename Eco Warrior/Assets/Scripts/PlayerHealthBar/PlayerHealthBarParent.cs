@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static PlayerHealthBar;
@@ -9,8 +10,16 @@ public class PlayerHealthBarParent : MonoBehaviour
 {
     public GameObject _healthBarPrefab;
     public GameObject ArmorPrefab;
-
-    public float ArmorAmount = 10;
+    private float _armorAmount = 10f;
+    public float ArmorAmount
+    {
+        get => _armorAmount;
+        set
+        {
+            _armorAmount += 10;
+            UpdateShield();
+        }
+    }
     //[SerializeField] public PlayerHealth _playerHealth;
     private List<PlayerHealthBar> _heartList = new List<PlayerHealthBar>();
     private Image[] _hearts;
@@ -63,7 +72,7 @@ public class PlayerHealthBarParent : MonoBehaviour
     }
     public void HitDamage(float damage, GameObject entity)
     {
-        if (ArmorAmount > 0)
+        if (_armorAmount > 0)
         {
             RemoveShield(damage);
             return;
@@ -76,10 +85,14 @@ public class PlayerHealthBarParent : MonoBehaviour
         Debug.Log("Spelarens Health: " + _health);
     }
 
+    void UpdateShield()
+    {
+        ArmorPrefab.GetComponentInChildren<TMP_Text>().text = $"{_armorAmount}";
+    }
     void RemoveShield(float damage)
     {
-        ArmorAmount -= damage;
-        ArmorPrefab.GetComponentInChildren<TMP_Text>().text = $"{ArmorAmount}";
+        _armorAmount -= damage;
+        UpdateShield();
     }
     public void Dead()
     {
