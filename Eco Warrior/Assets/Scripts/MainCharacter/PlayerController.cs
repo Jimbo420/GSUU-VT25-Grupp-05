@@ -36,11 +36,11 @@ public class PlayerController : MonoBehaviour
     {
         //if (EventSystem.current.IsPointerOverGameObject() || ItemDragHandler.IsDragging) return;
         if (!Input.GetButton("Fire1") || !(Time.time >= _nextFireTime)) return;
-        if(_weaponShooter is not null)
-        {
-            _weaponShooter.Shoot(true);
-            //Uses FireRate to calculate when next bullet should be fired
-            _nextFireTime = Time.time + (1f / _weaponShooter.GetFireRate());
-        }
+        
+        _weaponShooter.Shoot(true);
+        MusicManager.Instance.TriggerTensionOnGunfire();
+
+        //Uses FireRate to calculate when next bullet should be fired
+        _nextFireTime = Time.time + (1f/_weaponShooter.GetFireRate());
     }
 }
