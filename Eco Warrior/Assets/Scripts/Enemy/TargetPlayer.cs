@@ -68,6 +68,8 @@ public class TargetPlayer : MonoBehaviour
         bool isInRange = dot >= angleThreshold && distance <= viewDistance;
         if (distance > viewDistance) enemyMovement.isMakingSound = false;
         return isInRange && hasLineOfSight;
+
+
     }
 
     public void EngageTarget()
@@ -84,6 +86,8 @@ public class TargetPlayer : MonoBehaviour
             enemyMovement.agent.velocity = Vector3.zero;
         if (!(Time.time >= _nextFireTime)) return;
         _weaponShooter.Shoot();
+        MusicManager.Instance.TriggerTensionOnGunfire();
+
         _nextFireTime = Time.time + (1f / _weaponManager.CurrentWeapon.FireRate);
 
     }

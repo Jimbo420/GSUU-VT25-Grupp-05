@@ -47,13 +47,15 @@ public class EnemyMovement : MonoBehaviour
         health = maxHealth;
         NewPosition();
     }
-    void Update()
+void Update()
     {
         targetPlayer.lastFacingDirection = agent.velocity.normalized;
         if (targetPlayer.PlayerIsInRangeOfEnemy())
         {
             isPlayerInRange = true;
             targetPlayer.EngageTarget();
+            MusicManager.Instance.PlayTensionMusic();
+            //GetComponentInParent<SoundEmitter>().Play(_musicSource, true);
         }
         else
         {
