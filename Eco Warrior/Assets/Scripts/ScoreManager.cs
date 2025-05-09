@@ -6,6 +6,7 @@ public class ScoreManager : MonoBehaviour
 
     public int enemiesKilled = 0;
     public int objectivesCompleted = 0;
+    public int timesDetected = 0;
 
     private void Awake()
     {
@@ -28,6 +29,12 @@ public class ScoreManager : MonoBehaviour
 
     public void ObjectiveCompleted()
     {
+        Debug.Log("Objective Completed: " + objectivesCompleted);
         objectivesCompleted++;
+    }
+
+    public void TimesDetected()
+    {
+        timesDetected++;
     }
 }

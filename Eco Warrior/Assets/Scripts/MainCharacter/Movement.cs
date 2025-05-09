@@ -25,7 +25,9 @@ public class Movement : MonoBehaviour
         _animator = GetComponent<Animator>();
         _toolRotator = GetComponent<ToolRotator>();
         _footstepsSource = GameObject.Find("Step Audio").GetComponent<AudioSource>();
-        _toolRotator.RotateTool(false, _movement);
+        if (_toolRotator is not null)
+            _toolRotator.RotateTool(false, _movement);
+        
     }
 
     // Update is called once per frame
@@ -55,7 +57,7 @@ public class Movement : MonoBehaviour
         _animator.SetFloat("InputX", _movement.x);
         _animator.SetFloat("InputY", _movement.y);
 
-        if (_movement != Vector2.zero) _toolRotator.RotateTool( false, _movement);
+        if (_movement != Vector2.zero && _toolRotator is not null) _toolRotator.RotateTool( false, _movement);
 
       
     }
