@@ -797,7 +797,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1657674987697993843, guid: 41c960e2d824b4a44800a12a025533ff, type: 3}
       propertyPath: nextSceneName
-      value: CarFactory
+      value: CharacterSceneNew
       objectReference: {fileID: 0}
     - target: {fileID: 5401700742408989482, guid: 41c960e2d824b4a44800a12a025533ff, type: 3}
       propertyPath: m_fontColor.b
