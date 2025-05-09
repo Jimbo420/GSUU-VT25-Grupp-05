@@ -52,7 +52,7 @@ public class Bullet : MonoBehaviour
 
         // Fall back to HealthbarBehavior for compatibility
         HealthbarBehavior healthbar = other.GetComponentInChildren<HealthbarBehavior>();
-        PlayerHealth playerHealth = other.GetComponentInChildren<PlayerHealth>();
+        PlayerHealthBarParent playerHealth = other.GetComponentInChildren<PlayerHealthBarParent>();
         if (healthbar == null) Debug.Log("Healthbar is null");
         if (healthbar != null)
         {
@@ -62,6 +62,7 @@ public class Bullet : MonoBehaviour
         }
         else
         {
+            if (playerHealth is null) Debug.Log("Playerhealth is null");
             playerHealth.HitDamage(_damage, other.gameObject);
             Destroy(gameObject);
             return;

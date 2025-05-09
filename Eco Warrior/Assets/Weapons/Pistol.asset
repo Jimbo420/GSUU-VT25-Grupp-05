@@ -17,8 +17,8 @@ MonoBehaviour:
   ShotSound: {fileID: 0}
   FireRate: 2
   Accuracy: 0
-  Damage: 5
-  CurrentAmmunition: -39
+  Damage: 1
+  CurrentAmmunition: 0
   MaxAmmunition: 0
   HasUnlimitedAmmo: 1
   FirePointOffset: {x: 0, y: 0}
