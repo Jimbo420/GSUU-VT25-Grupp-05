@@ -1,0 +1,47 @@
+using NUnit.Framework;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using static PlayerHealthBar;
+
+public class PlayerHealthBarParent : MonoBehaviour
+{
+    public GameObject _healthBarPrefab;
+    public PlayerHealth _playerHealth;
+    private List<PlayerHealthBar> _heartList = new List<PlayerHealthBar>();
+    private Image[] _hearts;
+    public Sprite _fullHeart;
+    public Sprite _halfHeart;
+    public Sprite _emptyHeart;
+    private void Awake()
+    {
+        Transform[] children = GetComponentsInChildren<Transform>();
+        List<Image> foundHearts = new List<Image>();
+        foreach (Transform child in children)
+        {
+            Image heart = child.GetComponent<Image>();
+            if (heart != null)
+                foundHearts.Add(heart);
+        }
+
+        _hearts = foundHearts.ToArray();
+    }
+
+    public void UpdateHearts(float currentHealth)
+    {
+        Debug.Log("Tja");
+        for (int i = 0; i < _hearts.Length; i++)
+        {
+            //if (_hearts[i] == null) continue;
+
+            float heartHealth = currentHealth - (i * 2);
+            Debug.Log("HeartHealth " + heartHealth);
+            if (heartHealth >= 2)
+                _hearts[i].sprite = _fullHeart;
+            else if (heartHealth.Equals(1))
+                _hearts[i].sprite = _halfHeart;
+            else
+                _hearts[i].sprite = _emptyHeart;
+        }
+    }
+}
