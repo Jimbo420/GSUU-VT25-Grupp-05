@@ -7,14 +7,19 @@ using static PlayerHealthBar;
 public class PlayerHealthBarParent : MonoBehaviour
 {
     public GameObject _healthBarPrefab;
-    public PlayerHealth _playerHealth;
+    //[SerializeField] public PlayerHealth _playerHealth;
     private List<PlayerHealthBar> _heartList = new List<PlayerHealthBar>();
     private Image[] _hearts;
     public Sprite _fullHeart;
     public Sprite _halfHeart;
     public Sprite _emptyHeart;
+
+    private float _health = 10;
+    private float _maxHealth = 10;
     private void Awake()
     {
+        _health = _maxHealth;
+        Debug.Log("Nuvarande health: " + _health);
         Transform[] children = GetComponentsInChildren<Transform>();
         List<Image> foundHearts = new List<Image>();
         foreach (Transform child in children)
@@ -25,7 +30,9 @@ public class PlayerHealthBarParent : MonoBehaviour
         }
 
         _hearts = foundHearts.ToArray();
+        UpdateHearts(_health);
     }
+
 
     public void UpdateHearts(float currentHealth)
     {
@@ -43,5 +50,24 @@ public class PlayerHealthBarParent : MonoBehaviour
             else
                 _hearts[i].sprite = _emptyHeart;
         }
+    }
+
+    public void Heal()
+    {
+        _health = _maxHealth;
+        UpdateHearts(_health);
+    }
+    public void HitDamage(float damage, GameObject entity)
+    {
+        _health -= damage;
+        _health = Mathf.Clamp(_health, 0, _maxHealth);
+        UpdateHearts(_health);
+        if (_health <= 0)
+            Destroy(entity);
+        Debug.Log("Spelarens Health: " + _health);
+    }
+    public void Dead()
+    {
+        Destroy(gameObject);
     }
 }

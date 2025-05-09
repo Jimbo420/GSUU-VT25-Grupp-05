@@ -10,7 +10,7 @@ public class PlayerHealth : MonoBehaviour
     void Awake()
     {
         _health = _maxHealth;
-        _healthBarParent.UpdateHearts(_health);
+        //_healthBarParent.UpdateHearts(_health);
         Debug.Log("Nuvarande health: " + _health);
     }
 
@@ -23,13 +23,13 @@ public class PlayerHealth : MonoBehaviour
     public void Heal()
     {
         _health = _maxHealth;
-        _healthBarParent.UpdateHearts(_health);
+        //_healthBarParent.UpdateHearts(_health);
     }
     public void HitDamage(float damage, GameObject entity)
     {
         _health -= damage;
         _health = Mathf.Clamp(_health, 0, _maxHealth);
-        _healthBarParent.UpdateHearts(_health);
+        //_healthBarParent.UpdateHearts(_health);
         if (_health <= 0)
             Destroy(entity);
         Debug.Log("Spelarens Health: " + _health);
