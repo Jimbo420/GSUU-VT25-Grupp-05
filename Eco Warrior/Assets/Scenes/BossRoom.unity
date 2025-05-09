@@ -2590,11 +2590,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7869374764876844269, guid: 1da5c1ed43a6de5458c24907f773a722, type: 3}
       propertyPath: maxHealth
-      value: 50
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 7869374764876844269, guid: 1da5c1ed43a6de5458c24907f773a722, type: 3}
       propertyPath: currentHealth
-      value: 50
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 8096378671013174351, guid: 1da5c1ed43a6de5458c24907f773a722, type: 3}
       propertyPath: m_SortingOrder

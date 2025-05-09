@@ -29,6 +29,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CharacterSceneNew.unity
     guid: 13eb53bc557bfd14b9ca71a5d2b13739
+  - enabled: 1
+    path: Assets/Scenes/ArmorScene.unity
+    guid: ae81eefd0cb0a134b9d244a184d7b6b8
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

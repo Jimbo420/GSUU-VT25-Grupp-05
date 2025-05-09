@@ -10,7 +10,7 @@ using UnityEngine.Rendering.UI;
 public class EnemyMovement : MonoBehaviour
 {
     [SerializeField] public float health = 0;
-    [SerializeField] public float maxHealth = 25;
+    [SerializeField] public float maxHealth = 10;
     [SerializeField] private bool isPlayerInRange = false;
     [SerializeField] public Transform[] WayPoints;
 

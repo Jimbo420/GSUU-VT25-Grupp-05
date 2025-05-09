@@ -6,9 +6,9 @@ public class ItemPickup : MonoBehaviour
     //[SerializeField] GameObject weaponPrefab;
     void OnTriggerEnter2D(Collider2D other)
     {
+            if (!other.gameObject.CompareTag("Player")) return;
         if (gameObject.CompareTag("Ammo"))
         {
-            if (!other.gameObject.CompareTag("Player")) return;
             WeaponUI weaponUI = other.GetComponentInChildren<WeaponUI>();
             WeaponShooter weaponShooter= other.GetComponentInChildren<WeaponShooter>();
             GetComponentInParent<SoundEmitter>().Play(_reloadSource, false);
@@ -18,7 +18,6 @@ public class ItemPickup : MonoBehaviour
         }
         else if (gameObject.CompareTag("Health"))
         {
-            if (!other.gameObject.CompareTag("Player")) return;
             PlayerHealthBarParent healthbar = other.GetComponentInChildren<PlayerHealthBarParent>();
             if (healthbar == null) return;
             healthbar.Heal();

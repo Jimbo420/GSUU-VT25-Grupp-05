@@ -92,10 +92,10 @@ public class FireTrail : MonoBehaviour
     private void ApplyDamage(GameObject target)
     {
         // Check if enough time has passed since the last damage for this target
-        if (Time.time >= globalDamageTimers[target] + damageInterval)
-        {
+        //if (Time.time >= globalDamageTimers[target] + damageInterval)
+        //{
             // Update the last damage time for this target
-            globalDamageTimers[target] = Time.time;
+           // globalDamageTimers[target] = Time.time;
 
             // Attempt to apply damage through HealthbarBehavior
             PlayerHealthBarParent playerHealth = target.GetComponentInChildren<PlayerHealthBarParent>();
@@ -110,7 +110,7 @@ public class FireTrail : MonoBehaviour
             {
                 //Debug.LogWarning($"Fire Trail hit {target.name}, but it does not have a HealthbarBehavior.");
             }
-        }
+        //}
     }
 
     private void PlayDamageSound()

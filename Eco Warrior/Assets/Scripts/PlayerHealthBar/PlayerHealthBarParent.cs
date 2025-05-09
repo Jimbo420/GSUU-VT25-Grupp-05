@@ -89,9 +89,9 @@ public class PlayerHealthBarParent : MonoBehaviour
     {
         ArmorPrefab.GetComponentInChildren<TMP_Text>().text = $"{_armorAmount}";
     }
-    void RemoveShield(float damage)
+    void RemoveShield(float damage) 
     {
-        _armorAmount -= damage;
+        _armorAmount -= Mathf.RoundToInt(damage);
         UpdateShield();
     }
     public void Dead()

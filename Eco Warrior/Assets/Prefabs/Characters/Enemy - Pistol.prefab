@@ -580,7 +580,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
-  maxHealth: 25
+  maxHealth: 15
   isPlayerInRange: 0
   WayPoints:
   - {fileID: 4508378624174280116, guid: 3407f7df024c19d43aceff71e2ecc5e5, type: 3}
@@ -985,7 +985,7 @@ MonoBehaviour:
   fillImage: {fileID: 0}
   low: {r: 0.78113204, g: 0, b: 0, a: 1}
   high: {r: 0.2819624, g: 1, b: 0, a: 1}
-  _maxHealth: 25
+  _maxHealth: 10
 --- !u!1001 &4311718241327511900
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1091,6 +1091,10 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 07e1735015d2e554b979b994c1083326, type: 3}
     - target: {fileID: 4744151850079952380, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
       propertyPath: _availableWeapons.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4744151850079952380, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}
+      propertyPath: getAvailableWeapons.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6037138791799478460, guid: b7ec3f5881983be4f9a5674762f0e739, type: 3}

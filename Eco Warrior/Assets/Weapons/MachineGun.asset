@@ -17,8 +17,8 @@ MonoBehaviour:
   ShotSound: {fileID: 8300000, guid: a2dd2caee1601d340802c430ee39160d, type: 3}
   FireRate: 10
   Accuracy: 3
-  Damage: 5
-  CurrentAmmunition: 477
+  Damage: 1
+  CurrentAmmunition: 444
   MaxAmmunition: 500
   HasUnlimitedAmmo: 0
   FirePointOffset: {x: 0, y: 0}

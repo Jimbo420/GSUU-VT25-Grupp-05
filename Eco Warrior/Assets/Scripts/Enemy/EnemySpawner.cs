@@ -15,8 +15,8 @@ public class EnemySpawner : MonoBehaviour
     private Dictionary<int, int> _enemySpawnerList = new Dictionary<int, int>
     {
         {1, 1},
-        {2, 4},
-        {3, 6},
+        {2, 2},
+        {3, 4},
     };
 
     private void Awake()
@@ -43,15 +43,21 @@ public class EnemySpawner : MonoBehaviour
 
         var spawnPoint = GameObject.FindWithTag("EnemySpawnWaypoint");
 
-        for (int i = 0; i < enemiesToSpawn; i++)
+        int pistolCount = Mathf.CeilToInt(enemiesToSpawn / 2f);
+        int smgCount = enemiesToSpawn - pistolCount;
+
+        Debug.Log($"Spawning {pistolCount} pistols and {smgCount} SMGs");
+
+        for (int i = 0; i < pistolCount; i++)
         {
-            GameObject enemyToSpawn = _enemyPrefabPistol;
+            Instantiate(_enemyPrefabPistol, spawnPoint.transform.position, Quaternion.identity);
+            yield return new WaitForSeconds(0.5f);
+        }
 
-            if (i < _destroyedObjects.level)
-                enemyToSpawn = _enemyPrefabSMG;
-
-            Instantiate(enemyToSpawn, spawnPoint.transform.position, Quaternion.identity);
-            yield return new WaitForSeconds(5f);
+        for (int i = 0; i < smgCount; i++)
+        {
+            Instantiate(_enemyPrefabSMG, spawnPoint.transform.position, Quaternion.identity);
+            yield return new WaitForSeconds(0.5f);
         }
     }
 }

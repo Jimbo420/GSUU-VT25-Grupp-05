@@ -11,8 +11,8 @@ public class HealthbarBehavior : MonoBehaviour
     public Color low;
     public Color high;
 
-    private float _health = 25;
-    [SerializeField] private float _maxHealth = 25;
+    private float _health = 10;
+    [SerializeField] private float _maxHealth = 10;
     void Start()
     {
         _health = _maxHealth;

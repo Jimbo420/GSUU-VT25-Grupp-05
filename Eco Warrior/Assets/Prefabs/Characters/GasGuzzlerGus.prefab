@@ -421,7 +421,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   encounterStartDistance: 11
-  player: {fileID: 0}
   phases:
   - {fileID: 11400000, guid: 5ad27907dfffaac4d8c572bc8ab57e10, type: 2}
   - {fileID: 11400000, guid: f3e8f5afcc9d00f43bcc48c364616058, type: 2}
@@ -478,8 +477,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackRange: 2
   attackCooldown: 2
-  attackDamage: 2
+  attackDamage: 4
   knockbackForce: 6
+  swingSound: {fileID: 0}
+  hitSound: {fileID: 0}
 --- !u!114 &8680880280239958243
 MonoBehaviour:
   m_ObjectHideFlags: 0

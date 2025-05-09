@@ -41,6 +41,8 @@ public class DestroyPump : MonoBehaviour, IDestroy
 
     public void Destroy()
     {
+        ParticleSystem ps = transform.parent.GetComponentInChildren<ParticleSystem>();
+        if(ps is not null) ps.Play();
         _slider.gameObject.SetActive(false);
         textObject.gameObject.SetActive(false);
 
