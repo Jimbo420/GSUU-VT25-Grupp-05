@@ -63,11 +63,18 @@ public class MusicManager : MonoBehaviour
     }
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Debug.Log($"[MusicManager] Current Clip: {_currentClip?.name}");
+            Debug.Log($"[MusicManager] Timer: {tensionTimer}/{tensionDuration}");
+        }
+
         if (_currentClip == tensionMusic)
         {
             tensionTimer += Time.deltaTime;
             if (tensionTimer >= tensionDuration)
             {
+                Debug.Log("[MusicManager] Tension ended, switching to Calm");
                 PlayCalmMusic();
             }
         }
