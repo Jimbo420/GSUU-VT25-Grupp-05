@@ -7,20 +7,20 @@ using UnityEngine.Serialization;
 
 public class WeaponManager : MonoBehaviour
 {
-    [SerializeField] private WeaponData[] _availableWeapons;
+    [FormerlySerializedAs("_availableWeapons")] [SerializeField] private WeaponData[] getAvailableWeapons;
     [SerializeField] private Transform _gunHolder;
     private InventoryController _inventoryController;
 
     public WeaponData CurrentWeapon { get; private set; }
-   
+
     private int _currentWeaponIndex = 0;
     
-    public WeaponData[] AvailableWeapons => _availableWeapons;
+    public WeaponData[] GetAvailableWeapons => getAvailableWeapons;
 
     void Start()
     {
         _inventoryController = FindFirstObjectByType<InventoryController>();
-        CurrentWeapon = _availableWeapons[0];
+        CurrentWeapon = getAvailableWeapons[0];
         GetComponent<WeaponShooter>().ReloadAllWeapons();
         SwitchWeapon(CurrentWeapon);
     }
