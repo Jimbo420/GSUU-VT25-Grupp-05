@@ -14,9 +14,9 @@ public class EnemySpawner : MonoBehaviour
     private int _lastLevel;
     private Dictionary<int, int> _enemySpawnerList = new Dictionary<int, int>
     {
-        {1, 3},
-        {2, 5},
-        {3, 7},
+        {1, 1},
+        {2, 4},
+        {3, 6},
     };
 
     private void Awake()

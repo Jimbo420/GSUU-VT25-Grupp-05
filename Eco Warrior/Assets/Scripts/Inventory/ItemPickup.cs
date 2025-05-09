@@ -19,7 +19,7 @@ public class ItemPickup : MonoBehaviour
         else if (gameObject.CompareTag("Health"))
         {
             if (!other.gameObject.CompareTag("Player")) return;
-            HealthbarBehavior healthbar = other.GetComponentInChildren<HealthbarBehavior>();
+            PlayerHealthBarParent healthbar = other.GetComponentInChildren<PlayerHealthBarParent>();
             if (healthbar == null) return;
             healthbar.Heal();
             Destroy(gameObject);
