@@ -30,20 +30,30 @@ public class NPCBehavior : MonoBehaviour
     {
         if (isPlayerInRange)
         {
-            // Make the NPC face the player
+            // Calculate the direction vector
             Vector3 direction = (player.position - transform.position).normalized;
 
+            // Debugging: Log the direction vector
+            Debug.Log($"Direction: {direction}");
+
             // Determine the IdleDirection based on the direction vector
-            if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+            int idleDirection;
+            if (Mathf.Abs(direction.y) > Mathf.Abs(direction.x))
             {
-                // Horizontal direction
-                animator.SetInteger("IdleDirection", direction.x > 0 ? 3 : 2); // 3 = right, 2 = left
+                // Prioritize vertical movement
+                idleDirection = direction.y > 0 ? 1 : 0; // 1 = up, 0 = down
             }
             else
             {
-                // Vertical direction
-                animator.SetInteger("IdleDirection", direction.y > 0 ? 1 : 0); // 1 = up, 0 = down
+                // Horizontal movement
+                idleDirection = direction.x > 0 ? 3 : 2; // 3 = right, 2 = left
             }
+
+            // Debugging: Log the chosen IdleDirection
+            Debug.Log($"IdleDirection: {idleDirection}");
+
+            // Update the animator parameter
+            animator.SetInteger("IdleDirection", idleDirection);
         }
     }
 
