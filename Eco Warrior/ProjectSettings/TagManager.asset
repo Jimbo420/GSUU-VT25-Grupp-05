@@ -16,6 +16,7 @@ TagManager:
   - Computer
   - BossTransition
   - PlayerStart
+  - PlayerHearts
   layers:
   - Default
   - TransparentFX
