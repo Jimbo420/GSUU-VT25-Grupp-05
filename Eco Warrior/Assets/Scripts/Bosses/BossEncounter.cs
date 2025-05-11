@@ -98,6 +98,8 @@ public class BossEncounter : MonoBehaviour
 
         isEncounterActive = true;
 
+        MusicManager.Instance.PlayTensionMusic();
+
         // Set the player's Transform as the target for the boss movement
         if (movement != null)
         {

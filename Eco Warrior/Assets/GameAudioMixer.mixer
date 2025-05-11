@@ -28,7 +28,8 @@ AudioMixerSnapshotController:
   m_Name: Calm
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 74ab40f6ec4ba6c499a14047f0b5be0c
-  m_FloatValues: {}
+  m_FloatValues:
+    950bed26c6bf80644ac68b4e0660fc04: -11.400904
   m_TransitionOverrides: {}
 --- !u!245 &-694082569888997645
 AudioMixerSnapshotController:
