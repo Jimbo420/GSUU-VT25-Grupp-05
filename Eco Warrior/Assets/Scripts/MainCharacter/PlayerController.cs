@@ -38,7 +38,8 @@ public class PlayerController : MonoBehaviour
         if (!Input.GetButton("Fire1") || !(Time.time >= _nextFireTime)) return;
         
         _weaponShooter.Shoot(true);
-        MusicManager.Instance.TriggerTensionOnGunfire();
+        //Om man skulle vilja ha tension musik så fort player skjuter.
+        //MusicManager.Instance.TriggerTensionOnGunfire();
 
         //Uses FireRate to calculate when next bullet should be fired
         _nextFireTime = Time.time + (1f/_weaponShooter.GetFireRate());

@@ -104,6 +104,8 @@ public class TargetPlayer : MonoBehaviour
         else
             enemyMovement.agent.velocity = Vector3.zero;
         if (!(Time.time >= _nextFireTime)) return;
+
+        MusicManager.Instance.TriggerTensionOnGunfire();
         _weaponShooter.Shoot();
         _nextFireTime = Time.time + (1f / _weaponManager.CurrentWeapon.FireRate);
 
