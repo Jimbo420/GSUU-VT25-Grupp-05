@@ -19,6 +19,7 @@ public class EnemyMovement : MonoBehaviour
     private int newWayPoint;
     private float idleTimer = 0f;
     private bool isIdle = false;
+    private bool isAggressive = false;
 
     public NavMeshAgent agent;
     private Animator _animator;
@@ -54,13 +55,23 @@ void Update()
         {
             isPlayerInRange = true;
             targetPlayer.EngageTarget();
-            MusicManager.Instance.PlayTensionMusic();
             //GetComponentInParent<SoundEmitter>().Play(_musicSource, true);
+            if (!isAggressive)
+            {
+                isAggressive = true;  // Nu vet vi att vi är i jaktläge
+                MusicManager.Instance.PlayTensionMusic();
+            }
         }
         else
         {
             isPlayerInRange = false;
             Guard();
+        }
+
+        if (isAggressive)
+        {
+            isAggressive = false;  // Nu vet vi att vi patrullerar igen
+            MusicManager.Instance.PlayCalmMusic();
         }
     }
     public void SetTarget(Vector2 newTarget)
