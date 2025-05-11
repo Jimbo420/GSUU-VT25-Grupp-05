@@ -702,6 +702,10 @@ PrefabInstance:
       value: PlayerHearts
       objectReference: {fileID: 0}
     - target: {fileID: 7792081377498346061, guid: 58e9656e6c591c64cbf1b0a816b02c21, type: 3}
+      propertyPath: ArmorPrefab
+      value: 
+      objectReference: {fileID: 3157609319893825139, guid: 5ed72080de23c4d48ae55a35cf26139f, type: 3}
+    - target: {fileID: 7792081377498346061, guid: 58e9656e6c591c64cbf1b0a816b02c21, type: 3}
       propertyPath: _playerHealth
       value: 
       objectReference: {fileID: 0}

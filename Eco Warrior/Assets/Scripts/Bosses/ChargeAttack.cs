@@ -38,13 +38,18 @@ public class ChargeAttack : BossSpecialAttack
     private float pauseTimer = 0f;
     private int remainingCharges = 0;
 
-    private ObjectPool fireTrailPool; // Reference to the fire trail object pool
-
     public bool IsCharging => currentState == ChargeState.Charging; // Expose the charging state
 
     private void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        // Find the player
+        player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        if (player == null)
+        {
+            Debug.LogError("[ChargeAttack] Player object not found. Ensure the player has the 'Player' tag.");
+        }
+
+        // Get required components
         animator = GetComponent<Animator>();
         bossAttack = GetComponent<BossAttack>();
 
@@ -55,11 +60,11 @@ public class ChargeAttack : BossSpecialAttack
             audioSource = gameObject.AddComponent<AudioSource>();
         }
 
-        // Find or create the fire trail object pool
-        GameObject poolObject = new("FireTrailPool");
-        fireTrailPool = poolObject.AddComponent<ObjectPool>();
-        fireTrailPool.SetPrefab(fireTrailPrefab); // Set the prefab dynamically
-        fireTrailPool.SetInitialSize(10); // Set the initial pool size dynamically
+        // Validate fireTrailPrefab
+        if (fireTrailPrefab == null)
+        {
+            Debug.LogWarning("[ChargeAttack] FireTrailPrefab is not assigned. Fire trails will not be spawned.");
+        }
     }
 
     private void Update()
@@ -107,7 +112,15 @@ public class ChargeAttack : BossSpecialAttack
 
         PlayChargeSound();
 
-        chargeDirection = (player.position - transform.position).normalized;
+        if (player != null)
+        {
+            chargeDirection = (player.position - transform.position).normalized;
+        }
+        else
+        {
+            Debug.LogWarning("[ChargeAttack] Player reference is null. Charge direction cannot be determined.");
+            return;
+        }
 
         if (animator != null)
         {
@@ -147,8 +160,6 @@ public class ChargeAttack : BossSpecialAttack
         transform.position += movement;
         distanceCharged += moveDistance;
 
-        //Debug.Log($"[ChargeAttack] Moving. Distance charged: {distanceCharged}, Current position: {transform.position}");
-
         // Spawn fire trail at intervals
         fireTrailTimer += Time.deltaTime;
         if (fireTrailPrefab != null && fireTrailTimer >= fireTrailSpawnInterval)
@@ -160,7 +171,6 @@ public class ChargeAttack : BossSpecialAttack
         // Check if charge distance is reached
         if (distanceCharged >= chargeDistance)
         {
-            //Debug.Log("[ChargeAttack] Charge distance reached.");
             EndCharge();
         }
     }
@@ -172,7 +182,6 @@ public class ChargeAttack : BossSpecialAttack
         {
             pauseTimer = 0f;
             currentState = ChargeState.Idle;
-            //Debug.Log("[ChargeAttack] Pause complete. Returning to Idle state.");
         }
     }
 
@@ -183,8 +192,6 @@ public class ChargeAttack : BossSpecialAttack
 
         // Re-enable normal attacks after the charge
         bossAttack.SetSpecialAttackActive(false);
-
-        //Debug.Log($"[ChargeAttack] Charge ended. Remaining charges: {remainingCharges}");
     }
 
     private void PlayChargeSound()
@@ -197,8 +204,16 @@ public class ChargeAttack : BossSpecialAttack
 
     private void SpawnFireTrail()
     {
-        GameObject fireTrail = fireTrailPool.GetFromPool(transform.position, Quaternion.identity);
+        if (fireTrailPrefab == null)
+        {
+            Debug.LogWarning("[ChargeAttack] FireTrailPrefab is not assigned. Cannot spawn fire trail.");
+            return;
+        }
 
+        // Directly instantiate the fire trail prefab
+        GameObject fireTrail = Instantiate(fireTrailPrefab, transform.position, Quaternion.identity);
+
+        // Configure the fire trail
         float randomScale = Random.Range(fireTrailMinScale, fireTrailMaxScale);
         fireTrail.transform.localScale = new Vector3(randomScale, randomScale, randomScale);
 
@@ -208,14 +223,8 @@ public class ChargeAttack : BossSpecialAttack
             fireTrail.transform.Rotate(0f, 0f, randomRotation);
         }
 
-        // Return the fire trail to the pool after its lifetime
-        StartCoroutine(ReturnFireTrailToPool(fireTrail, fireTrailLifetime));
-    }
-
-    private System.Collections.IEnumerator ReturnFireTrailToPool(GameObject fireTrail, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        fireTrailPool.ReturnToPool(fireTrail);
+        // Destroy the fire trail after its lifetime
+        Destroy(fireTrail, fireTrailLifetime);
     }
 
     private bool IsWallInDirection(Vector2 direction)
@@ -224,4 +233,3 @@ public class ChargeAttack : BossSpecialAttack
         return hit.collider != null;
     }
 }
-

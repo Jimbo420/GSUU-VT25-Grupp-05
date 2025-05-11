@@ -49,7 +49,6 @@ public class PlayerHealthBarParent : MonoBehaviour
 
     public void UpdateHearts(float currentHealth)
     {
-        Debug.Log("Tja");
         for (int i = 0; i < _hearts.Length; i++)
         {
             //if (_hearts[i] == null) continue;
@@ -87,11 +86,18 @@ public class PlayerHealthBarParent : MonoBehaviour
 
     void UpdateShield()
     {
-        ArmorPrefab.GetComponentInChildren<TMP_Text>().text = $"{_armorAmount}";
+        int armorDisplay = Mathf.FloorToInt(_armorAmount);
+
+        if (armorDisplay < 0)
+        {
+            armorDisplay = 0;
+        }
+
+        ArmorPrefab.GetComponentInChildren<TMP_Text>().text = $"{armorDisplay}";
     }
     void RemoveShield(float damage) 
     {
-        _armorAmount -= Mathf.RoundToInt(damage);
+        _armorAmount -= damage;
         UpdateShield();
     }
     public void Dead()

@@ -82,14 +82,32 @@ public class BossAttack : MonoBehaviour
         {
             if (hit.CompareTag("Player"))
             {
-                //Debug.Log("Player hit!");
+                // Check if the target implements IDamageable
+                IDamageable damageable = hit.GetComponent<IDamageable>();
+                if (damageable != null)
+                {
+                    damageable.TakeDamage(attackDamage);
+                    PlaySound(hitSound);
+                    continue;
+                }
+
+                // Fall back to HealthbarBehavior for compatibility
+                HealthbarBehavior healthbar = hit.GetComponentInChildren<HealthbarBehavior>();
                 PlayerHealthBarParent playerHealth = hit.GetComponentInChildren<PlayerHealthBarParent>();
-                if (playerHealth != null)
+
+                if (healthbar != null)
+                {
+                    healthbar.HitDamage(attackDamage, hit.gameObject);
+                    PlaySound(hitSound);
+                }
+                else if (playerHealth != null)
                 {
                     playerHealth.HitDamage(attackDamage, hit.gameObject);
-
-                    // Play the hit sound effect
                     PlaySound(hitSound);
+                }
+                else
+                {
+                    Debug.LogWarning($"Boss hit {hit.gameObject.name}, but it cannot take damage.");
                 }
 
                 ApplyKnockback(hit);
@@ -158,5 +176,3 @@ public class BossAttack : MonoBehaviour
         }
     }
 }
-
-
