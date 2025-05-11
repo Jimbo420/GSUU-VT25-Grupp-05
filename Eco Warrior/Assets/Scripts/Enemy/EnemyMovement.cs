@@ -21,6 +21,9 @@ public class EnemyMovement : MonoBehaviour
     private bool isIdle = false;
     private bool isAggressive = false;
 
+    private float calmDelay = 2f;     // Tid att vänta innan calm
+    private float calmTimer = 0f;     // Timer för att räkna ned
+
     public NavMeshAgent agent;
     private Animator _animator;
     private ToolRotator _toolRotator;
@@ -48,7 +51,7 @@ public class EnemyMovement : MonoBehaviour
         health = maxHealth;
         NewPosition();
     }
-void Update()
+    void Update()
     {
         targetPlayer.lastFacingDirection = agent.velocity.normalized;
         if (targetPlayer.PlayerIsInRangeOfEnemy())
@@ -65,15 +68,23 @@ void Update()
         else
         {
             isPlayerInRange = false;
+
+            // Starta nertrappningstimer om vi är aggressiva
+            if (isAggressive)
+            {
+                calmTimer += Time.deltaTime;
+                if (calmTimer >= calmDelay)
+                {
+                    isAggressive = false;
+                    calmTimer = 0f; // Nollställ timer
+                    MusicManager.Instance.PlayCalmMusic();
+                }
+            }
+
             Guard();
         }
-
-        if (isAggressive)
-        {
-            isAggressive = false;  // Nu vet vi att vi patrullerar igen
-            MusicManager.Instance.PlayCalmMusic();
-        }
     }
+
     public void SetTarget(Vector2 newTarget)
     {
         currentTarget = newTarget;
