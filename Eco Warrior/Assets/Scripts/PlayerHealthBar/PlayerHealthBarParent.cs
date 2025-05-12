@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static PlayerHealthBar;
 
@@ -46,7 +47,6 @@ public class PlayerHealthBarParent : MonoBehaviour
         UpdateHearts(_health);
     }
 
-
     public void UpdateHearts(float currentHealth)
     {
         for (int i = 0; i < _hearts.Length; i++)
@@ -80,7 +80,10 @@ public class PlayerHealthBarParent : MonoBehaviour
         _health = Mathf.Clamp(_health, 0, _maxHealth);
         UpdateHearts(_health);
         if (_health <= 0)
+        {
+            SceneManager.LoadScene("ScoreScene");
             Destroy(entity);
+        }
         Debug.Log("Spelarens Health: " + _health);
     }
 
@@ -102,6 +105,7 @@ public class PlayerHealthBarParent : MonoBehaviour
     }
     public void Dead()
     {
+        SceneManager.LoadScene("ScoreScene");
         Destroy(gameObject);
     }
 }

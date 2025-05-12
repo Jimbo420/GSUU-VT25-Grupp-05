@@ -15,8 +15,8 @@ public class EnemySpawner : MonoBehaviour
     private Dictionary<int, int> _enemySpawnerList = new Dictionary<int, int>
     {
         {1, 1},
-        {2, 2},
-        {3, 4},
+        {2, 1},
+        {3, 1},
     };
 
     private void Awake()

@@ -94,19 +94,34 @@ public class EnemyMovement : MonoBehaviour
     {
         if (targetPlayer.PlayerIsInRangeOfEnemy() || isMakingSound)
         {
-            agent.autoBraking = false;
-            if(isMakingSound)
+            if (isMakingSound && targetPlayer.player != null)
+            {
                 currentTarget = targetPlayer.player.position;
-            agent.SetDestination(currentTarget);
-            agent.speed = 3.5f;
-            
+            }
+
+            agent.autoBraking = false;
+
+            if (agent.isActiveAndEnabled)
+            {
+                agent.SetDestination(currentTarget);
+                agent.speed = 3.5f;
+            }
         }
         else
         {
             agent.autoBraking = true;
-            agent.SetDestination(WayPoints[newWayPoint].position);
-            agent.speed = 1.5f;
+
+            // Check if the waypoint exists before accessing it
+            if (WayPoints != null && WayPoints.Length > newWayPoint && WayPoints[newWayPoint] != null)
+            {
+                if (agent.isActiveAndEnabled)
+                {
+                    agent.SetDestination(WayPoints[newWayPoint].position);
+                    agent.speed = 1.5f;
+                }
+            }
         }
+
         EnemyWalkAnimation();
     }
 

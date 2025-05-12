@@ -42,11 +42,19 @@ public class KnockOut : MonoBehaviour
 
         var components = GetComponents<MonoBehaviour>();
         foreach (var comp in components)
+        {
             if (comp != this && comp.GetType() != typeof(EnemyMovement))
                 comp.enabled = false;
-        
+        }
 
-        GetComponent<Animator>().enabled = false; ;
+        // Disable EnemyMovement to prevent NavMeshAgent usage
+        var enemyMovement = GetComponent<EnemyMovement>();
+        if (enemyMovement != null)
+        {
+            enemyMovement.enabled = false;
+        }
+
+        GetComponent<Animator>().enabled = false;
 
         GetComponent<NavMeshAgent>().enabled = false;
 
@@ -57,12 +65,13 @@ public class KnockOut : MonoBehaviour
         }
 
         foreach (Transform child in transform)
+        {
             child.gameObject.SetActive(false);
+        }
 
         GetComponent<SpriteRenderer>().enabled = true;
         GetComponent<SpriteRenderer>().sprite = _sprite;
         _sleep.gameObject.SetActive(true);
-
-
     }
+
 }
